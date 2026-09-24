@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gift Zone - My Profile</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .profile-page {
+            min-height: 100vh;
+            padding: 40px 15px;
+            background: linear-gradient(135deg, #ffe4ef, #fff);
+            box-sizing: border-box;
+        }
+
+        .profile-container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .profile-header {
+            background: #e91e63;
+            color: white;
+            padding: 30px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+
+        .profile-icon {
+            width: 85px;
+            height: 85px;
+            margin: auto;
+            border-radius: 50%;
+            background: white;
+            color: #e91e63;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .profile-header h1 {
+            margin: 15px 0 5px;
+        }
+
+        .profile-header p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        .profile-card {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+        }
+
+        .profile-title {
+            color: #e91e63;
+            margin-bottom: 20px;
+        }
+
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 5px;
+            border-bottom: 1px solid #eee;
+            gap: 20px;
+        }
+
+        .profile-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .profile-value {
+            color: #222;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .profile-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .profile-button {
+            display: block;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            font-size: 15px;
+        }
+
+        .orders-button {
+            background: #e91e63;
+            color: white;
+        }
+
+        .home-button {
+            background: #f8bbd0;
+            color: #880e4f;
+        }
+
+        .logout-button {
+            background: #333;
+            color: white;
+        }
+
+        .profile-button:hover {
+            opacity: 0.9;
+        }
+
+        .not-logged-in {
+            max-width: 500px;
+            margin: 100px auto;
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+        }
+
+        .not-logged-in h2 {
+            color: #e91e63;
+        }
+
+        .login-now-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 13px 25px;
+            background: #e91e63;
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+
+            .profile-page {
+                padding: 20px 10px;
+            }
+
+            .profile-card {
+                padding: 20px;
+            }
+
+            .profile-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .profile-value {
+                text-align: left;
+            }
+
+            .profile-buttons {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="profile-page">
+
+    <div
+        id="profileContent"
+        class="profile-container"
+    >
+
+    </div>
+
+</div>
+
+
+<script>
+
+// =====================================
+// GIFT ZONE CUSTOMER PROFILE
+// =====================================
+
+const profileContent =
+    document.getElementById("profileContent");
+
+
+// =====================================
+// GET LOGGED-IN CUSTOMER
+// =====================================
+
+let customer = null;
+
+try {
+
+    customer =
+        JSON.parse(
+            localStorage.getItem(
+                "giftZoneLoggedInCustomer"
+            )
+        );
+
+} catch (error) {
+
+    customer = null;
+
+}
+
+
+// =====================================
+// CHECK LOGIN
+// =====================================
+
+if (!customer) {
+
+    profileContent.innerHTML = `
+
+        <div class="not-logged-in">
+
+            <div style="font-size:60px;">
+                🔐
+            </div>
+
+            <h2>
+                Login Required
+            </h2>
+
+            <p>
+                Please login to view your
+                Gift Zone profile.
+            </p>
+
+            <a
+                href="login.html"
+                class="login-now-button"
+            >
+                🔐 Login Now
+            </a>
+
+        </div>
+
+    `;
+
+} else {
+
+
+    // =====================================
+    // SHOW CUSTOMER PROFILE
+    // =====================================
+
+    profileContent.innerHTML = `
+
+        <div class="profile-header">
+
+            <div class="profile-icon">
+                👤
+            </div>
+
+            <h1>
+                Welcome, ${escapeHTML(customer.name)}
+            </h1>
+
+            <p>
+                Gift Zone Customer
+            </p>
+
+        </div>
+
+
+        <div class="profile-card">
+
+            <h2 class="profile-title">
+                👤 My Profile
+            </h2>
+
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    Customer ID
+                </span>
+
+                <span class="profile-value">
+                    ${escapeHTML(customer.customerId || "Not available")}
+                </span>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    Full Name
+                </span>
+
+                <span class="profile-value">
+                    ${escapeHTML(customer.name || "Not available")}
+                </span>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    📱 Mobile Number
+                </span>
+
+                <span class="profile-value">
+                    ${escapeHTML(customer.mobile || "Not available")}
+                </span>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    📧 Email
+                </span>
+
+                <span class="profile-value">
+                    ${escapeHTML(customer.email || "Not available")}
+                </span>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    🕒 Login Time
+                </span>
+
+                <span class="profile-value">
+                    ${escapeHTML(customer.loginTime || "Not available")}
+                </span>
+
+            </div>
+
+
+            <div class="profile-buttons">
+
+                <a
+                    href="orders.html"
+                    class="profile-button orders-button"
+                >
+                    📦 My Orders
+                </a>
+
+
+                <a
+                    href="index.html"
+                    class="profile-button home-button"
+                >
+                    🏠 Home
+                </a>
+
+
+                <button
+                    onclick="logoutCustomer()"
+                    class="profile-button logout-button"
+                >
+                    🚪 Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+// =====================================
+// LOGOUT
+// =====================================
+
+function logoutCustomer() {
+
+    const confirmLogout =
+        confirm(
+            "Are you sure you want to logout?"
+        );
+
+
+    if (!confirmLogout) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        "giftZoneLoggedInCustomer"
+    );
+
+
+    alert(
+        "You have been logged out successfully."
+    );
+
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+// =====================================
+// SECURITY HELPER
+// =====================================
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+</script>
+
+</body>
+
+</html>

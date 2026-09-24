@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gift Zone - Checkout</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* =====================================
+           CURRENT LOCATION BUTTON
+        ===================================== */
+
+        .location-btn {
+            width: 100%;
+            min-height: 58px;
+            margin: 8px 0 12px;
+
+            padding: 15px 20px;
+
+            border: none;
+            border-radius: 14px;
+
+            background: linear-gradient(
+                135deg,
+                #e91e63,
+                #ff4081
+            );
+
+            color: #ffffff;
+
+            font-size: 17px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            box-shadow:
+                0 8px 20px
+                rgba(233, 30, 99, 0.25);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                opacity 0.25s ease;
+        }
+
+
+        .location-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 26px
+                rgba(233, 30, 99, 0.35);
+        }
+
+
+        .location-btn:active {
+            transform: scale(0.98);
+        }
+
+
+        .location-btn:disabled {
+            opacity: 0.7;
+            cursor: wait;
+            transform: none;
+        }
+
+
+        .location-icon {
+            font-size: 22px;
+        }
+
+
+        .location-status {
+            min-height: 24px;
+
+            margin: 8px 0 15px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .location-success {
+            color: #159447;
+        }
+
+
+        .location-error {
+            color: #d93025;
+        }
+
+
+        .location-loading {
+            color: #e91e63;
+        }
+
+
+        .address-filled {
+            border: 2px solid #e91e63 !important;
+
+            background: #fff8fb !important;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(233, 30, 99, 0.08);
+        }
+
+
+        /* =====================================
+           MOBILE
+        ===================================== */
+
+        @media (max-width: 600px) {
+
+            .location-btn {
+                min-height: 56px;
+
+                font-size: 16px;
+
+                padding: 14px 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     GIFT ZONE LOADING SCREEN
+========================= -->
+
+<div
+    id="loadingScreen"
+    class="loading-screen">
+
+    <div class="loading-logo">
+        🎁
+    </div>
+
+    <h2>
+        Gift Zone
+    </h2>
+
+    <p>
+        Preparing your surprise...
+    </p>
+
+    <div class="loading-spinner"></div>
+
+</div>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="main-header">
+
+    <div class="logo">
+        🎁 <span>GIFT ZONE</span>
+    </div>
+
+
+    <nav class="main-nav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="index.html#gifts">
+            Gifts
+        </a>
+
+        <a href="index.html#categories">
+            Occasions
+        </a>
+
+        <a
+            href="checkout.html"
+            class="active">
+
+            Surprise Delivery
+
+        </a>
+
+        <a href="orders.html">
+            My Orders
+        </a>
+
+        <a href="cart.html">
+            🛒 Cart
+        </a>
+
+    </nav>
+
+
+    <div class="mobile-cart">
+        🛒
+    </div>
+
+</header>
+
+
+<!-- =========================
+     CHECKOUT
+========================= -->
+
+<main class="checkout-container">
+
+
+    <h1>
+        🎁 Delivery Details
+    </h1>
+
+
+    <p class="checkout-subtitle">
+        Enter the details for your surprise delivery.
+    </p>
+
+
+    <form id="checkoutForm">
+
+
+        <!-- CUSTOMER DETAILS -->
+
+        <section class="checkout-section">
+
+            <h2>
+                👤 Customer Details
+            </h2>
+
+
+            <label for="customerName">
+                Your Name
+            </label>
+
+            <input
+                type="text"
+                id="customerName"
+                placeholder="Enter your name"
+                required
+            >
+
+
+            <label for="customerPhone">
+                Your Mobile Number
+            </label>
+
+            <input
+                type="tel"
+                id="customerPhone"
+                placeholder="Enter your mobile number"
+                maxlength="10"
+                inputmode="numeric"
+                required
+            >
+
+        </section>
+
+
+        <!-- RECIPIENT DETAILS -->
+
+        <section class="checkout-section">
+
+            <h2>
+                🎁 Recipient Details
+            </h2>
+
+
+            <label for="recipientName">
+                Recipient Name
+            </label>
+
+            <input
+                type="text"
+                id="recipientName"
+                placeholder="Who will receive the surprise?"
+                required
+            >
+
+
+            <label for="recipientPhone">
+                Recipient Mobile Number
+            </label>
+
+            <input
+                type="tel"
+                id="recipientPhone"
+                placeholder="Recipient mobile number"
+                maxlength="10"
+                inputmode="numeric"
+                required
+            >
+
+        </section>
+
+
+        <!-- DELIVERY LOCATION -->
+
+        <section class="checkout-section">
+
+            <h2>
+                📍 Delivery Location
+            </h2>
+
+
+            <button
+                type="button"
+                id="locationBtn"
+                class="location-btn">
+
+                <span class="location-icon">
+                    📍
+                </span>
+
+                <span id="locationBtnText">
+                    Use My Current Location
+                </span>
+
+            </button>
+
+
+            <p
+                id="locationStatus"
+                class="location-status">
+            </p>
+
+
+            <label for="address">
+                Full Delivery Address
+            </label>
+
+
+            <textarea
+                id="address"
+                rows="4"
+                placeholder="House/Building, Street, Area, City, PIN code"
+                required
+            ></textarea>
+
+
+        </section>
+
+
+        <!-- DELIVERY DATE & TIME -->
+
+        <section class="checkout-section">
+
+            <h2>
+                📅 Surprise Delivery
+            </h2>
+
+
+            <label for="deliveryDate">
+                Booking / Delivery Date
+            </label>
+
+
+            <input
+                type="date"
+                id="deliveryDate"
+                required
+            >
+
+
+            <p class="date-info">
+                ⏳ Please book at least 2 days in advance.
+            </p>
+
+
+            <label for="deliveryTime">
+                Preferred Delivery Time
+            </label>
+
+
+            <select
+                id="deliveryTime"
+                required>
+
+                <option value="">
+                    Select delivery time
+                </option>
+
+                <option value="10:00 AM - 12:00 PM">
+                    10:00 AM - 12:00 PM
+                </option>
+
+                <option value="12:00 PM - 2:00 PM">
+                    12:00 PM - 2:00 PM
+                </option>
+
+                <option value="2:00 PM - 4:00 PM">
+                    2:00 PM - 4:00 PM
+                </option>
+
+                <option value="4:00 PM - 6:00 PM">
+                    4:00 PM - 6:00 PM
+                </option>
+
+                <option value="6:00 PM - 8:00 PM">
+                    6:00 PM - 8:00 PM
+                </option>
+
+            </select>
+
+        </section>
+
+
+        <!-- SURPRISE MESSAGE -->
+
+        <section class="checkout-section">
+
+            <h2>
+                💌 Surprise Message
+            </h2>
+
+
+            <textarea
+                id="surpriseMessage"
+                rows="4"
+                placeholder="Write a message for the recipient..."
+            ></textarea>
+
+        </section>
+
+
+        <!-- SPECIAL INSTRUCTIONS -->
+
+        <section class="checkout-section">
+
+            <h2>
+                📝 Special Instructions
+            </h2>
+
+
+            <textarea
+                id="specialInstructions"
+                rows="4"
+                placeholder="Any special instructions for Gift Zone?"
+            ></textarea>
+
+        </section>
+
+
+        <!-- PAYMENT BUTTON -->
+
+        <button
+            type="submit"
+            class="checkout-btn">
+
+            Continue to Payment 💳
+
+        </button>
+
+
+    </form>
+
+</main>
+
+
+<!-- =====================================
+     GIFT ZONE CUSTOM POPUP
+===================================== -->
+
+<div
+    id="giftPopup"
+    class="gift-popup-overlay">
+
+    <div class="gift-popup">
+
+        <button
+            type="button"
+            id="giftPopupClose"
+            class="gift-popup-close">
+
+            ×
+
+        </button>
+
+
+        <div
+            id="giftPopupIcon"
+            class="gift-popup-icon">
+
+            🎁
+
+        </div>
+
+
+        <h2 id="giftPopupTitle">
+            Gift Zone
+        </h2>
+
+
+        <p id="giftPopupMessage">
+            Something special is waiting...
+        </p>
+
+
+        <button
+            type="button"
+            id="giftPopupButton"
+            class="gift-popup-button">
+
+            Okay ❤️
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+     CHECKOUT JAVASCRIPT
+===================================== -->
+
+<script>
+
+
+// =====================================
+// POPUP FUNCTION
+// =====================================
+
+function checkoutPopup(
+    title,
+    message,
+    icon,
+    buttonText
+) {
+
+    const popup =
+        document.getElementById("giftPopup");
+
+    const popupIcon =
+        document.getElementById("giftPopupIcon");
+
+    const popupTitle =
+        document.getElementById("giftPopupTitle");
+
+    const popupMessage =
+        document.getElementById("giftPopupMessage");
+
+    const popupButton =
+        document.getElementById("giftPopupButton");
+
+    const popupClose =
+        document.getElementById("giftPopupClose");
+
+
+    if (!popup) {
+
+        alert(
+            title + "\n\n" + message
+        );
+
+        return;
+
+    }
+
+
+    popupIcon.textContent =
+        icon || "🎁";
+
+    popupTitle.textContent =
+        title;
+
+    popupMessage.innerHTML =
+        message;
+
+    popupButton.textContent =
+        buttonText || "Okay ❤️";
+
+
+    popup.classList.add("show");
+
+
+    popupButton.onclick =
+        function () {
+
+            popup.classList.remove("show");
+
+        };
+
+
+    popupClose.onclick =
+        function () {
+
+            popup.classList.remove("show");
+
+        };
+
+}
+
+
+// =====================================
+// HIDE LOADING SCREEN
+// =====================================
+
+window.addEventListener(
+    "load",
+    function () {
+
+        setTimeout(
+            function () {
+
+                const loadingScreen =
+                    document.getElementById(
+                        "loadingScreen"
+                    );
+
+                if (loadingScreen) {
+
+                    loadingScreen.classList.add(
+                        "hidden"
+                    );
+
+                }
+
+            },
+            700
+        );
+
+    }
+);
+
+
+// =====================================
+// MINIMUM DELIVERY DATE
+// =====================================
+
+const deliveryDate =
+    document.getElementById(
+        "deliveryDate"
+    );
+
+
+const minimumDateObject =
+    new Date();
+
+
+minimumDateObject.setDate(
+    minimumDateObject.getDate() + 2
+);
+
+
+const minimumYear =
+    minimumDateObject.getFullYear();
+
+
+const minimumMonth =
+    String(
+        minimumDateObject.getMonth() + 1
+    ).padStart(2, "0");
+
+
+const minimumDay =
+    String(
+        minimumDateObject.getDate()
+    ).padStart(2, "0");
+
+
+const minimumDate =
+    `${minimumYear}-${minimumMonth}-${minimumDay}`;
+
+
+if (deliveryDate) {
+
+    deliveryDate.min =
+        minimumDate;
+
+}
+
+
+// =====================================
+// CURRENT LOCATION
+// =====================================
+
+const locationBtn =
+    document.getElementById(
+        "locationBtn"
+    );
+
+
+const locationBtnText =
+    document.getElementById(
+        "locationBtnText"
+    );
+
+
+const locationStatus =
+    document.getElementById(
+        "locationStatus"
+    );
+
+
+const address =
+    document.getElementById(
+        "address"
+    );
+
+
+if (locationBtn) {
+
+    locationBtn.addEventListener(
+        "click",
+        function () {
+
+
+            // Browser support
+
+            if (!navigator.geolocation) {
+
+                checkoutPopup(
+                    "Location Not Supported",
+                    "Your browser does not support location services.<br><br>Please enter your delivery address manually.",
+                    "📍",
+                    "Okay"
+                );
+
+                locationStatus.textContent =
+                    "❌ Location is not supported.";
+
+                locationStatus.className =
+                    "location-status location-error";
+
+                return;
+
+            }
+
+
+            // Button loading
+
+            locationBtn.disabled =
+                true;
+
+            locationBtnText.textContent =
+                "Getting your location...";
+
+
+            locationStatus.textContent =
+                "📍 Finding your current location...";
+
+            locationStatus.className =
+                "location-status location-loading";
+
+
+            // Get location
+
+            navigator.geolocation.getCurrentPosition(
+
+                async function (position) {
+
+
+                    const latitude =
+                        position.coords.latitude;
+
+
+                    const longitude =
+                        position.coords.longitude;
+
+
+                    try {
+
+
+                        const response =
+                            await fetch(
+
+                                "https://nominatim.openstreetmap.org/reverse" +
+                                "?format=jsonv2" +
+                                "&lat=" +
+                                encodeURIComponent(
+                                    latitude
+                                ) +
+                                "&lon=" +
+                                encodeURIComponent(
+                                    longitude
+                                ) +
+                                "&zoom=18" +
+                                "&addressdetails=1"
+
+                            );
+
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                "Address lookup failed"
+                            );
+
+                        }
+
+
+                        const data =
+                            await response.json();
+
+
+                        if (
+                            data &&
+                            data.display_name
+                        ) {
+
+
+                            address.value =
+                                data.display_name;
+
+
+                            address.classList.add(
+                                "address-filled"
+                            );
+
+
+                            locationStatus.textContent =
+                                "✅ Current location added.";
+
+                            locationStatus.className =
+                                "location-status location-success";
+
+
+                            locationBtnText.textContent =
+                                "📍 Location Added";
+
+
+                            checkoutPopup(
+                                "Location Added! 📍",
+                                "Your current location has been added to the delivery address.<br><br><strong>Please check the address once before continuing.</strong>",
+                                "📍",
+                                "Looks Good ❤️"
+                            );
+
+
+                        } else {
+
+
+                            locationStatus.textContent =
+                                "✅ Location detected. Please complete your address.";
+
+                            locationStatus.className =
+                                "location-status location-success";
+
+
+                            locationBtnText.textContent =
+                                "📍 Location Detected";
+
+
+                            checkoutPopup(
+                                "Location Detected! 📍",
+                                "We found your location, but we couldn't get the complete address.<br><br>Please enter the remaining address details manually.",
+                                "📍",
+                                "Okay ❤️"
+                            );
+
+                        }
+
+
+                    } catch (error) {
+
+
+                        console.error(error);
+
+
+                        address.value =
+                            "Location detected. Please enter your complete delivery address here.";
+
+
+                        address.classList.add(
+                            "address-filled"
+                        );
+
+
+                        locationStatus.textContent =
+                            "✅ Location detected. Please complete your address.";
+
+                        locationStatus.className =
+                            "location-status location-success";
+
+
+                        locationBtnText.textContent =
+                            "📍 Location Detected";
+
+
+                        checkoutPopup(
+                            "Location Detected! 📍",
+                            "Your location was detected successfully.<br><br>Please complete your full delivery address manually.",
+                            "📍",
+                            "Continue ❤️"
+                        );
+
+                    }
+
+
+                    locationBtn.disabled =
+                        false;
+
+                },
+
+
+                function (error) {
+
+
+                    console.error(
+                        "Location error:",
+                        error
+                    );
+
+
+                    locationBtn.disabled =
+                        false;
+
+
+                    locationBtnText.textContent =
+                        "📍 Use My Current Location";
+
+
+                    let title =
+                        "Location Not Available";
+
+
+                    let message =
+                        "We couldn't get your current location.<br><br>Please try again or enter your address manually.";
+
+
+                    if (
+                        error.code ===
+                        error.PERMISSION_DENIED
+                    ) {
+
+                        title =
+                            "Location Permission Needed 📍";
+
+                        message =
+                            "Please allow location access in your browser and try again.<br><br>You can also enter your delivery address manually.";
+
+                    }
+
+
+                    else if (
+                        error.code ===
+                        error.POSITION_UNAVAILABLE
+                    ) {
+
+                        title =
+                            "Location Unavailable 📍";
+
+                        message =
+                            "Your location could not be detected right now.<br><br>Please try again or enter your address manually.";
+
+                    }
+
+
+                    else if (
+                        error.code ===
+                        error.TIMEOUT
+                    ) {
+
+                        title =
+                            "Location Request Timed Out ⏳";
+
+                        message =
+                            "The location request took too long.<br><br>Please try again.";
+
+                    }
+
+
+                    locationStatus.textContent =
+                        "❌ " + title;
+
+                    locationStatus.className =
+                        "location-status location-error";
+
+
+                    checkoutPopup(
+                        title,
+                        message,
+                        "📍",
+                        "Okay ❤️"
+                    );
+
+                },
+
+
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================
+// CHECK DELIVERY DATE
+// =====================================
+
+if (deliveryDate) {
+
+    deliveryDate.addEventListener(
+        "change",
+        function () {
+
+
+            if (
+                deliveryDate.value <
+                minimumDate
+            ) {
+
+
+                checkoutPopup(
+                    "Choose Another Date 📅",
+                    "Please select a delivery date at least <strong>2 days from today</strong>.<br><br>We've selected the earliest available date for you.",
+                    "📅",
+                    "Got It ❤️"
+                );
+
+
+                deliveryDate.value =
+                    minimumDate;
+
+            }
+
+        }
+    );
+
+}
+
+
+</script>
+
+
+<!-- =====================================
+     MAIN GIFT ZONE JAVASCRIPT
+===================================== -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>

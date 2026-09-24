@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gift Zone - My Orders</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #fff5f8;
+            color: #333;
+        }
+
+        header {
+            background: #e91e63;
+            color: white;
+            padding: 16px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1050px;
+            margin: 30px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #e91e63;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .login-message,
+        .empty-orders {
+            background: white;
+            padding: 45px 20px;
+            text-align: center;
+            border-radius: 18px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+        }
+
+        .login-message h2,
+        .empty-orders h2 {
+            color: #e91e63;
+            margin-bottom: 12px;
+        }
+
+        .login-button,
+        .back-home {
+            display: inline-block;
+            margin-top: 20px;
+            background: #e91e63;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .customer-info {
+            background: #fff0f5;
+            border-left: 5px solid #e91e63;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .customer-info strong {
+            color: #e91e63;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.09);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .order-id {
+            color: #e91e63;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .order-date {
+            color: #777;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .status-badge {
+            background: #fff0f5;
+            color: #e91e63;
+            padding: 9px 15px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .status-notification {
+            background: linear-gradient(135deg, #fff0f5, #ffe1ec);
+            border: 1px solid #ffc1d5;
+            border-left: 6px solid #e91e63;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+        }
+
+        .status-notification h3 {
+            color: #e91e63;
+            margin-bottom: 8px;
+        }
+
+        .status-notification p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .last-update {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .tracking-section {
+            margin-bottom: 28px;
+        }
+
+        .tracking-title {
+            color: #e91e63;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tracking {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 25px 5px;
+        }
+
+        .tracking-line {
+            position: absolute;
+            top: 18px;
+            left: 5%;
+            right: 5%;
+            height: 5px;
+            background: #eee;
+            z-index: 0;
+            border-radius: 10px;
+        }
+
+        .tracking-progress {
+            position: absolute;
+            top: 18px;
+            left: 5%;
+            height: 5px;
+            background: #e91e63;
+            z-index: 1;
+            border-radius: 10px;
+        }
+
+        .tracking-step {
+            position: relative;
+            z-index: 2;
+            width: 16%;
+            text-align: center;
+        }
+
+        .step-circle {
+            width: 38px;
+            height: 38px;
+            margin: 0 auto 8px;
+            border-radius: 50%;
+            background: #eee;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 17px;
+        }
+
+        .tracking-step.completed .step-circle,
+        .tracking-step.current .step-circle {
+            background: #e91e63;
+            color: white;
+        }
+
+        .tracking-step.current .step-circle {
+            box-shadow: 0 0 0 5px #ffd4e2;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #777;
+            line-height: 1.3;
+        }
+
+        .tracking-step.completed .step-label,
+        .tracking-step.current .step-label {
+            color: #e91e63;
+            font-weight: bold;
+        }
+
+        .next-step {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .next-step strong {
+            color: #e91e63;
+        }
+
+        .section-title {
+            color: #e91e63;
+            margin: 20px 0 12px;
+            font-size: 18px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .detail-box {
+            background: #fafafa;
+            padding: 13px;
+            border-radius: 10px;
+            word-break: break-word;
+        }
+
+        .detail-box strong {
+            display: block;
+            color: #e91e63;
+            margin-bottom: 5px;
+        }
+
+        .gift-item {
+            background: #fafafa;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .payment-box {
+            background: #fff8fb;
+            padding: 15px;
+            border-radius: 12px;
+            line-height: 1.8;
+        }
+
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e91e63;
+        }
+
+        .refresh-info {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+
+        .back-home {
+            display: block;
+            width: fit-content;
+            margin: 30px auto;
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tracking {
+                flex-direction: column;
+                gap: 18px;
+                margin-left: 10px;
+            }
+
+            .tracking-line {
+                top: 20px;
+                bottom: 20px;
+                left: 18px;
+                right: auto;
+                width: 5px;
+                height: auto;
+            }
+
+            .tracking-progress {
+                top: 20px;
+                left: 18px;
+                width: 5px !important;
+                height: 0;
+            }
+
+            .tracking-step {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                text-align: left;
+                gap: 12px;
+            }
+
+            .step-circle {
+                margin: 0;
+                flex-shrink: 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🎁 Gift Zone
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#gifts">Gifts</a>
+        <a href="checkout.html">Surprise Delivery</a>
+        <a href="orders.html">My Orders</a>
+        <a href="profile.html">👤 Profile</a>
+        <a href="cart.html">🛒 Cart</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <h1>📦 My Orders</h1>
+
+    <p class="subtitle">
+        Track your surprise gift delivery
+    </p>
+
+    <div id="ordersContainer"></div>
+
+    <div class="refresh-info">
+        🔄 Order status automatically updates every 5 seconds
+    </div>
+
+    <a href="index.html" class="back-home">
+        🏠 Continue Shopping
+    </a>
+
+</div>
+
+
+<script>
+
+
+// =====================================
+// ORDER STATUS STEPS
+// =====================================
+
+const statusSteps = [
+
+    {
+        key: "Order Placed",
+        icon: "🛒",
+        message: "Your order has been successfully placed.",
+        next: "Our team will start preparing your gift."
+    },
+
+    {
+        key: "Gift Being Packed",
+        icon: "📦",
+        message: "Your gift is currently being packed.",
+        next: "Once packing is complete, your gift will be marked ready."
+    },
+
+    {
+        key: "Gift Ready",
+        icon: "🎁",
+        message: "Your gift is ready for delivery.",
+        next: "The delivery person will pick up your gift."
+    },
+
+    {
+        key: "Delivery Person Picked Up",
+        icon: "🚚",
+        message: "Our delivery person has picked up your gift.",
+        next: "Your gift will now be taken to the delivery location."
+    },
+
+    {
+        key: "Out for Delivery",
+        icon: "🛵",
+        message: "Your gift is out for delivery.",
+        next: "The delivery person is on the way to the recipient."
+    },
+
+    {
+        key: "Delivered",
+        icon: "🎉",
+        message: "Your gift has been successfully delivered.",
+        next: "Thank you for choosing Gift Zone! ❤️"
+    }
+
+];
+
+
+// =====================================
+// GET LOGGED-IN CUSTOMER
+// =====================================
+
+function getLoggedInCustomer() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "giftZoneLoggedInCustomer"
+            )
+        );
+
+    } catch (error) {
+
+        return null;
+
+    }
+
+}
+
+
+// =====================================
+// GET ALL ORDERS
+// =====================================
+
+function getAllOrders() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "giftZoneOrders"
+            )
+        ) || [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+// =====================================
+// SAVE ORDERS
+// =====================================
+
+function saveAllOrders(orders) {
+
+    localStorage.setItem(
+        "giftZoneOrders",
+        JSON.stringify(orders)
+    );
+
+}
+
+
+// =====================================
+// LOAD CUSTOMER ORDERS
+// =====================================
+
+function loadOrders() {
+
+    const ordersContainer =
+        document.getElementById(
+            "ordersContainer"
+        );
+
+
+    const loggedInCustomer =
+        getLoggedInCustomer();
+
+
+    // =====================================
+    // LOGIN CHECK
+    // =====================================
+
+    if (!loggedInCustomer) {
+
+        ordersContainer.innerHTML = `
+
+            <div class="login-message">
+
+                <h2>
+                    🔐 Login Required
+                </h2>
+
+                <p>
+                    Please login to view your Gift Zone orders.
+                </p>
+
+                <a
+                    href="login.html"
+                    class="login-button"
+                >
+                    Login Now
+                </a>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    // =====================================
+    // CUSTOMER ID
+    // =====================================
+
+    const customerId =
+        String(
+            loggedInCustomer.customerId || ""
+        ).trim();
+
+
+    if (!customerId) {
+
+        ordersContainer.innerHTML = `
+
+            <div class="empty-orders">
+
+                <h2>
+                    ⚠️ Account Information Missing
+                </h2>
+
+                <p>
+                    Please logout and login again.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    // =====================================
+    // GET ORDERS
+    // =====================================
+
+    const allOrders =
+        getAllOrders();
+
+
+    let customerOrders = [];
+
+    let ordersChanged = false;
+
+
+    // =====================================
+    // FILTER CUSTOMER ORDERS
+    // =====================================
+
+    allOrders.forEach(
+        function(order) {
+
+            if (!order) {
+                return;
+            }
+
+
+            const orderCustomerId =
+                String(
+                    order.customerId || ""
+                ).trim();
+
+
+            // =================================
+            // NEW ORDER WITH CUSTOMER ID
+            // =================================
+
+            if (orderCustomerId) {
+
+                if (
+                    orderCustomerId ===
+                    customerId
+                ) {
+
+                    customerOrders.push(order);
+
+                }
+
+                return;
+
+            }
+
+
+            // =================================
+            // OLD ORDER WITHOUT CUSTOMER ID
+            // =================================
+
+            const orderEmail =
+                String(
+                    order.customerEmail || ""
+                )
+                .toLowerCase()
+                .trim();
+
+
+            const customerEmail =
+                String(
+                    loggedInCustomer.email || ""
+                )
+                .toLowerCase()
+                .trim();
+
+
+            const orderPhone =
+                String(
+                    order.customerPhone || ""
+                ).trim();
+
+
+            const customerPhone =
+                String(
+                    loggedInCustomer.mobile || ""
+                ).trim();
+
+
+            const emailMatch =
+                orderEmail &&
+                customerEmail &&
+                orderEmail === customerEmail;
+
+
+            const phoneMatch =
+                orderPhone &&
+                customerPhone &&
+                orderPhone === customerPhone;
+
+
+            if (
+                emailMatch ||
+                phoneMatch
+            ) {
+
+                order.customerId =
+                    customerId;
+
+                customerOrders.push(order);
+
+                ordersChanged = true;
+
+            }
+
+        }
+    );
+
+
+    // =====================================
+    // SAVE OLD ORDERS
+    // =====================================
+
+    if (ordersChanged) {
+
+        saveAllOrders(allOrders);
+
+    }
+
+
+    // =====================================
+    // NO ORDERS
+    // =====================================
+
+    if (
+        customerOrders.length === 0
+    ) {
+
+        ordersContainer.innerHTML = `
+
+            <div class="empty-orders">
+
+                <h2>
+                    📭 No Orders Found
+                </h2>
+
+                <p>
+                    You have not placed any orders yet.
+                </p>
+
+                <br>
+
+                <p>
+                    Any new order you place will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    // =====================================
+    // CUSTOMER INFORMATION
+    // =====================================
+
+    ordersContainer.innerHTML = `
+
+        <div class="customer-info">
+
+            👤 Logged in as:
+
+            <strong>
+                ${
+                    loggedInCustomer.name ||
+                    "Customer"
+                }
+            </strong>
+
+        </div>
+
+    `;
+
+
+    // =====================================
+    // NEWEST ORDER FIRST
+    // =====================================
+
+    customerOrders
+        .slice()
+        .reverse()
+        .forEach(
+            function(order) {
+
+
+                // =================================
+                // CURRENT STATUS
+                // =================================
+
+                let currentStatus =
+                    order.orderStatus ||
+                    "Order Placed";
+
+
+                if (
+                    currentStatus ===
+                    "Surprise Preparing"
+                ) {
+
+                    currentStatus =
+                        "Order Placed";
+
+                }
+
+
+                // =================================
+                // FIND STATUS INDEX
+                // =================================
+
+                let currentIndex =
+                    statusSteps.findIndex(
+                        function(step) {
+
+                            return (
+                                step.key ===
+                                currentStatus
+                            );
+
+                        }
+                    );
+
+
+                if (currentIndex === -1) {
+
+                    currentIndex = 0;
+
+                    currentStatus =
+                        "Order Placed";
+
+                }
+
+
+                const currentStep =
+                    statusSteps[currentIndex];
+
+
+                // =================================
+                // PROGRESS
+                // =================================
+
+                const progressPercent =
+                    currentIndex === 0
+                        ? 0
+                        : (
+                            currentIndex /
+                            (statusSteps.length - 1)
+                        ) * 90;
+
+
+                // =================================
+                // TRACKING
+                // =================================
+
+                let trackingHTML = "";
+
+
+                statusSteps.forEach(
+                    function(step, index) {
+
+                        let className = "";
+
+
+                        if (
+                            index <
+                            currentIndex
+                        ) {
+
+                            className =
+                                "completed";
+
+                        }
+
+                        else if (
+                            index ===
+                            currentIndex
+                        ) {
+
+                            className =
+                                "current";
+
+                        }
+
+
+                        trackingHTML += `
+
+                            <div
+                                class="tracking-step ${className}"
+                            >
+
+                                <div class="step-circle">
+                                    ${step.icon}
+                                </div>
+
+                                <div class="step-label">
+                                    ${step.key}
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                );
+
+
+                // =================================
+                // NEXT STEP
+                // =================================
+
+                const nextStep =
+                    statusSteps[
+                        currentIndex + 1
+                    ];
+
+
+                const nextStepHTML =
+                    nextStep
+                    ? `
+                        <div class="next-step">
+
+                            <strong>
+                                🔜 Next:
+                            </strong>
+
+                            ${nextStep.icon}
+                            ${nextStep.key}
+
+                        </div>
+                    `
+                    : `
+                        <div class="next-step">
+
+                            <strong>
+                                ❤️ Completed
+                            </strong>
+
+                            Your surprise delivery is complete.
+
+                        </div>
+                    `;
+
+
+                // =================================
+                // LAST UPDATE
+                // =================================
+
+                let lastUpdateHTML =
+                    "";
+
+
+                if (
+                    order.statusUpdatedAt
+                ) {
+
+                    lastUpdateHTML = `
+
+                        <div class="last-update">
+
+                            🕐 Last status update:
+
+                            ${order.statusUpdatedAt}
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                // =================================
+                // GIFTS
+                // =================================
+
+                let giftsHTML = "";
+
+
+                if (
+                    Array.isArray(order.cart)
+                ) {
+
+                    order.cart.forEach(
+                        function(item) {
+
+                            giftsHTML += `
+
+                                <div class="gift-item">
+
+                                    🎁
+
+                                    <strong>
+                                        ${item.name || "Gift"}
+                                    </strong>
+
+                                    <br>
+
+                                    Quantity:
+                                    ${item.quantity || 1}
+
+                                    <br>
+
+                                    Price:
+                                    ₹${item.price || 0}
+
+                                </div>
+
+                            `;
+
+                        }
+                    );
+
+                }
+
+
+                // =================================
+                // ORDER CARD
+                // =================================
+
+                const orderCard =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                orderCard.className =
+                    "order-card";
+
+
+                orderCard.innerHTML = `
+
+                    <div class="order-header">
+
+                        <div>
+
+                            <div class="order-id">
+                                ${order.orderId || "No Order ID"}
+                            </div>
+
+                            <div class="order-date">
+                                Ordered on:
+                                ${order.orderDate || ""}
+                            </div>
+
+                        </div>
+
+
+                        <div class="status-badge">
+
+                            ${currentStep.icon}
+
+                            ${currentStatus}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATUS NOTIFICATION -->
+
+                    <div class="status-notification">
+
+                        <h3>
+
+                            ${currentStep.icon}
+
+                            ${currentStatus}
+
+                        </h3>
+
+                        <p>
+                            ${currentStep.message}
+                        </p>
+
+                        ${lastUpdateHTML}
+
+                    </div>
+
+
+                    <!-- TRACKING -->
+
+                    <div class="tracking-section">
+
+                        <h2 class="tracking-title">
+                            🚚 Surprise Delivery Tracking
+                        </h2>
+
+
+                        <div class="tracking">
+
+                            <div class="tracking-line"></div>
+
+                            <div
+                                class="tracking-progress"
+                                style="width:${progressPercent}%"
+                            ></div>
+
+                            ${trackingHTML}
+
+                        </div>
+
+
+                        ${nextStepHTML}
+
+                    </div>
+
+
+                    <!-- CUSTOMER DETAILS -->
+
+                    <h3 class="section-title">
+                        👤 Customer Details
+                    </h3>
+
+
+                    <div class="details-grid">
+
+                        <div class="detail-box">
+
+                            <strong>
+                                Name
+                            </strong>
+
+                            ${order.customerName || "N/A"}
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <strong>
+                                Phone
+                            </strong>
+
+                            ${order.customerPhone || "N/A"}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RECIPIENT -->
+
+                    <h3 class="section-title">
+                        🎁 Recipient Details
+                    </h3>
+
+
+                    <div class="details-grid">
+
+                        <div class="detail-box">
+
+                            <strong>
+                                Name
+                            </strong>
+
+                            ${order.recipientName || "N/A"}
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <strong>
+                                Phone
+                            </strong>
+
+                            ${order.recipientPhone || "N/A"}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DELIVERY -->
+
+                    <h3 class="section-title">
+                        📍 Delivery Details
+                    </h3>
+
+
+                    <div class="details-grid">
+
+                        <div class="detail-box">
+
+                            <strong>
+                                Address
+                            </strong>
+
+                            ${order.address || "N/A"}
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <strong>
+                                Delivery Date
+                            </strong>
+
+                            ${order.deliveryDate || "N/A"}
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <strong>
+                                Delivery Time
+                            </strong>
+
+                            ${order.deliveryTime || "N/A"}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- GIFTS -->
+
+                    <h3 class="section-title">
+                        🎁 Ordered Gifts
+                    </h3>
+
+
+                    ${
+                        giftsHTML ||
+                        "<p>No gift details available.</p>"
+                    }
+
+
+                    <!-- SURPRISE MESSAGE -->
+
+                    <h3 class="section-title">
+                        💌 Surprise Message
+                    </h3>
+
+
+                    <div class="detail-box">
+
+                        ${
+                            order.surpriseMessage ||
+                            "No surprise message"
+                        }
+
+                    </div>
+
+
+                    <!-- SPECIAL INSTRUCTIONS -->
+
+                    <h3 class="section-title">
+                        📝 Special Instructions
+                    </h3>
+
+
+                    <div class="detail-box">
+
+                        ${
+                            order.specialInstructions ||
+                            "No special instructions"
+                        }
+
+                    </div>
+
+
+                    <!-- PAYMENT -->
+
+                    <h3 class="section-title">
+                        💳 Payment Details
+                    </h3>
+
+
+                    <div class="payment-box">
+
+                        Payment Method:
+
+                        <strong>
+                            ${order.paymentMethod || "N/A"}
+                        </strong>
+
+                        <br>
+
+                        Payment Status:
+
+                        <strong>
+                            ${order.paymentStatus || "N/A"}
+                        </strong>
+
+                        <br><br>
+
+                        Gift Total:
+                        ₹${order.giftTotal || 0}
+
+                        <br>
+
+                        Delivery Charge:
+                        ₹${order.deliveryCharge || 0}
+
+                        <br>
+
+                        <span class="total">
+
+                            Total:
+                            ₹${order.total || 0}
+
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                ordersContainer.appendChild(
+                    orderCard
+                );
+
+            }
+        );
+
+}
+
+
+// =====================================
+// INITIAL LOAD
+// =====================================
+
+loadOrders();
+
+
+// =====================================
+// AUTO REFRESH EVERY 5 SECONDS
+// =====================================
+
+setInterval(
+    function() {
+
+        loadOrders();
+
+    },
+    5000
+);
+
+
+</script>
+
+
+</body>
+
+</html>

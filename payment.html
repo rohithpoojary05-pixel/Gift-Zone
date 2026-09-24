@@ -1,0 +1,1648 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gift Zone - Payment</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* =====================================
+           PAYMENT PAGE
+        ===================================== */
+
+        .payment-page {
+            max-width: 850px;
+        }
+
+
+        /* =====================================
+           PAYMENT METHOD BUTTONS
+        ===================================== */
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .payment-method {
+            border: 2px solid #eeeeee;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s ease;
+            user-select: none;
+        }
+
+        .payment-method:hover {
+            border-color: #ff80ab;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.12);
+        }
+
+        .payment-method.active {
+            border-color: #e91e63;
+            background: #fff0f5;
+            box-shadow: 0 8px 22px rgba(233, 30, 99, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .payment-method-icon {
+            display: block;
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .payment-method span {
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            color: #333;
+        }
+
+        .payment-method.active span {
+            color: #e91e63;
+        }
+
+
+        /* =====================================
+           PAYMENT PANELS
+        ===================================== */
+
+        .payment-panel {
+            display: none;
+            margin-top: 20px;
+            padding: 22px;
+            background: #fff8fb;
+            border: 1px solid #f5d9e4;
+            border-radius: 16px;
+            animation: paymentPanelShow 0.3s ease;
+        }
+
+        .payment-panel.active {
+            display: block;
+        }
+
+        @keyframes paymentPanelShow {
+
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        /* =====================================
+           QR SECTION
+        ===================================== */
+
+        .qr-box {
+            text-align: center;
+        }
+
+        .qr-placeholder {
+            width: 190px;
+            height: 190px;
+            margin: 15px auto;
+            background: #ffffff;
+            border: 2px dashed #e91e63;
+            border-radius: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 65px;
+        }
+
+        .qr-box h3 {
+            color: #e91e63;
+            margin-bottom: 8px;
+        }
+
+        .qr-box p {
+            color: #666;
+            line-height: 1.5;
+            margin: 5px 0;
+        }
+
+
+        /* =====================================
+           CARD FORM
+        ===================================== */
+
+        .payment-input {
+            width: 100%;
+            padding: 14px 15px;
+            margin-top: 7px;
+            margin-bottom: 15px;
+
+            border: 1px solid #dddddd;
+            border-radius: 10px;
+
+            font-size: 15px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .payment-input:focus {
+            border-color: #e91e63;
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .payment-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #555;
+        }
+
+
+        /* =====================================
+           NET BANKING
+        ===================================== */
+
+        .bank-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .bank-option {
+            padding: 14px;
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            color: #444;
+            transition: 0.2s ease;
+        }
+
+        .bank-option:hover {
+            border-color: #e91e63;
+            color: #e91e63;
+        }
+
+        .bank-option.selected {
+            background: #fff0f5;
+            border-color: #e91e63;
+            color: #e91e63;
+        }
+
+
+        /* =====================================
+           SELECTED PAYMENT TEXT
+        ===================================== */
+
+        .selected-payment {
+            margin-top: 18px;
+            padding: 12px 15px;
+            background: #fff0f5;
+            border-radius: 10px;
+            color: #e91e63;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+
+        /* =====================================
+           POPUP
+        ===================================== */
+
+        .payment-popup-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(20, 10, 15, 0.65);
+            backdrop-filter: blur(6px);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition: 0.3s ease;
+        }
+
+        .payment-popup-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .payment-popup {
+            width: 100%;
+            max-width: 430px;
+
+            background: #ffffff;
+            border-radius: 24px;
+
+            padding: 35px 25px 28px;
+
+            text-align: center;
+
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+
+            transform: scale(0.8);
+            transition: 0.3s ease;
+        }
+
+        .payment-popup-overlay.show .payment-popup {
+            transform: scale(1);
+        }
+
+        .payment-popup-icon {
+            width: 80px;
+            height: 80px;
+
+            margin: 0 auto 18px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #fff0f5;
+
+            font-size: 42px;
+        }
+
+        .payment-popup h2 {
+            margin: 0 0 10px;
+            color: #e91e63;
+        }
+
+        .payment-popup p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .payment-popup-button {
+            width: 100%;
+            padding: 14px 20px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: linear-gradient(
+                135deg,
+                #e91e63,
+                #ff4081
+            );
+
+            color: #ffffff;
+
+            font-size: 16px;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================
+           MOBILE
+        ===================================== */
+
+        @media (max-width: 600px) {
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .bank-list {
+                grid-template-columns: 1fr;
+            }
+
+            .card-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .payment-popup {
+                max-width: 360px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     LOADING SCREEN
+===================================== -->
+
+<div id="loadingScreen" class="loading-screen">
+
+    <div class="loading-logo">
+        🎁
+    </div>
+
+    <h2>
+        Gift Zone
+    </h2>
+
+    <p>
+        Preparing secure payment...
+    </p>
+
+    <div class="loading-spinner"></div>
+
+</div>
+
+
+<!-- =====================================
+     HEADER
+===================================== -->
+
+<header class="main-header">
+
+    <div class="logo">
+        🎁 <span>GIFT ZONE</span>
+    </div>
+
+    <nav class="main-nav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="index.html#gifts">
+            Gifts
+        </a>
+
+        <a href="checkout.html">
+            Surprise Delivery
+        </a>
+
+        <a href="orders.html">
+            My Orders
+        </a>
+
+        <a href="cart.html">
+            🛒 Cart
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- =====================================
+     PAYMENT
+===================================== -->
+
+<main class="checkout-container payment-page">
+
+
+    <h1>
+        💳 Secure Payment
+    </h1>
+
+    <p class="checkout-subtitle">
+        Complete your payment to confirm the surprise delivery.
+    </p>
+
+
+    <!-- =====================================
+         ORDER SUMMARY
+    ===================================== -->
+
+    <section class="checkout-section payment-box">
+
+        <h2>
+            🎁 Gift Zone Order
+        </h2>
+
+        <div id="paymentItems"></div>
+
+
+        <div class="payment-summary">
+
+            <div class="payment-row">
+
+                <span>
+                    Gift Amount
+                </span>
+
+                <strong id="giftAmount">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <div class="payment-row">
+
+                <span>
+                    Delivery & Surprise Service
+                </span>
+
+                <strong id="deliveryAmount">
+                    ₹50
+                </strong>
+
+            </div>
+
+
+            <div class="payment-total">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <strong id="totalAmount">
+                    ₹0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         ONLINE PAYMENT
+    ===================================== -->
+
+    <section class="checkout-section online-payment">
+
+        <h2>
+            💳 Choose Payment Method
+        </h2>
+
+        <p class="payment-description">
+            Select how you would like to pay.
+        </p>
+
+
+        <div class="payment-methods">
+
+
+            <div
+                class="payment-method active"
+                data-method="UPI / QR Code"
+                id="upiMethod"
+            >
+
+                <span class="payment-method-icon">
+                    📱
+                </span>
+
+                <span>
+                    UPI / QR Code
+                </span>
+
+            </div>
+
+
+            <div
+                class="payment-method"
+                data-method="Debit / Credit Card"
+                id="cardMethod"
+            >
+
+                <span class="payment-method-icon">
+                    💳
+                </span>
+
+                <span>
+                    Debit / Credit Card
+                </span>
+
+            </div>
+
+
+            <div
+                class="payment-method"
+                data-method="Net Banking"
+                id="netBankingMethod"
+            >
+
+                <span class="payment-method-icon">
+                    🏦
+                </span>
+
+                <span>
+                    Net Banking
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- UPI -->
+
+        <div
+            id="upiPanel"
+            class="payment-panel active"
+        >
+
+            <div class="qr-box">
+
+                <h3>
+                    📱 UPI / QR Payment
+                </h3>
+
+                <p>
+                    Scan the QR code using your UPI app.
+                </p>
+
+                <div class="qr-placeholder">
+                    📱
+                </div>
+
+                <p>
+                    <strong>
+                        Demo Payment
+                    </strong>
+                </p>
+
+                <p>
+                    Real QR payment will be connected
+                    when the payment gateway is added.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD -->
+
+        <div
+            id="cardPanel"
+            class="payment-panel"
+        >
+
+            <h3>
+                💳 Card Payment
+            </h3>
+
+            <p>
+                Enter your card details.
+            </p>
+
+
+            <label class="payment-label">
+                Card Number
+            </label>
+
+            <input
+                type="text"
+                id="cardNumber"
+                class="payment-input"
+                placeholder="1234 5678 9012 3456"
+                maxlength="19"
+            >
+
+
+            <label class="payment-label">
+                Card Holder Name
+            </label>
+
+            <input
+                type="text"
+                id="cardName"
+                class="payment-input"
+                placeholder="Name on card"
+            >
+
+
+            <div class="card-row">
+
+                <div>
+
+                    <label class="payment-label">
+                        Expiry Date
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cardExpiry"
+                        class="payment-input"
+                        placeholder="MM/YY"
+                        maxlength="5"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label class="payment-label">
+                        CVV
+                    </label>
+
+                    <input
+                        type="password"
+                        id="cardCvv"
+                        class="payment-input"
+                        placeholder="•••"
+                        maxlength="3"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NET BANKING -->
+
+        <div
+            id="netBankingPanel"
+            class="payment-panel"
+        >
+
+            <h3>
+                🏦 Net Banking
+            </h3>
+
+            <p>
+                Select your bank.
+            </p>
+
+
+            <div class="bank-list">
+
+                <div class="bank-option">
+                    SBI
+                </div>
+
+                <div class="bank-option">
+                    HDFC Bank
+                </div>
+
+                <div class="bank-option">
+                    ICICI Bank
+                </div>
+
+                <div class="bank-option">
+                    Axis Bank
+                </div>
+
+                <div class="bank-option">
+                    Canara Bank
+                </div>
+
+                <div class="bank-option">
+                    Union Bank
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SELECTED METHOD -->
+
+        <div
+            id="selectedPayment"
+            class="selected-payment"
+        >
+            Selected: 📱 UPI / QR Code
+        </div>
+
+
+        <!-- PAY NOW -->
+
+        <button
+            type="button"
+            id="payButton"
+            class="pay-now-button"
+        >
+
+            💳 Pay ₹0
+
+        </button>
+
+
+        <p class="secure-payment">
+            🔒 Secure payment • Your payment information is protected.
+        </p>
+
+
+    </section>
+
+
+    <!-- BACK -->
+
+    <a
+        href="checkout.html"
+        class="continue-shopping payment-back"
+    >
+        ← Back to Checkout
+    </a>
+
+
+</main>
+
+
+<!-- =====================================
+     PAYMENT POPUP
+===================================== -->
+
+<div
+    id="paymentPopup"
+    class="payment-popup-overlay"
+>
+
+    <div class="payment-popup">
+
+        <div
+            id="paymentPopupIcon"
+            class="payment-popup-icon"
+        >
+            💳
+        </div>
+
+        <h2 id="paymentPopupTitle">
+            Confirm Payment
+        </h2>
+
+        <p id="paymentPopupMessage">
+            Please confirm your payment.
+        </p>
+
+        <button
+            type="button"
+            id="paymentPopupButton"
+            class="payment-popup-button"
+        >
+            Confirm Payment
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+// =====================================
+// HIDE LOADING SCREEN
+// =====================================
+
+window.addEventListener("load", function () {
+
+    setTimeout(function () {
+
+        const loadingScreen =
+            document.getElementById("loadingScreen");
+
+        if (loadingScreen) {
+
+            loadingScreen.classList.add("hidden");
+
+        }
+
+    }, 700);
+
+});
+
+
+// =====================================
+// GET CART
+// =====================================
+
+const cart =
+    JSON.parse(
+        localStorage.getItem("giftZoneCart")
+    ) || [];
+
+
+// =====================================
+// GET CHECKOUT DETAILS
+// =====================================
+
+const checkoutDetails =
+    JSON.parse(
+        localStorage.getItem("giftZoneCheckout")
+    ) || {};
+
+
+// =====================================
+// GET CURRENT LOGGED-IN CUSTOMER
+// =====================================
+
+const loggedInCustomer =
+    JSON.parse(
+        localStorage.getItem(
+            "giftZoneLoggedInCustomer"
+        )
+    ) || null;
+
+
+// =====================================
+// ELEMENTS
+// =====================================
+
+const paymentItems =
+    document.getElementById("paymentItems");
+
+const giftAmount =
+    document.getElementById("giftAmount");
+
+const deliveryAmount =
+    document.getElementById("deliveryAmount");
+
+const totalAmount =
+    document.getElementById("totalAmount");
+
+const payButton =
+    document.getElementById("payButton");
+
+
+// =====================================
+// DELIVERY CHARGE
+// =====================================
+
+const deliveryCharge = 50;
+
+
+// =====================================
+// CALCULATE TOTAL
+// =====================================
+
+let giftTotal = 0;
+
+
+if (cart.length === 0) {
+
+    paymentItems.innerHTML = `
+
+        <div class="payment-empty">
+
+            🛒 Your cart is empty.
+
+        </div>
+
+    `;
+
+} else {
+
+    cart.forEach(function (item) {
+
+        const itemTotal =
+            Number(item.price) *
+            Number(item.quantity);
+
+        giftTotal += itemTotal;
+
+
+        paymentItems.innerHTML += `
+
+            <div class="payment-item">
+
+                <div>
+
+                    <strong>
+                        ${item.name}
+                    </strong>
+
+                    <span>
+                        Quantity: ${item.quantity}
+                    </span>
+
+                </div>
+
+                <strong>
+                    ₹${itemTotal}
+                </strong>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+const finalTotal =
+    giftTotal + deliveryCharge;
+
+
+// =====================================
+// SHOW AMOUNTS
+// =====================================
+
+giftAmount.textContent =
+    "₹" + giftTotal;
+
+deliveryAmount.textContent =
+    "₹" + deliveryCharge;
+
+totalAmount.textContent =
+    "₹" + finalTotal;
+
+payButton.textContent =
+    "💳 Pay ₹" + finalTotal;
+
+
+// =====================================
+// PAYMENT METHOD SWITCHING
+// =====================================
+
+const paymentMethods =
+    document.querySelectorAll(".payment-method");
+
+const upiPanel =
+    document.getElementById("upiPanel");
+
+const cardPanel =
+    document.getElementById("cardPanel");
+
+const netBankingPanel =
+    document.getElementById("netBankingPanel");
+
+const selectedPayment =
+    document.getElementById("selectedPayment");
+
+
+paymentMethods.forEach(function (method) {
+
+    method.addEventListener("click", function () {
+
+        paymentMethods.forEach(function (item) {
+
+            item.classList.remove("active");
+
+        });
+
+
+        method.classList.add("active");
+
+
+        upiPanel.classList.remove("active");
+        cardPanel.classList.remove("active");
+        netBankingPanel.classList.remove("active");
+
+
+        const selectedMethod =
+            method.getAttribute("data-method");
+
+
+        if (selectedMethod === "UPI / QR Code") {
+
+            upiPanel.classList.add("active");
+
+        }
+
+
+        if (selectedMethod === "Debit / Credit Card") {
+
+            cardPanel.classList.add("active");
+
+        }
+
+
+        if (selectedMethod === "Net Banking") {
+
+            netBankingPanel.classList.add("active");
+
+        }
+
+
+        let icon = "💳";
+
+
+        if (selectedMethod === "UPI / QR Code") {
+
+            icon = "📱";
+
+        }
+
+        if (selectedMethod === "Debit / Credit Card") {
+
+            icon = "💳";
+
+        }
+
+        if (selectedMethod === "Net Banking") {
+
+            icon = "🏦";
+
+        }
+
+
+        selectedPayment.textContent =
+            "Selected: " +
+            icon +
+            " " +
+            selectedMethod;
+
+    });
+
+});
+
+
+// =====================================
+// BANK SELECTION
+// =====================================
+
+const bankOptions =
+    document.querySelectorAll(".bank-option");
+
+
+bankOptions.forEach(function (bank) {
+
+    bank.addEventListener("click", function () {
+
+        bankOptions.forEach(function (item) {
+
+            item.classList.remove("selected");
+
+        });
+
+        bank.classList.add("selected");
+
+    });
+
+});
+
+
+// =====================================
+// POPUP FUNCTION
+// =====================================
+
+function showPaymentPopup(
+    icon,
+    title,
+    message,
+    buttonText,
+    callback
+) {
+
+    const popup =
+        document.getElementById("paymentPopup");
+
+    const popupIcon =
+        document.getElementById("paymentPopupIcon");
+
+    const popupTitle =
+        document.getElementById("paymentPopupTitle");
+
+    const popupMessage =
+        document.getElementById("paymentPopupMessage");
+
+    const popupButton =
+        document.getElementById("paymentPopupButton");
+
+
+    popupIcon.textContent =
+        icon;
+
+    popupTitle.textContent =
+        title;
+
+    popupMessage.innerHTML =
+        message;
+
+    popupButton.textContent =
+        buttonText;
+
+
+    popup.classList.add("show");
+
+
+    popupButton.onclick = function () {
+
+        popup.classList.remove("show");
+
+
+        if (callback) {
+
+            callback();
+
+        }
+
+    };
+
+}
+
+
+// =====================================
+// PAY NOW
+// =====================================
+
+payButton.addEventListener(
+    "click",
+    function () {
+
+
+        // =================================
+        // CHECK LOGIN
+        // =================================
+
+        if (!loggedInCustomer) {
+
+            showPaymentPopup(
+                "🔐",
+                "Login Required",
+                "Please login to your Gift Zone account before completing the order.",
+                "Go to Login",
+                function () {
+
+                    window.location.href =
+                        "login.html";
+
+                }
+            );
+
+            return;
+
+        }
+
+
+        // =================================
+        // CHECK CUSTOMER ID
+        // =================================
+
+        if (!loggedInCustomer.customerId) {
+
+            showPaymentPopup(
+                "🔐",
+                "Account Information Missing",
+                "Please logout and login again before placing the order.",
+                "Login Again",
+                function () {
+
+                    localStorage.removeItem(
+                        "giftZoneLoggedInCustomer"
+                    );
+
+                    window.location.href =
+                        "login.html";
+
+                }
+            );
+
+            return;
+
+        }
+
+
+        // =================================
+        // CHECK CART
+        // =================================
+
+        if (cart.length === 0) {
+
+            showPaymentPopup(
+                "🛒",
+                "Cart is Empty",
+                "Please add a gift before making a payment.",
+                "Choose a Gift",
+                function () {
+
+                    window.location.href =
+                        "index.html#gifts";
+
+                }
+            );
+
+            return;
+
+        }
+
+
+        // =================================
+        // GET SELECTED METHOD
+        // =================================
+
+        const activeMethod =
+            document.querySelector(
+                ".payment-method.active"
+            );
+
+
+        const selectedMethod =
+            activeMethod
+            ? activeMethod.getAttribute("data-method")
+            : "UPI / QR Code";
+
+
+        // =================================
+        // CARD VALIDATION
+        // =================================
+
+        if (
+            selectedMethod ===
+            "Debit / Credit Card"
+        ) {
+
+            const cardNumber =
+                document.getElementById("cardNumber")
+                .value
+                .trim();
+
+            const cardName =
+                document.getElementById("cardName")
+                .value
+                .trim();
+
+            const cardExpiry =
+                document.getElementById("cardExpiry")
+                .value
+                .trim();
+
+            const cardCvv =
+                document.getElementById("cardCvv")
+                .value
+                .trim();
+
+
+            if (
+                !cardNumber ||
+                !cardName ||
+                !cardExpiry ||
+                !cardCvv
+            ) {
+
+                showPaymentPopup(
+                    "💳",
+                    "Card Details Required",
+                    "Please enter all card details before continuing.",
+                    "Okay ❤️"
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        // =================================
+        // NET BANKING VALIDATION
+        // =================================
+
+        if (
+            selectedMethod ===
+            "Net Banking"
+        ) {
+
+            const selectedBank =
+                document.querySelector(
+                    ".bank-option.selected"
+                );
+
+
+            if (!selectedBank) {
+
+                showPaymentPopup(
+                    "🏦",
+                    "Select Your Bank",
+                    "Please choose your bank before continuing.",
+                    "Okay ❤️"
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        // =================================
+        // CONFIRM PAYMENT
+        // =================================
+
+        showPaymentPopup(
+
+            "💳",
+
+            "Confirm Payment",
+
+            "Payment Method:<br>" +
+
+            "<strong>" +
+            selectedMethod +
+            "</strong>" +
+
+            "<br><br>" +
+
+            "Amount to Pay:<br>" +
+
+            "<strong>₹" +
+            finalTotal +
+            "</strong>" +
+
+            "<br><br>" +
+
+            "<small>" +
+            "This is currently a demo payment. " +
+            "No real money will be charged." +
+            "</small>",
+
+            "Confirm Payment",
+
+            function () {
+
+
+                // =================================
+                // CREATE ORDER ID
+                // =================================
+
+                const orderId =
+                    "GZ-" +
+                    Date.now();
+
+
+                // =================================
+                // CURRENT CUSTOMER ID
+                // =================================
+                // IMPORTANT:
+                // ALWAYS use the customer who is
+                // currently logged in.
+                //
+                // Do NOT use checkoutDetails.customerId
+                // here.
+                // =================================
+
+                const customerId =
+                    String(
+                        loggedInCustomer.customerId
+                    ).trim();
+
+
+                // =================================
+                // CREATE ORDER
+                // =================================
+
+                const newOrder = {
+
+                    orderId:
+                        orderId,
+
+
+                    customerId:
+                        customerId,
+
+
+                    orderDate:
+                        new Date()
+                        .toLocaleString("en-IN"),
+
+
+                    // =================================
+                    // CUSTOMER INFORMATION
+                    // =================================
+
+                    customerName:
+                        loggedInCustomer.name ||
+                        loggedInCustomer.loginName ||
+                        checkoutDetails.customerName ||
+                        "",
+
+
+                    customerPhone:
+                        checkoutDetails.customerPhone ||
+                        loggedInCustomer.mobile ||
+                        "",
+
+
+                    customerEmail:
+                        loggedInCustomer.email ||
+                        checkoutDetails.customerEmail ||
+                        "",
+
+
+                    // =================================
+                    // RECIPIENT INFORMATION
+                    // =================================
+
+                    recipientName:
+                        checkoutDetails.recipientName ||
+                        "",
+
+
+                    recipientPhone:
+                        checkoutDetails.recipientPhone ||
+                        "",
+
+
+                    // =================================
+                    // DELIVERY INFORMATION
+                    // =================================
+
+                    address:
+                        checkoutDetails.address ||
+                        "",
+
+
+                    deliveryDate:
+                        checkoutDetails.deliveryDate ||
+                        "",
+
+
+                    deliveryTime:
+                        checkoutDetails.deliveryTime ||
+                        "",
+
+
+                    // =================================
+                    // SURPRISE DETAILS
+                    // =================================
+
+                    surpriseMessage:
+                        checkoutDetails.surpriseMessage ||
+                        "",
+
+
+                    specialInstructions:
+                        checkoutDetails.specialInstructions ||
+                        "",
+
+
+                    // =================================
+                    // GIFTS
+                    // =================================
+
+                    cart:
+                        cart,
+
+
+                    // =================================
+                    // PAYMENT
+                    // =================================
+
+                    giftTotal:
+                        giftTotal,
+
+
+                    deliveryCharge:
+                        deliveryCharge,
+
+
+                    total:
+                        finalTotal,
+
+
+                    paymentMethod:
+                        selectedMethod,
+
+
+                    paymentStatus:
+                        "Demo Payment Successful",
+
+
+                    // =================================
+                    // INITIAL STATUS
+                    // =================================
+
+                    orderStatus:
+                        "Order Placed"
+
+                };
+
+
+                // =================================
+                // GET ALL OLD ORDERS
+                // =================================
+
+                let orders =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "giftZoneOrders"
+                        )
+                    ) || [];
+
+
+                // =================================
+                // ADD NEW ORDER
+                // =================================
+
+                orders.push(
+                    newOrder
+                );
+
+
+                // =================================
+                // SAVE ALL ORDERS
+                // =================================
+
+                localStorage.setItem(
+                    "giftZoneOrders",
+                    JSON.stringify(
+                        orders
+                    )
+                );
+
+
+                // =================================
+                // CLEAR CART
+                // =================================
+
+                localStorage.removeItem(
+                    "giftZoneCart"
+                );
+
+
+                // =================================
+                // CLEAR CHECKOUT DATA
+                // =================================
+                // Prevents old checkout details
+                // from being reused for another
+                // customer.
+                // =================================
+
+                localStorage.removeItem(
+                    "giftZoneCheckout"
+                );
+
+
+                // =================================
+                // SUCCESS
+                // =================================
+
+                showPaymentPopup(
+
+                    "🎉",
+
+                    "Order Confirmed!",
+
+                    "Your Gift Zone order has been placed successfully." +
+
+                    "<br><br>" +
+
+                    "<strong>Order ID:</strong> " +
+                    orderId +
+
+                    "<br>" +
+
+                    "<strong>Amount:</strong> ₹" +
+                    finalTotal +
+
+                    "<br><br>" +
+
+                    "Your surprise delivery is now being prepared! 🎁",
+
+                    "View My Order →",
+
+                    function () {
+
+                        window.location.href =
+                            "orders.html";
+
+                    }
+
+                );
+
+            }
+
+        );
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>
+

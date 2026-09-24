@@ -1,0 +1,1046 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gift Zone - Distributor Orders</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fff5f8;
+            color: #222;
+            padding-bottom: 40px;
+        }
+
+        /* HEADER */
+        header {
+            background: #e91e63;
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .admin-title {
+            font-size: 15px;
+            background: white;
+            color: #e91e63;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* MAIN */
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 8px;
+            color: #e91e63;
+            font-size: 30px;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #e91e63;
+        }
+
+        .refresh-btn {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .refresh-btn:hover {
+            background: #c2185b;
+        }
+
+        /* ORDER COUNT */
+        .order-count {
+            background: white;
+            padding: 15px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+            font-weight: bold;
+            color: #555;
+        }
+
+        .order-count span {
+            color: #e91e63;
+        }
+
+        /* ORDER CARD */
+        .order-card {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            padding: 22px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.09);
+            border-left: 5px solid #e91e63;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 18px;
+        }
+
+        .order-id {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e91e63;
+        }
+
+        .order-date {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* SECTIONS */
+        .section-title {
+            color: #e91e63;
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .detail-box {
+            background: #fff8fa;
+            padding: 13px;
+            border-radius: 8px;
+            border: 1px solid #f5d8e2;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            color: #222;
+            word-break: break-word;
+        }
+
+        /* GIFTS */
+        .gift-list {
+            background: #fff8fa;
+            border: 1px solid #f5d8e2;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .gift-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .gift-item:last-child {
+            border-bottom: none;
+        }
+
+        /* MESSAGE */
+        .message-box {
+            background: #fff0f5;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 20px;
+        }
+
+        .message-box strong {
+            color: #e91e63;
+        }
+
+        /* PAYMENT */
+        .total-box {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .total {
+            font-size: 22px;
+            font-weight: bold;
+            color: #e91e63;
+        }
+
+        /* STATUS AREA */
+        .status-area {
+            background: #fff4f7;
+            border: 1px solid #f2c8d7;
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .status-label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .status-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .status-select {
+            flex: 1;
+            min-width: 240px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .update-btn {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .update-btn:hover {
+            background: #c2185b;
+        }
+
+        .status-message {
+            margin-top: 10px;
+            color: #388e3c;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* NO ORDERS */
+        .no-orders {
+            background: white;
+            text-align: center;
+            padding: 50px 20px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .no-orders-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .no-orders h2 {
+            color: #e91e63;
+            margin-bottom: 8px;
+        }
+
+        .no-orders p {
+            color: #777;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+
+            header {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .page-title {
+                font-size: 25px;
+            }
+
+            .container {
+                width: 93%;
+            }
+
+            .order-card {
+                padding: 16px;
+            }
+
+            .gift-item {
+                flex-direction: column;
+            }
+
+            .status-controls {
+                flex-direction: column;
+            }
+
+            .status-select,
+            .update-btn {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+            🎁 Gift Zone
+        </div>
+
+        <div class="admin-title">
+            👨‍💼 Distributor / Admin
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <div class="container">
+
+        <h1 class="page-title">
+            📦 All Customer Orders
+        </h1>
+
+        <p class="page-subtitle">
+            Prepare gifts, manage deliveries and update customer order status
+        </p>
+
+
+        <!-- SEARCH -->
+
+        <div class="top-bar">
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="searchOrders"
+                    placeholder="🔎 Search Order ID, Customer or Recipient..."
+                >
+
+            </div>
+
+            <button
+                class="refresh-btn"
+                onclick="loadAdminOrders()"
+            >
+                🔄 Refresh Orders
+            </button>
+
+        </div>
+
+
+        <!-- COUNT -->
+
+        <div class="order-count">
+
+            Total Orders:
+            <span id="orderCount">0</span>
+
+        </div>
+
+
+        <!-- ORDERS -->
+
+        <div id="ordersContainer"></div>
+
+    </div>
+
+
+    <script>
+
+        /* =========================================
+           GIFT ZONE ADMIN / DISTRIBUTOR ORDERS
+        ========================================= */
+
+
+        const statusList = [
+            "Order Placed",
+            "Gift Being Packed",
+            "Gift Ready",
+            "Delivery Person Picked Up",
+            "Out for Delivery",
+            "Delivered"
+        ];
+
+
+        /* =========================================
+           LOAD ALL ORDERS
+        ========================================= */
+
+        function loadAdminOrders() {
+
+            const ordersContainer =
+                document.getElementById("ordersContainer");
+
+            const orderCount =
+                document.getElementById("orderCount");
+
+            let orders =
+                JSON.parse(
+                    localStorage.getItem("giftZoneOrders")
+                ) || [];
+
+
+            /* SEARCH */
+
+            const searchInput =
+                document.getElementById("searchOrders");
+
+            const searchText =
+                searchInput.value
+                    .toLowerCase()
+                    .trim();
+
+
+            if (searchText) {
+
+                orders = orders.filter(order => {
+
+                    const orderId =
+                        String(order.orderId || "").toLowerCase();
+
+                    const customerName =
+                        String(order.customerName || "").toLowerCase();
+
+                    const customerPhone =
+                        String(order.customerPhone || "").toLowerCase();
+
+                    const recipientName =
+                        String(order.recipientName || "").toLowerCase();
+
+                    const recipientPhone =
+                        String(order.recipientPhone || "").toLowerCase();
+
+                    return (
+                        orderId.includes(searchText) ||
+                        customerName.includes(searchText) ||
+                        customerPhone.includes(searchText) ||
+                        recipientName.includes(searchText) ||
+                        recipientPhone.includes(searchText)
+                    );
+
+                });
+
+            }
+
+
+            orderCount.textContent = orders.length;
+
+
+            /* NO ORDERS */
+
+            if (orders.length === 0) {
+
+                ordersContainer.innerHTML = `
+
+                    <div class="no-orders">
+
+                        <div class="no-orders-icon">
+                            📦
+                        </div>
+
+                        <h2>No Orders Found</h2>
+
+                        <p>
+                            Customer orders will appear here after successful payment.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+            /* NEWEST FIRST */
+
+            orders.reverse();
+
+
+            ordersContainer.innerHTML =
+                orders.map(order => createOrderCard(order)).join("");
+
+        }
+
+
+        /* =========================================
+           CREATE ORDER CARD
+        ========================================= */
+
+        function createOrderCard(order) {
+
+            const orderStatus =
+                order.orderStatus || "Order Placed";
+
+
+            /* GIFTS */
+
+            let giftsHTML = "";
+
+            if (
+                Array.isArray(order.cart) &&
+                order.cart.length > 0
+            ) {
+
+                giftsHTML = order.cart.map(item => {
+
+                    return `
+
+                        <div class="gift-item">
+
+                            <span>
+                                🎁 ${escapeHTML(item.name || "Gift")}
+                                × ${item.quantity || 1}
+                            </span>
+
+                            <strong>
+                                ₹${item.price || 0}
+                            </strong>
+
+                        </div>
+
+                    `;
+
+                }).join("");
+
+            } else {
+
+                giftsHTML = `
+                    <div class="gift-item">
+                        No gift information available
+                    </div>
+                `;
+
+            }
+
+
+            /* STATUS OPTIONS */
+
+            const statusOptions =
+                statusList.map(status => {
+
+                    const selected =
+                        status === orderStatus
+                            ? "selected"
+                            : "";
+
+                    return `
+                        <option value="${escapeHTML(status)}" ${selected}>
+                            ${escapeHTML(status)}
+                        </option>
+                    `;
+
+                }).join("");
+
+
+            return `
+
+                <div class="order-card">
+
+                    <!-- ORDER HEADER -->
+
+                    <div class="order-header">
+
+                        <div>
+
+                            <div class="order-id">
+                                🧾 ${escapeHTML(order.orderId || "Unknown Order")}
+                            </div>
+
+                            <div class="order-date">
+                                Booked:
+                                ${formatDate(order.orderDate)}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CUSTOMER -->
+
+                    <div class="section-title">
+                        👤 Customer Details
+                    </div>
+
+                    <div class="details-grid">
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                CUSTOMER NAME
+                            </div>
+
+                            <div class="detail-value">
+                                ${escapeHTML(order.customerName || "-")}
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                CUSTOMER PHONE
+                            </div>
+
+                            <div class="detail-value">
+                                ${escapeHTML(order.customerPhone || "-")}
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                CUSTOMER EMAIL
+                            </div>
+
+                            <div class="detail-value">
+                                ${escapeHTML(order.customerEmail || "-")}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RECIPIENT -->
+
+                    <div class="section-title">
+                        🎉 Recipient Details
+                    </div>
+
+                    <div class="details-grid">
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                RECIPIENT NAME
+                            </div>
+
+                            <div class="detail-value">
+                                ${escapeHTML(order.recipientName || "-")}
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                RECIPIENT PHONE
+                            </div>
+
+                            <div class="detail-value">
+                                ${escapeHTML(order.recipientPhone || "-")}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DELIVERY -->
+
+                    <div class="section-title">
+                        🚚 Delivery Details
+                    </div>
+
+                    <div class="details-grid">
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                DELIVERY DATE
+                            </div>
+
+                            <div class="detail-value">
+                                ${escapeHTML(order.deliveryDate || "-")}
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                DELIVERY TIME
+                            </div>
+
+                            <div class="detail-value">
+                                ${escapeHTML(order.deliveryTime || "-")}
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                DELIVERY ADDRESS
+                            </div>
+
+                            <div class="detail-value">
+                                ${escapeHTML(order.address || "-")}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- GIFTS -->
+
+                    <div class="section-title">
+                        🎁 Gift Details
+                    </div>
+
+                    <div class="gift-list">
+
+                        ${giftsHTML}
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+
+                    <div class="message-box">
+
+                        <strong>
+                            💌 Surprise Message:
+                        </strong>
+
+                        <br><br>
+
+                        ${escapeHTML(
+                            order.surpriseMessage || "No message"
+                        )}
+
+                    </div>
+
+
+                    <div class="message-box">
+
+                        <strong>
+                            📝 Special Instructions:
+                        </strong>
+
+                        <br><br>
+
+                        ${escapeHTML(
+                            order.specialInstructions || "No special instructions"
+                        )}
+
+                    </div>
+
+
+                    <!-- PAYMENT -->
+
+                    <div class="total-box">
+
+                        <div>
+                            💳 Payment:
+                            ${escapeHTML(order.paymentMethod || "-")}
+                        </div>
+
+                        <div>
+                            Payment Status:
+                            ${escapeHTML(order.paymentStatus || "-")}
+                        </div>
+
+                        <br>
+
+                        <div class="total">
+                            Total: ₹${order.total || 0}
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="status-area">
+
+                        <div class="status-label">
+                            📍 Current Order Status
+                        </div>
+
+                        <div class="status-controls">
+
+                            <select
+                                class="status-select"
+                                id="status-${escapeHTML(order.orderId)}"
+                            >
+
+                                ${statusOptions}
+
+                            </select>
+
+
+                            <button
+                                class="update-btn"
+                                onclick="updateOrderStatus('${escapeHTML(order.orderId)}')"
+                            >
+                                💾 Update Status
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            class="status-message"
+                            id="message-${escapeHTML(order.orderId)}"
+                        >
+                            ✅ Status updated successfully!
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =========================================
+           UPDATE ORDER STATUS
+        ========================================= */
+
+        function updateOrderStatus(orderId) {
+
+            const select =
+                document.getElementById(
+                    "status-" + orderId
+                );
+
+            if (!select) {
+                return;
+            }
+
+
+            const newStatus =
+                select.value;
+
+
+            let orders =
+                JSON.parse(
+                    localStorage.getItem("giftZoneOrders")
+                ) || [];
+
+
+            const orderIndex =
+                orders.findIndex(
+                    order =>
+                        String(order.orderId) === String(orderId)
+                );
+
+
+            if (orderIndex === -1) {
+
+                alert("Order not found.");
+
+                return;
+            }
+
+
+            /* UPDATE STATUS */
+
+            orders[orderIndex].orderStatus =
+                newStatus;
+
+
+            /* SAVE */
+
+            localStorage.setItem(
+                "giftZoneOrders",
+                JSON.stringify(orders)
+            );
+
+
+            /* SHOW MESSAGE */
+
+            const message =
+                document.getElementById(
+                    "message-" + orderId
+                );
+
+            if (message) {
+
+                message.style.display = "block";
+
+                setTimeout(() => {
+
+                    message.style.display = "none";
+
+                }, 2500);
+
+            }
+
+        }
+
+
+        /* =========================================
+           SEARCH LIVE
+        ========================================= */
+
+        document
+            .getElementById("searchOrders")
+            .addEventListener(
+                "input",
+                loadAdminOrders
+            );
+
+
+        /* =========================================
+           HTML SAFETY
+        ========================================= */
+
+        function escapeHTML(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =========================================
+           DATE FORMAT
+        ========================================= */
+
+        function formatDate(dateValue) {
+
+            if (!dateValue) {
+                return "-";
+            }
+
+            const date =
+                new Date(dateValue);
+
+            if (isNaN(date.getTime())) {
+                return dateValue;
+            }
+
+            return date.toLocaleString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+        }
+
+
+        /* =========================================
+           FIRST LOAD
+        ========================================= */
+
+        loadAdminOrders();
+
+
+        /* =========================================
+           AUTO REFRESH
+        ========================================= */
+
+        setInterval(
+            loadAdminOrders,
+            5000
+        );
+
+    </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,2218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gift Zone - Admin Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #fff5f8;
+            color: #333;
+        }
+
+        /* =====================================
+           HEADER
+        ===================================== */
+
+        header {
+            background: #e91e63;
+            color: white;
+            padding: 18px 25px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .admin-title {
+            font-size: 14px;
+            background: rgba(255,255,255,0.18);
+            padding: 8px 14px;
+            border-radius: 20px;
+        }
+
+
+        /* =====================================
+           MAIN
+        ===================================== */
+
+        .container {
+            width: 94%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #e91e63;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+
+        /* =====================================
+           DASHBOARD CARDS
+        ===================================== */
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+        }
+
+        .dashboard-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e91e63;
+        }
+
+        .dashboard-label {
+            color: #777;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+
+        /* =====================================
+           SEARCH + FILTER
+        ===================================== */
+
+        .tools-box {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+        }
+
+        .tools-title {
+            color: #e91e63;
+            margin-bottom: 15px;
+        }
+
+        .tools-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .search-input,
+        .filter-select,
+        .date-filter {
+            width: 100%;
+            padding: 13px 14px;
+
+            border: 1px solid #ddd;
+            border-radius: 10px;
+
+            outline: none;
+            background: white;
+
+            font-size: 14px;
+        }
+
+        .search-input:focus,
+        .filter-select:focus,
+        .date-filter:focus {
+            border-color: #e91e63;
+        }
+
+        .clear-button {
+            margin-top: 12px;
+
+            padding: 10px 18px;
+
+            border: none;
+            border-radius: 20px;
+
+            background: #e91e63;
+            color: white;
+
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        /* =====================================
+           ORDER SECTION
+        ===================================== */
+
+        .orders-title {
+            color: #e91e63;
+            margin-bottom: 18px;
+        }
+
+        .result-count {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .empty-orders {
+            background: white;
+            padding: 45px 20px;
+            text-align: center;
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+        }
+
+        .empty-orders h2 {
+            color: #e91e63;
+            margin-bottom: 10px;
+        }
+
+
+        /* =====================================
+           ORDER CARD
+        ===================================== */
+
+        .order-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.09);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            border-bottom: 1px solid #eee;
+
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .order-id {
+            color: #e91e63;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .order-date {
+            color: #777;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+
+        /* =====================================
+           CURRENT STATUS BADGE
+        ===================================== */
+
+        .current-status {
+            background: #fff0f5;
+            color: #e91e63;
+
+            padding: 9px 14px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================
+           STATUS UPDATE
+        ===================================== */
+
+        .status-area {
+            background: #fff0f5;
+            border-radius: 12px;
+            padding: 18px;
+
+            margin-bottom: 22px;
+        }
+
+        .status-area h3 {
+            color: #e91e63;
+            margin-bottom: 12px;
+        }
+
+        .status-select {
+            width: 100%;
+            max-width: 500px;
+
+            padding: 13px;
+
+            border: 2px solid #e91e63;
+            border-radius: 10px;
+
+            background: white;
+
+            font-size: 15px;
+
+            cursor: pointer;
+        }
+
+        .update-button {
+            margin-top: 12px;
+
+            background: #e91e63;
+            color: white;
+
+            border: none;
+
+            padding: 12px 22px;
+
+            border-radius: 25px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .update-button:hover {
+            background: #c2185b;
+        }
+
+        .status-message {
+            margin-top: 10px;
+
+            color: #e91e63;
+
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+
+        /* =====================================
+           PREPARATION BOX
+        ===================================== */
+
+        .preparation-box {
+            background: #fff8fb;
+
+            border-left: 5px solid #e91e63;
+
+            padding: 16px;
+
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .preparation-box h3 {
+            color: #e91e63;
+            margin-bottom: 8px;
+        }
+
+        .preparation-box p {
+            line-height: 1.6;
+        }
+
+
+        /* =====================================
+           DETAILS
+        ===================================== */
+
+        .section-title {
+            color: #e91e63;
+
+            margin:
+                20px 0 12px;
+
+            font-size: 18px;
+        }
+
+        .details-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .detail-box {
+            background: #fafafa;
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            line-height: 1.5;
+
+            word-break: break-word;
+        }
+
+        .detail-box strong {
+            display: block;
+
+            color: #e91e63;
+
+            margin-bottom: 5px;
+        }
+
+
+        /* =====================================
+           CONTACT BUTTONS
+        ===================================== */
+
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .call-button,
+        .whatsapp-button {
+            display: inline-block;
+
+            text-decoration: none;
+
+            padding: 10px 16px;
+
+            border-radius: 22px;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+        .call-button {
+            background: #e91e63;
+            color: white;
+        }
+
+        .whatsapp-button {
+            background: #25D366;
+            color: white;
+        }
+
+
+        /* =====================================
+           GIFTS
+        ===================================== */
+
+        .gift-item {
+            background: #fafafa;
+
+            padding: 13px;
+
+            border-radius: 10px;
+
+            margin-bottom: 8px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================
+           PAYMENT
+        ===================================== */
+
+        .payment-box {
+            background: #fff8fb;
+
+            padding: 16px;
+
+            border-radius: 12px;
+
+            line-height: 1.8;
+        }
+
+        .payment-status {
+            color: #e91e63;
+            font-weight: bold;
+        }
+
+        .total {
+            font-size: 19px;
+
+            font-weight: bold;
+
+            color: #e91e63;
+        }
+
+
+        /* =====================================
+           ACTION BUTTONS
+        ===================================== */
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .print-button,
+        .delete-button {
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 22px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .print-button {
+            background: #e91e63;
+            color: white;
+        }
+
+        .delete-button {
+            background: #555;
+            color: white;
+        }
+
+        .print-button:hover {
+            background: #c2185b;
+        }
+
+        .delete-button:hover {
+            background: #333;
+        }
+
+
+        /* =====================================
+           HOME BUTTON
+        ===================================== */
+
+        .back-home {
+            display: block;
+
+            width: fit-content;
+
+            margin: 30px auto;
+
+            background: #e91e63;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 12px 24px;
+
+            border-radius: 25px;
+
+            font-weight: bold;
+        }
+
+
+        /* =====================================
+           PRINT
+        ===================================== */
+
+        @media print {
+
+            header,
+            .tools-box,
+            .dashboard-cards,
+            .orders-title,
+            .result-count,
+            .back-home,
+            .status-area,
+            .action-buttons {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+
+            .container {
+                width: 100%;
+                max-width: none;
+                margin: 0;
+            }
+
+            .order-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+
+        }
+
+
+        /* =====================================
+           MOBILE
+        ===================================== */
+
+        @media (max-width: 800px) {
+
+            .dashboard-cards {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .tools-row {
+                grid-template-columns: 1fr;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .current-status {
+                white-space: normal;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     HEADER
+===================================== -->
+
+<header>
+
+    <div class="logo">
+        🎁 Gift Zone
+    </div>
+
+    <div class="admin-title">
+        🔐 Admin Dashboard
+    </div>
+
+</header>
+
+
+
+<!-- =====================================
+     MAIN
+===================================== -->
+
+<div class="container">
+
+
+    <h1>
+        📊 Gift Zone Admin Dashboard
+    </h1>
+
+    <p class="subtitle">
+        Manage customer orders and delivery status
+    </p>
+
+
+
+    <!-- =====================================
+         DASHBOARD SUMMARY
+    ===================================== -->
+
+    <div class="dashboard-cards">
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                📦
+            </div>
+
+            <div
+                class="dashboard-number"
+                id="totalOrders"
+            >
+                0
+            </div>
+
+            <div class="dashboard-label">
+                Total Orders
+            </div>
+
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🛒
+            </div>
+
+            <div
+                class="dashboard-number"
+                id="placedOrders"
+            >
+                0
+            </div>
+
+            <div class="dashboard-label">
+                New Orders
+            </div>
+
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🚚
+            </div>
+
+            <div
+                class="dashboard-number"
+                id="deliveryOrders"
+            >
+                0
+            </div>
+
+            <div class="dashboard-label">
+                Out for Delivery
+            </div>
+
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🎉
+            </div>
+
+            <div
+                class="dashboard-number"
+                id="deliveredOrders"
+            >
+                0
+            </div>
+
+            <div class="dashboard-label">
+                Delivered
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         SEARCH AND FILTER
+    ===================================== -->
+
+    <div class="tools-box">
+
+        <h3 class="tools-title">
+            🔍 Find Customer Orders
+        </h3>
+
+
+        <div class="tools-row">
+
+            <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="Search Order ID, customer name, phone..."
+            >
+
+
+            <select
+                id="statusFilter"
+                class="filter-select"
+            >
+
+                <option value="all">
+                    🔎 All Status
+                </option>
+
+                <option value="Order Placed">
+                    🛒 Order Placed
+                </option>
+
+                <option value="Gift Being Packed">
+                    📦 Gift Being Packed
+                </option>
+
+                <option value="Gift Ready">
+                    🎁 Gift Ready
+                </option>
+
+                <option value="Delivery Person Picked Up">
+                    🚚 Delivery Person Picked Up
+                </option>
+
+                <option value="Out for Delivery">
+                    🛵 Out for Delivery
+                </option>
+
+                <option value="Delivered">
+                    🎉 Delivered
+                </option>
+
+            </select>
+
+
+            <input
+                type="date"
+                id="dateFilter"
+                class="date-filter"
+            >
+
+        </div>
+
+
+        <button
+            class="clear-button"
+            onclick="clearFilters()"
+        >
+            ✖ Clear Filters
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================
+         ORDERS
+    ===================================== -->
+
+    <h2 class="orders-title">
+        📦 Customer Orders
+    </h2>
+
+
+    <div
+        id="resultCount"
+        class="result-count"
+    ></div>
+
+
+    <div id="ordersContainer"></div>
+
+
+    <a
+        href="index.html"
+        class="back-home"
+    >
+        🏠 Back to Gift Zone
+    </a>
+
+
+</div>
+
+
+
+<script>
+
+
+// =====================================
+// ORDER STATUS LIST
+// =====================================
+
+const statusSteps = [
+
+    {
+        key: "Order Placed",
+        icon: "🛒"
+    },
+
+    {
+        key: "Gift Being Packed",
+        icon: "📦"
+    },
+
+    {
+        key: "Gift Ready",
+        icon: "🎁"
+    },
+
+    {
+        key: "Delivery Person Picked Up",
+        icon: "🚚"
+    },
+
+    {
+        key: "Out for Delivery",
+        icon: "🛵"
+    },
+
+    {
+        key: "Delivered",
+        icon: "🎉"
+    }
+
+];
+
+
+// =====================================
+// GET ORDERS
+// =====================================
+
+function getAllOrders() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "giftZoneOrders"
+            )
+        ) || [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+// =====================================
+// SAVE ORDERS
+// =====================================
+
+function saveAllOrders(orders) {
+
+    localStorage.setItem(
+        "giftZoneOrders",
+        JSON.stringify(orders)
+    );
+
+}
+
+
+// =====================================
+// ESCAPE HTML
+// =====================================
+
+function escapeHTML(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+// =====================================
+// NORMALIZE PHONE NUMBER
+// =====================================
+
+function cleanPhone(phone) {
+
+    return String(
+        phone || ""
+    )
+    .replace(
+        /\D/g,
+        ""
+    );
+
+}
+
+
+// =====================================
+// UPDATE DASHBOARD NUMBERS
+// =====================================
+
+function updateDashboard(orders) {
+
+    document.getElementById(
+        "totalOrders"
+    ).textContent =
+        orders.length;
+
+
+    let placed = 0;
+    let delivery = 0;
+    let delivered = 0;
+
+
+    orders.forEach(
+        function(order) {
+
+            const status =
+                order.orderStatus ||
+                "Order Placed";
+
+
+            if (
+                status ===
+                "Order Placed"
+            ) {
+
+                placed++;
+
+            }
+
+
+            if (
+                status ===
+                "Out for Delivery" ||
+                status ===
+                "Delivery Person Picked Up"
+            ) {
+
+                delivery++;
+
+            }
+
+
+            if (
+                status ===
+                "Delivered"
+            ) {
+
+                delivered++;
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "placedOrders"
+    ).textContent =
+        placed;
+
+
+    document.getElementById(
+        "deliveryOrders"
+    ).textContent =
+        delivery;
+
+
+    document.getElementById(
+        "deliveredOrders"
+    ).textContent =
+        delivered;
+
+}
+
+
+// =====================================
+// UPDATE STATUS
+// =====================================
+
+function updateOrderStatus(orderId) {
+
+    const select =
+        document.getElementById(
+            "status-" + orderId
+        );
+
+
+    if (!select) {
+        return;
+    }
+
+
+    const newStatus =
+        select.value;
+
+
+    const orders =
+        getAllOrders();
+
+
+    const order =
+        orders.find(
+            function(item) {
+
+                return String(
+                    item.orderId
+                ) ===
+                String(orderId);
+
+            }
+        );
+
+
+    if (!order) {
+
+        alert(
+            "Order not found."
+        );
+
+        return;
+
+    }
+
+
+    order.orderStatus =
+        newStatus;
+
+
+    order.statusUpdatedAt =
+        new Date().toLocaleString();
+
+
+    saveAllOrders(
+        orders
+    );
+
+
+    alert(
+        "✅ Order status updated to:\n\n" +
+        newStatus
+    );
+
+
+    loadOrders();
+
+}
+
+
+// =====================================
+// DELETE ORDER
+// =====================================
+
+function deleteOrder(orderId) {
+
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete this order?"
+        );
+
+
+    if (!confirmDelete) {
+        return;
+    }
+
+
+    let orders =
+        getAllOrders();
+
+
+    orders =
+        orders.filter(
+            function(order) {
+
+                return String(
+                    order.orderId
+                ) !==
+                String(orderId);
+
+            }
+        );
+
+
+    saveAllOrders(
+        orders
+    );
+
+
+    loadOrders();
+
+}
+
+
+// =====================================
+// PRINT ORDER
+// =====================================
+
+function printOrder(orderId) {
+
+    const cards =
+        document.querySelectorAll(
+            ".order-card"
+        );
+
+
+    cards.forEach(
+        function(card) {
+
+            card.style.display =
+                "none";
+
+        }
+    );
+
+
+    const target =
+        document.getElementById(
+            "card-" + orderId
+        );
+
+
+    if (target) {
+
+        target.style.display =
+            "block";
+
+    }
+
+
+    window.print();
+
+
+    cards.forEach(
+        function(card) {
+
+            card.style.display =
+                "block";
+
+        }
+    );
+
+}
+
+
+// =====================================
+// CREATE GIFT HTML
+// =====================================
+
+function createGiftHTML(order) {
+
+    if (
+        !Array.isArray(order.cart) ||
+        order.cart.length === 0
+    ) {
+
+        return `
+            <p>
+                No gift details available.
+            </p>
+        `;
+
+    }
+
+
+    let html = "";
+
+
+    order.cart.forEach(
+        function(item) {
+
+            html += `
+
+                <div class="gift-item">
+
+                    🎁
+
+                    <strong>
+                        ${escapeHTML(
+                            item.name ||
+                            "Gift"
+                        )}
+                    </strong>
+
+                    <br>
+
+                    Quantity:
+                    ${escapeHTML(
+                        item.quantity ||
+                        1
+                    )}
+
+                    <br>
+
+                    Price:
+                    ₹${escapeHTML(
+                        item.price ||
+                        0
+                    )}
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    return html;
+
+}
+
+
+// =====================================
+// SEARCH / FILTER
+// =====================================
+
+function filterOrders(orders) {
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const status =
+        document.getElementById(
+            "statusFilter"
+        )
+        .value;
+
+
+    const selectedDate =
+        document.getElementById(
+            "dateFilter"
+        )
+        .value;
+
+
+    return orders.filter(
+        function(order) {
+
+
+            // =============================
+            // SEARCH
+            // =============================
+
+            const searchableText = (
+
+                String(
+                    order.orderId || ""
+                ) +
+
+                " " +
+
+                String(
+                    order.customerName || ""
+                ) +
+
+                " " +
+
+                String(
+                    order.customerPhone || ""
+                ) +
+
+                " " +
+
+                String(
+                    order.customerEmail || ""
+                ) +
+
+                " " +
+
+                String(
+                    order.recipientName || ""
+                ) +
+
+                " " +
+
+                String(
+                    order.recipientPhone || ""
+                )
+
+            ).toLowerCase();
+
+
+            if (
+                search &&
+                !searchableText.includes(
+                    search
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            // =============================
+            // STATUS
+            // =============================
+
+            const orderStatus =
+                order.orderStatus ||
+                "Order Placed";
+
+
+            if (
+                status !== "all" &&
+                orderStatus !== status
+            ) {
+
+                return false;
+
+            }
+
+
+            // =============================
+            // DELIVERY DATE
+            // =============================
+
+            if (selectedDate) {
+
+                const deliveryDate =
+                    String(
+                        order.deliveryDate ||
+                        ""
+                    );
+
+
+                if (
+                    deliveryDate !==
+                    selectedDate
+                ) {
+
+                    return false;
+
+                }
+
+            }
+
+
+            return true;
+
+        }
+    );
+
+}
+
+
+// =====================================
+// CLEAR FILTERS
+// =====================================
+
+function clearFilters() {
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "statusFilter"
+    ).value = "all";
+
+
+    document.getElementById(
+        "dateFilter"
+    ).value = "";
+
+
+    loadOrders();
+
+}
+
+
+// =====================================
+// LOAD ORDERS
+// =====================================
+
+function loadOrders() {
+
+    const container =
+        document.getElementById(
+            "ordersContainer"
+        );
+
+
+    const allOrders =
+        getAllOrders();
+
+
+    updateDashboard(
+        allOrders
+    );
+
+
+    const filteredOrders =
+        filterOrders(
+            allOrders
+        );
+
+
+    document.getElementById(
+        "resultCount"
+    ).textContent =
+        "Showing " +
+        filteredOrders.length +
+        " of " +
+        allOrders.length +
+        " orders";
+
+
+    // =================================
+    // NO RESULTS
+    // =================================
+
+    if (
+        filteredOrders.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty-orders">
+
+                <h2>
+                    📭 No Orders Found
+                </h2>
+
+                <p>
+                    Try changing your search
+                    or filters.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    // =================================
+    // NEWEST ORDER FIRST
+    // =================================
+
+    const sortedOrders =
+        filteredOrders
+            .slice()
+            .reverse();
+
+
+    container.innerHTML = "";
+
+
+    sortedOrders.forEach(
+        function(order) {
+
+
+            const orderId =
+                String(
+                    order.orderId ||
+                    "UNKNOWN"
+                );
+
+
+            const currentStatus =
+                order.orderStatus ||
+                "Order Placed";
+
+
+            // =================================
+            // STATUS OPTIONS
+            // =================================
+
+            let statusOptions = "";
+
+
+            statusSteps.forEach(
+                function(step) {
+
+                    statusOptions += `
+
+                        <option
+                            value="${escapeHTML(
+                                step.key
+                            )}"
+                            ${
+                                currentStatus ===
+                                step.key
+                                    ? "selected"
+                                    : ""
+                            }
+                        >
+
+                            ${step.icon}
+                            ${step.key}
+
+                        </option>
+
+                    `;
+
+                }
+            );
+
+
+            // =================================
+            // PHONE NUMBERS
+            // =================================
+
+            const customerPhone =
+                cleanPhone(
+                    order.customerPhone
+                );
+
+
+            const recipientPhone =
+                cleanPhone(
+                    order.recipientPhone
+                );
+
+
+            // =================================
+            // CARD
+            // =================================
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "order-card";
+
+
+            card.id =
+                "card-" + orderId;
+
+
+            card.innerHTML = `
+
+                <!-- ORDER HEADER -->
+
+                <div class="order-header">
+
+                    <div>
+
+                        <div class="order-id">
+
+                            📦
+                            ${escapeHTML(
+                                orderId
+                            )}
+
+                        </div>
+
+                        <div class="order-date">
+
+                            Ordered on:
+                            ${escapeHTML(
+                                order.orderDate ||
+                                ""
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="current-status">
+
+                        ${escapeHTML(
+                            currentStatus
+                        )}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PREPARATION -->
+
+                <div class="preparation-box">
+
+                    <h3>
+                        📋 Order Preparation
+                    </h3>
+
+                    <p>
+
+                        Prepare:
+
+                        <strong>
+                            ${escapeHTML(
+                                order.cart?.length ||
+                                0
+                            )}
+                            gift item(s)
+                        </strong>
+
+                        for
+
+                        <strong>
+                            ${escapeHTML(
+                                order.recipientName ||
+                                "recipient"
+                            )}
+                        </strong>
+
+                        and deliver on
+
+                        <strong>
+                            ${escapeHTML(
+                                order.deliveryDate ||
+                                "N/A"
+                            )}
+                        </strong>
+
+                        at
+
+                        <strong>
+                            ${escapeHTML(
+                                order.deliveryTime ||
+                                "N/A"
+                            )}
+                        </strong>.
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                <div class="status-area">
+
+                    <h3>
+                        🔄 Update Order Status
+                    </h3>
+
+
+                    <select
+                        class="status-select"
+                        id="status-${escapeHTML(
+                            orderId
+                        )}"
+                    >
+
+                        ${statusOptions}
+
+                    </select>
+
+
+                    <br>
+
+
+                    <button
+                        class="update-button"
+                        onclick="updateOrderStatus('${escapeHTML(
+                            orderId
+                        )}')"
+                    >
+
+                        ✅ Update Status
+
+                    </button>
+
+
+                    ${
+                        order.statusUpdatedAt
+                        ? `
+                            <div class="status-message">
+
+                                Last updated:
+                                ${escapeHTML(
+                                    order.statusUpdatedAt
+                                )}
+
+                            </div>
+                        `
+                        : ""
+                    }
+
+                </div>
+
+
+
+                <!-- CUSTOMER -->
+
+                <h3 class="section-title">
+                    👤 Customer Details
+                </h3>
+
+
+                <div class="details-grid">
+
+                    <div class="detail-box">
+
+                        <strong>
+                            Customer ID
+                        </strong>
+
+                        ${escapeHTML(
+                            order.customerId ||
+                            "N/A"
+                        )}
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <strong>
+                            Name
+                        </strong>
+
+                        ${escapeHTML(
+                            order.customerName ||
+                            "N/A"
+                        )}
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <strong>
+                            Phone
+                        </strong>
+
+                        ${escapeHTML(
+                            order.customerPhone ||
+                            "N/A"
+                        )}
+
+                        ${
+                            customerPhone
+                            ? `
+                                <div class="contact-buttons">
+
+                                    <a
+                                        href="tel:${customerPhone}"
+                                        class="call-button"
+                                    >
+                                        📞 Call Customer
+                                    </a>
+
+                                </div>
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <strong>
+                            Email
+                        </strong>
+
+                        ${escapeHTML(
+                            order.customerEmail ||
+                            "N/A"
+                        )}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RECIPIENT -->
+
+                <h3 class="section-title">
+                    🎁 Recipient Details
+                </h3>
+
+
+                <div class="details-grid">
+
+                    <div class="detail-box">
+
+                        <strong>
+                            Recipient Name
+                        </strong>
+
+                        ${escapeHTML(
+                            order.recipientName ||
+                            "N/A"
+                        )}
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <strong>
+                            Recipient Phone
+                        </strong>
+
+                        ${escapeHTML(
+                            order.recipientPhone ||
+                            "N/A"
+                        )}
+
+                        ${
+                            recipientPhone
+                            ? `
+                                <div class="contact-buttons">
+
+                                    <a
+                                        href="tel:${recipientPhone}"
+                                        class="call-button"
+                                    >
+                                        📞 Call Recipient
+                                    </a>
+
+                                    <a
+                                        href="https://wa.me/91${recipientPhone}"
+                                        target="_blank"
+                                        class="whatsapp-button"
+                                    >
+                                        💬 WhatsApp
+                                    </a>
+
+                                </div>
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DELIVERY -->
+
+                <h3 class="section-title">
+                    📍 Delivery Details
+                </h3>
+
+
+                <div class="details-grid">
+
+                    <div class="detail-box">
+
+                        <strong>
+                            Address
+                        </strong>
+
+                        ${escapeHTML(
+                            order.address ||
+                            "N/A"
+                        )}
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <strong>
+                            Delivery Date
+                        </strong>
+
+                        ${escapeHTML(
+                            order.deliveryDate ||
+                            "N/A"
+                        )}
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <strong>
+                            Delivery Time
+                        </strong>
+
+                        ${escapeHTML(
+                            order.deliveryTime ||
+                            "N/A"
+                        )}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- GIFTS -->
+
+                <h3 class="section-title">
+                    🎁 Ordered Gifts
+                </h3>
+
+
+                ${createGiftHTML(order)}
+
+
+
+                <!-- MESSAGE -->
+
+                <h3 class="section-title">
+                    💌 Surprise Message
+                </h3>
+
+
+                <div class="detail-box">
+
+                    ${escapeHTML(
+                        order.surpriseMessage ||
+                        "No surprise message"
+                    )}
+
+                </div>
+
+
+
+                <!-- SPECIAL INSTRUCTIONS -->
+
+                <h3 class="section-title">
+                    📝 Special Instructions
+                </h3>
+
+
+                <div class="detail-box">
+
+                    ${escapeHTML(
+                        order.specialInstructions ||
+                        "No special instructions"
+                    )}
+
+                </div>
+
+
+
+                <!-- PAYMENT -->
+
+                <h3 class="section-title">
+                    💳 Payment Details
+                </h3>
+
+
+                <div class="payment-box">
+
+                    Payment Method:
+
+                    <strong>
+                        ${escapeHTML(
+                            order.paymentMethod ||
+                            "N/A"
+                        )}
+                    </strong>
+
+                    <br>
+
+                    Payment Status:
+
+                    <strong class="payment-status">
+
+                        ${escapeHTML(
+                            order.paymentStatus ||
+                            "N/A"
+                        )}
+
+                    </strong>
+
+                    <br><br>
+
+                    Gift Total:
+
+                    ₹${escapeHTML(
+                        order.giftTotal ||
+                        0
+                    )}
+
+                    <br>
+
+                    Delivery Charge:
+
+                    ₹${escapeHTML(
+                        order.deliveryCharge ||
+                        0
+                    )}
+
+                    <br><br>
+
+                    <span class="total">
+
+                        Total:
+                        ₹${escapeHTML(
+                            order.total ||
+                            0
+                        )}
+
+                    </span>
+
+                </div>
+
+
+
+                <!-- ACTION BUTTONS -->
+
+                <div class="action-buttons">
+
+                    <button
+                        class="print-button"
+                        onclick="printOrder('${escapeHTML(
+                            orderId
+                        )}')"
+                    >
+                        🖨️ Print Order
+                    </button>
+
+
+                    <button
+                        class="delete-button"
+                        onclick="deleteOrder('${escapeHTML(
+                            orderId
+                        )}')"
+                    >
+                        🗑️ Delete Order
+                    </button>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================
+// SEARCH EVENT
+// =====================================
+
+document.getElementById(
+    "searchInput"
+).addEventListener(
+    "input",
+    function() {
+
+        loadOrders();
+
+    }
+);
+
+
+// =====================================
+// STATUS FILTER EVENT
+// =====================================
+
+document.getElementById(
+    "statusFilter"
+).addEventListener(
+    "change",
+    function() {
+
+        loadOrders();
+
+    }
+);
+
+
+// =====================================
+// DATE FILTER EVENT
+// =====================================
+
+document.getElementById(
+    "dateFilter"
+).addEventListener(
+    "change",
+    function() {
+
+        loadOrders();
+
+    }
+);
+
+
+// =====================================
+// INITIAL LOAD
+// =====================================
+
+loadOrders();
+
+
+// =====================================
+// AUTO REFRESH
+// =====================================
+
+setInterval(
+    function() {
+
+        loadOrders();
+
+    },
+    5000
+);
+
+</script>
+
+
+</body>
+
+</html>
