@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,8 +20,8 @@
 .gift-search-box {
     width: 100%;
     max-width: 700px;
-    margin: 25px auto 15px;
-    padding: 0 15px;
+    margin: 0;
+    padding: 0;
     position: relative;
     z-index: 20;
 }
@@ -32,7 +33,7 @@
 
 .gift-search-icon {
     position: absolute;
-    left: 20px;
+    left: 18px;
     top: 50%;
     width: 17px;
     height: 17px;
@@ -57,20 +58,20 @@
 
 .gift-search {
     width: 100%;
-    height: 54px;
-    padding: 0 22px 0 55px;
+    height: 44px;
+    padding: 0 18px 0 52px;
     border: 1px solid #dedede;
-    border-radius: 28px;
-    font-size: 16px;
+    border-radius: 24px;
+    font-size: 15px;
     outline: none;
     background: #fff;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.09);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     transition: 0.25s ease;
 }
 
 .gift-search:focus {
     border-color: #e91e63;
-    box-shadow: 0 5px 22px rgba(233,30,99,0.18);
+    box-shadow: 0 4px 16px rgba(233,30,99,0.18);
 }
 
 .gift-search::placeholder {
@@ -79,9 +80,9 @@
 
 .gift-search-suggestions {
     position: absolute;
-    top: 61px;
-    left: 15px;
-    right: 15px;
+    top: 51px;
+    left: 0;
+    right: 0;
     background: #fff;
     border-radius: 14px;
     box-shadow: 0 12px 30px rgba(0,0,0,0.14);
@@ -344,13 +345,30 @@
 
 
 /* =========================================
-   MOBILE
+   HEADER SEARCH
+========================================= */
+
+.header-search {
+    flex: 0 1 360px;
+    min-width: 180px;
+    margin: 0 15px;
+}
+
+
+/* =========================================
+   MOBILE SEARCH
 ========================================= */
 
 @media (max-width: 950px) {
 
     .features {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .header-search {
+        flex-basis: 280px;
+        min-width: 160px;
+        margin: 0 8px;
     }
 
 }
@@ -375,17 +393,27 @@
 
 @media (max-width: 600px) {
 
-    .gift-search-box {
-        margin-top: 20px;
+    .header-search {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 10px 15px;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     .gift-search {
-        height: 50px;
+        height: 48px;
         font-size: 15px;
     }
 
     .gift-search-suggestions {
-        top: 57px;
+        top: 61px;
+        left: 15px;
+        right: 15px;
     }
 
     .features {
@@ -426,6 +454,39 @@
         <span>GIFT ZONE</span>
     </div>
 
+
+    <!-- SEARCH MOVED INTO HEADER -->
+
+    <div class="header-search">
+
+        <div class="gift-search-box">
+
+            <div class="gift-search-wrapper">
+
+                <span
+                    class="gift-search-icon"
+                    aria-hidden="true">
+                </span>
+
+                <input
+                    type="text"
+                    id="giftSearch"
+                    class="gift-search"
+                    placeholder="Search for gifts..."
+                    autocomplete="off">
+
+                <div
+                    id="giftSearchSuggestions"
+                    class="gift-search-suggestions">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
     <nav class="main-nav">
 
         <a href="index.html" class="active">Home</a>
@@ -438,12 +499,16 @@
 
         <a href="orders.html">My Orders</a>
 
-        <!-- PROFILE ADDED -->
-        <a href="profile.html" class="profile-link">👤 Profile</a>
+        <a href="profile.html" class="profile-link">
+            👤 Profile
+        </a>
 
-        <a href="cart.html">🛒 Cart</a>
+        <a href="cart.html">
+            🛒 Cart
+        </a>
 
     </nav>
+
 
     <div class="mobile-cart">
         Cart
@@ -704,8 +769,6 @@
     <div class="category-container">
 
 
-        <!-- BIRTHDAY -->
-
         <div class="category" onclick="showCategory('Birthday')">
 
             <div class="professional-category-icon">
@@ -721,8 +784,6 @@
 
         </div>
 
-
-        <!-- ANNIVERSARY -->
 
         <div class="category" onclick="showCategory('Anniversary')">
 
@@ -740,8 +801,6 @@
         </div>
 
 
-        <!-- CELEBRATIONS -->
-
         <div class="category" onclick="showCategory('Celebrations')">
 
             <div class="professional-category-icon">
@@ -757,8 +816,6 @@
 
         </div>
 
-
-        <!-- RAKSHA BANDHAN -->
 
         <div class="category" onclick="showCategory('Raksha Bandhan')">
 
@@ -776,8 +833,6 @@
         </div>
 
 
-        <!-- MOTHERS DAY -->
-
         <div class="category" onclick="showCategory('Mothers Day')">
 
             <div class="professional-category-icon">
@@ -793,8 +848,6 @@
 
         </div>
 
-
-        <!-- FATHERS DAY -->
 
         <div class="category" onclick="showCategory('Fathers Day')">
 
@@ -812,8 +865,6 @@
         </div>
 
 
-        <!-- LOVE -->
-
         <div class="category" onclick="showCategory('Love')">
 
             <div class="professional-category-icon">
@@ -829,8 +880,6 @@
 
         </div>
 
-
-        <!-- FLOWERS -->
 
         <div class="category" onclick="showCategory('Flowers')">
 
@@ -848,8 +897,6 @@
         </div>
 
 
-        <!-- CAKES -->
-
         <div class="category" onclick="showCategory('Cakes')">
 
             <div class="professional-category-icon">
@@ -866,8 +913,6 @@
         </div>
 
 
-        <!-- COMBOS -->
-
         <div class="category" onclick="showCategory('Combos')">
 
             <div class="professional-category-icon">
@@ -883,8 +928,6 @@
 
         </div>
 
-
-        <!-- ALL GIFTS -->
 
         <div class="category" onclick="showAllGifts()">
 
@@ -922,29 +965,8 @@
     </div>
 
 
-    <!-- SEARCH -->
-
-    <div class="gift-search-box">
-
-        <div class="gift-search-wrapper">
-
-            <span class="gift-search-icon" aria-hidden="true"></span>
-
-            <input
-                type="text"
-                id="giftSearch"
-                class="gift-search"
-                placeholder="Search for gifts..."
-                autocomplete="off">
-
-            <div
-                id="giftSearchSuggestions"
-                class="gift-search-suggestions">
-            </div>
-
-        </div>
-
-    </div>
+    <!-- SEARCH REMOVED FROM HERE
+         IT IS NOW IN THE HEADER -->
 
 
     <p id="giftSearchMessage" class="gift-search-message">
@@ -954,10 +976,6 @@
 
     <div class="gift-container">
 
-
-        <!-- =========================================
-             1. BIRTHDAY
-        ========================================= -->
 
         <div class="gift-card" data-category="Birthday">
 
@@ -981,10 +999,6 @@
         </div>
 
 
-        <!-- =========================================
-             2. ANNIVERSARY
-        ========================================= -->
-
         <div class="gift-card" data-category="Anniversary">
 
             <div class="professional-gift-image">
@@ -1006,10 +1020,6 @@
 
         </div>
 
-
-        <!-- =========================================
-             3. CELEBRATIONS
-        ========================================= -->
 
         <div class="gift-card" data-category="Celebrations">
 
@@ -1033,10 +1043,6 @@
         </div>
 
 
-        <!-- =========================================
-             4. RAKSHA BANDHAN
-        ========================================= -->
-
         <div class="gift-card" data-category="Raksha Bandhan">
 
             <div class="professional-gift-image">
@@ -1058,10 +1064,6 @@
 
         </div>
 
-
-        <!-- =========================================
-             5. MOTHERS DAY
-        ========================================= -->
 
         <div class="gift-card" data-category="Mothers Day">
 
@@ -1085,10 +1087,6 @@
         </div>
 
 
-        <!-- =========================================
-             6. FATHERS DAY
-        ========================================= -->
-
         <div class="gift-card" data-category="Fathers Day">
 
             <div class="professional-gift-image">
@@ -1110,10 +1108,6 @@
 
         </div>
 
-
-        <!-- =========================================
-             7. LOVE
-        ========================================= -->
 
         <div class="gift-card" data-category="Love">
 
@@ -1137,10 +1131,6 @@
         </div>
 
 
-        <!-- =========================================
-             8. FLOWERS
-        ========================================= -->
-
         <div class="gift-card" data-category="Flowers">
 
             <div class="professional-gift-image">
@@ -1162,10 +1152,6 @@
 
         </div>
 
-
-        <!-- =========================================
-             9. CAKES
-        ========================================= -->
 
         <div class="gift-card" data-category="Cakes">
 
@@ -1189,10 +1175,6 @@
         </div>
 
 
-        <!-- =========================================
-             10. COMBOS
-        ========================================= -->
-
         <div class="gift-card" data-category="Combos">
 
             <div class="professional-gift-image">
@@ -1214,10 +1196,6 @@
 
         </div>
 
-
-        <!-- =========================================
-             11. PERSONALIZED
-        ========================================= -->
 
         <div class="gift-card" data-category="Personalized">
 
@@ -2130,3 +2108,4 @@ document.querySelectorAll(
 
 </body>
 </html>
+
