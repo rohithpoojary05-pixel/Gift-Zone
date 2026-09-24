@@ -3,7 +3,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -12,7 +11,6 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-
         .register-page {
             min-height: 100vh;
             display: flex;
@@ -125,7 +123,6 @@
         }
 
         @media (max-width: 480px) {
-
             .register-box {
                 padding: 28px 20px;
             }
@@ -133,194 +130,168 @@
             .register-box h1 {
                 font-size: 26px;
             }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
+    <div class="register-page">
 
-<div class="register-page">
+        <div class="register-box">
 
-    <div class="register-box">
+            <div class="register-logo">
+                🎁
+            </div>
 
-        <div class="register-logo">
-            🎁
-        </div>
+            <h1>Gift Zone</h1>
+
+            <p class="register-subtitle">
+                Create your account ❤️
+            </p>
+
+            <form id="registerForm">
+
+                <!-- Full Name -->
+                <label for="registerName">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="registerName"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required
+                >
 
 
-        <h1>Gift Zone</h1>
+                <!-- Email -->
+                <label for="registerEmail">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="registerEmail"
+                    placeholder="Enter your email address"
+                    autocomplete="email"
+                    required
+                >
 
 
-        <p class="register-subtitle">
-            Create your account ❤️
-        </p>
+                <!-- Mobile -->
+                <label for="registerMobile">
+                    Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="registerMobile"
+                    placeholder="Enter 10-digit mobile number"
+                    maxlength="10"
+                    inputmode="numeric"
+                    autocomplete="tel"
+                    required
+                >
 
 
-        <!-- =================================
-             REGISTER FORM
-        ================================== -->
+                <!-- Password -->
+                <label for="registerPassword">
+                    Password
+                </label>
 
-        <form id="registerForm">
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Create a password"
+                    minlength="6"
+                    autocomplete="new-password"
+                    required
+                >
 
 
-            <label for="registerName">
-                Full Name
-            </label>
+                <!-- Confirm Password -->
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
 
-            <input
-                type="text"
-                id="registerName"
-                placeholder="Enter your full name"
-                required
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Re-enter your password"
+                    minlength="6"
+                    autocomplete="new-password"
+                    required
+                >
+
+
+                <!-- Create Account -->
+                <button
+                    type="submit"
+                    class="register-button"
+                    id="registerButton"
+                >
+                    🎁 Create Account
+                </button>
+
+            </form>
+
+
+            <p class="login-link">
+                Already have an account?
+                <a href="login.html">
+                    Login
+                </a>
+            </p>
+
+
+            <a
+                href="index.html"
+                class="continue-shopping"
             >
-
-
-            <label for="registerEmail">
-                Email Address
-            </label>
-
-            <input
-                type="email"
-                id="registerEmail"
-                placeholder="Enter your email address"
-                required
-            >
-
-
-            <label for="registerMobile">
-                Mobile Number
-            </label>
-
-            <input
-                type="tel"
-                id="registerMobile"
-                placeholder="Enter 10-digit mobile number"
-                maxlength="10"
-                inputmode="numeric"
-                required
-            >
-
-
-            <label for="registerPassword">
-                Password
-            </label>
-
-            <input
-                type="password"
-                id="registerPassword"
-                placeholder="Create a password"
-                minlength="6"
-                required
-            >
-
-
-            <label for="confirmPassword">
-                Confirm Password
-            </label>
-
-            <input
-                type="password"
-                id="confirmPassword"
-                placeholder="Re-enter your password"
-                minlength="6"
-                required
-            >
-
-
-            <button
-                type="submit"
-                class="register-button"
-                id="registerButton"
-            >
-                🎁 Create Account
-            </button>
-
-
-        </form>
-
-
-        <!-- =================================
-             LOGIN LINK
-        ================================== -->
-
-        <p class="login-link">
-
-            Already have an account?
-
-            <a href="login.html">
-                Login
+                ← Continue Shopping
             </a>
 
-        </p>
-
-
-        <!-- =================================
-             CONTINUE SHOPPING
-        ================================== -->
-
-        <a
-            href="index.html"
-            class="continue-shopping"
-        >
-            ← Continue Shopping
-        </a>
-
+        </div>
 
     </div>
 
-</div>
+
+    <!-- ==========================================
+         FIREBASE REGISTRATION
+    =========================================== -->
+
+    <script type="module">
+
+        // Firebase Authentication
+        import {
+            createUserWithEmailAndPassword,
+            updateProfile
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 
-
-<!-- ==========================================
-     FIREBASE REGISTRATION
-=========================================== -->
-
-<script type="module">
+        // Gift Zone Firebase connection
+        import {
+            auth
+        } from "./firebase.js";
 
 
-    // ==========================================
-    // FIREBASE AUTH FUNCTIONS
-    // ==========================================
-
-    import {
-
-        createUserWithEmailAndPassword,
-
-        updateProfile
-
-    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        // Register form
+        const registerForm =
+            document.getElementById("registerForm");
 
 
-    // ==========================================
-    // OUR FIREBASE CONNECTION
-    // ==========================================
-
-    import {
-
-        auth
-
-    } from "./firebase.js";
+        // Register button
+        const registerButton =
+            document.getElementById("registerButton");
 
 
-
-    // ==========================================
-    // REGISTER FORM
-    // ==========================================
-
-    document
-        .getElementById("registerForm")
-        .addEventListener(
+        registerForm.addEventListener(
             "submit",
             async function(event) {
 
                 event.preventDefault();
-
 
 
                 // ==========================================
@@ -328,7 +299,6 @@
                 // ==========================================
 
                 const name =
-
                     document
                         .getElementById("registerName")
                         .value
@@ -336,7 +306,6 @@
 
 
                 const email =
-
                     document
                         .getElementById("registerEmail")
                         .value
@@ -345,7 +314,6 @@
 
 
                 const mobile =
-
                     document
                         .getElementById("registerMobile")
                         .value
@@ -353,22 +321,19 @@
 
 
                 const password =
-
                     document
                         .getElementById("registerPassword")
                         .value;
 
 
                 const confirmPassword =
-
                     document
                         .getElementById("confirmPassword")
                         .value;
 
 
-
                 // ==========================================
-                // VALIDATION
+                // NAME VALIDATION
                 // ==========================================
 
                 if (!name) {
@@ -378,9 +343,7 @@
                     );
 
                     return;
-
                 }
-
 
 
                 // ==========================================
@@ -391,103 +354,79 @@
                     /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
-                if (
-                    !emailPattern.test(email)
-                ) {
+                if (!emailPattern.test(email)) {
 
                     alert(
                         "Please enter a valid email address."
                     );
 
                     return;
-
                 }
-
 
 
                 // ==========================================
                 // MOBILE VALIDATION
                 // ==========================================
 
-                if (
-                    !/^[0-9]{10}$/.test(mobile)
-                ) {
+                if (!/^[0-9]{10}$/.test(mobile)) {
 
                     alert(
                         "Please enter a valid 10-digit mobile number."
                     );
 
                     return;
-
                 }
-
 
 
                 // ==========================================
                 // PASSWORD VALIDATION
                 // ==========================================
 
-                if (
-                    password.length < 6
-                ) {
+                if (password.length < 6) {
 
                     alert(
                         "Password must be at least 6 characters."
                     );
 
                     return;
-
                 }
 
 
-                if (
-                    password !== confirmPassword
-                ) {
+                // ==========================================
+                // CONFIRM PASSWORD
+                // ==========================================
+
+                if (password !== confirmPassword) {
 
                     alert(
                         "Passwords do not match."
                     );
 
                     return;
-
                 }
 
 
-
                 // ==========================================
-                // REGISTER BUTTON
+                // DISABLE BUTTON
                 // ==========================================
-
-                const registerButton =
-
-                    document
-                        .getElementById("registerButton");
-
 
                 registerButton.disabled = true;
 
                 registerButton.textContent =
-                    "🔄 Creating Account...";
-
+                    "Creating Account...";
 
 
                 try {
 
-
                     // ==========================================
-                    // CREATE FIREBASE ACCOUNT
+                    // CREATE FIREBASE AUTH USER
                     // ==========================================
 
                     const userCredential =
-
                         await createUserWithEmailAndPassword(
-
                             auth,
-
                             email,
-
                             password
-
                         );
 
 
@@ -495,25 +434,20 @@
                         userCredential.user;
 
 
-
                     // ==========================================
-                    // SAVE CUSTOMER NAME IN FIREBASE
+                    // SAVE NAME TO FIREBASE USER PROFILE
                     // ==========================================
 
                     await updateProfile(
-
                         user,
-
                         {
                             displayName: name
                         }
-
                     );
 
 
-
                     // ==========================================
-                    // CREATE CUSTOMER INFORMATION
+                    // CUSTOMER INFORMATION
                     // ==========================================
 
                     const customer = {
@@ -534,43 +468,29 @@
                             new Date().toLocaleString(
                                 "en-IN"
                             )
-
                     };
 
 
-
                     // ==========================================
-                    // SAVE CUSTOMER SESSION
+                    // SAVE LOGIN SESSION
                     // ==========================================
 
                     localStorage.setItem(
-
                         "giftZoneLoggedInCustomer",
-
-                        JSON.stringify(
-                            customer
-                        )
-
+                        JSON.stringify(customer)
                     );
 
 
-
                     // ==========================================
-                    // SUCCESS
+                    // SUCCESS MESSAGE
                     // ==========================================
 
                     alert(
-
                         "❤️ Account created successfully!\n\n" +
-
                         "Welcome to Gift Zone, " +
-
                         name +
-
                         "!"
-
                     );
-
 
 
                     // ==========================================
@@ -581,110 +501,100 @@
                         "index.html";
 
 
-                }
-
-
-                catch (error) {
-
+                } catch (error) {
 
                     console.error(
-
                         "Firebase Registration Error:",
-
                         error
-
                     );
 
 
-
                     // ==========================================
-                    // ERROR MESSAGES
+                    // ERROR HANDLING
                     // ==========================================
 
                     if (
-
                         error.code ===
                         "auth/email-already-in-use"
-
                     ) {
 
                         alert(
-
                             "❌ This email address is already registered.\n\n" +
-
                             "Please login to your existing Gift Zone account."
-
                         );
 
                     }
 
-
                     else if (
-
                         error.code ===
                         "auth/invalid-email"
-
                     ) {
 
                         alert(
-
                             "❌ Please enter a valid email address."
-
                         );
 
                     }
-
 
                     else if (
-
                         error.code ===
                         "auth/weak-password"
-
                     ) {
 
                         alert(
-
                             "❌ Password is too weak.\n\n" +
-
                             "Please use at least 6 characters."
-
                         );
 
                     }
 
+                    else if (
+                        error.code ===
+                        "auth/network-request-failed"
+                    ) {
+
+                        alert(
+                            "❌ Network connection problem.\n\n" +
+                            "Please check your internet connection and try again."
+                        );
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/operation-not-allowed"
+                    ) {
+
+                        alert(
+                            "❌ Email/Password registration is not enabled in Firebase.\n\n" +
+                            "Please check Firebase Authentication settings."
+                        );
+
+                    }
 
                     else {
 
                         alert(
-
                             "❌ Account creation failed.\n\n" +
-
                             error.message
-
                         );
-
                     }
 
 
-
                     // ==========================================
-                    // RESTORE BUTTON
+                    // ENABLE BUTTON AGAIN
                     // ==========================================
 
                     registerButton.disabled = false;
 
                     registerButton.textContent =
                         "🎁 Create Account";
-
                 }
 
             }
-
         );
 
-
-</script>
-
+    </script>
 
 </body>
 
