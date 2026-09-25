@@ -1,368 +1,390 @@
-
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Gift Zone - Payment</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>Gift Zone - Payment</title>
 
-    <style>
+<link rel="stylesheet" href="style.css">
 
-        /* =====================================
-           PAYMENT PAGE
-        ===================================== */
+<style>
 
-        .payment-page {
-            max-width: 850px;
+    /* =====================================
+       PAYMENT PAGE
+    ===================================== */
+
+    .payment-page {
+        max-width: 850px;
+    }
+
+
+    /* =====================================
+       PAYMENT METHOD BUTTONS
+    ===================================== */
+
+    .payment-methods {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .payment-method {
+        border: 2px solid #eeeeee;
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 20px 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.25s ease;
+        user-select: none;
+    }
+
+    .payment-method:hover {
+        border-color: #ff80ab;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(233, 30, 99, 0.12);
+    }
+
+    .payment-method.active {
+        border-color: #e91e63;
+        background: #fff0f5;
+        box-shadow: 0 8px 22px rgba(233, 30, 99, 0.18);
+        transform: translateY(-2px);
+    }
+
+    .payment-method-icon {
+        display: block;
+        font-size: 35px;
+        margin-bottom: 8px;
+    }
+
+    .payment-method span {
+        display: block;
+        font-size: 15px;
+        font-weight: 800;
+        color: #333;
+    }
+
+    .payment-method.active span {
+        color: #e91e63;
+    }
+
+
+    /* =====================================
+       PAYMENT PANELS
+    ===================================== */
+
+    .payment-panel {
+        display: none;
+        margin-top: 20px;
+        padding: 22px;
+        background: #fff8fb;
+        border: 1px solid #f5d9e4;
+        border-radius: 16px;
+        animation: paymentPanelShow 0.3s ease;
+    }
+
+    .payment-panel.active {
+        display: block;
+    }
+
+    @keyframes paymentPanelShow {
+
+        from {
+            opacity: 0;
+            transform: translateY(8px);
         }
 
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-        /* =====================================
-           PAYMENT METHOD BUTTONS
-        ===================================== */
+    }
+
+
+    /* =====================================
+       QR SECTION
+    ===================================== */
+
+    .qr-box {
+        text-align: center;
+    }
+
+    .qr-placeholder {
+        width: 190px;
+        height: 190px;
+        margin: 15px auto;
+        background: #ffffff;
+        border: 2px dashed #e91e63;
+        border-radius: 15px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 65px;
+    }
+
+    .qr-box h3 {
+        color: #e91e63;
+        margin-bottom: 8px;
+    }
+
+    .qr-box p {
+        color: #666;
+        line-height: 1.5;
+        margin: 5px 0;
+    }
+
+
+    /* =====================================
+       CARD FORM
+    ===================================== */
+
+    .payment-input {
+        width: 100%;
+        padding: 14px 15px;
+        margin-top: 7px;
+        margin-bottom: 15px;
+
+        border: 1px solid #dddddd;
+        border-radius: 10px;
+
+        font-size: 15px;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    .payment-input:focus {
+        border-color: #e91e63;
+        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
+    }
+
+    .card-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .payment-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        color: #555;
+    }
+
+
+    /* =====================================
+       NET BANKING
+    ===================================== */
+
+    .bank-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .bank-option {
+        padding: 14px 12px;
+        background: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 700;
+        color: #444;
+        transition: 0.2s ease;
+    }
+
+    .bank-option:hover {
+        border-color: #e91e63;
+        color: #e91e63;
+        background: #fff8fb;
+    }
+
+    .bank-option.selected {
+        background: #fff0f5;
+        border: 2px solid #e91e63;
+        color: #e91e63;
+    }
+
+
+    /* =====================================
+       SELECTED BANK
+    ===================================== */
+
+    .selected-bank {
+        display: none;
+        margin-top: 15px;
+        padding: 12px 15px;
+        background: #fff0f5;
+        border-radius: 10px;
+        color: #e91e63;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .selected-bank.show {
+        display: block;
+    }
+
+
+    /* =====================================
+       SELECTED PAYMENT TEXT
+    ===================================== */
+
+    .selected-payment {
+        margin-top: 18px;
+        padding: 12px 15px;
+        background: #fff0f5;
+        border-radius: 10px;
+        color: #e91e63;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+
+    /* =====================================
+       POPUP
+    ===================================== */
+
+    .payment-popup-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+
+        background: rgba(20, 10, 15, 0.65);
+        backdrop-filter: blur(6px);
+
+        opacity: 0;
+        visibility: hidden;
+
+        transition: 0.3s ease;
+    }
+
+    .payment-popup-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .payment-popup {
+        width: 100%;
+        max-width: 430px;
+
+        background: #ffffff;
+        border-radius: 24px;
+
+        padding: 35px 25px 28px;
+
+        text-align: center;
+
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+
+        transform: scale(0.8);
+        transition: 0.3s ease;
+    }
+
+    .payment-popup-overlay.show .payment-popup {
+        transform: scale(1);
+    }
+
+    .payment-popup-icon {
+        width: 80px;
+        height: 80px;
+
+        margin: 0 auto 18px;
+
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #fff0f5;
+
+        font-size: 42px;
+    }
+
+    .payment-popup h2 {
+        margin: 0 0 10px;
+        color: #e91e63;
+    }
+
+    .payment-popup p {
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 22px;
+    }
+
+    .payment-popup-button {
+        width: 100%;
+        padding: 14px 20px;
+
+        border: none;
+        border-radius: 12px;
+
+        background: linear-gradient(
+            135deg,
+            #e91e63,
+            #ff4081
+        );
+
+        color: #ffffff;
+
+        font-size: 16px;
+        font-weight: 800;
+
+        cursor: pointer;
+    }
+
+
+    /* =====================================
+       MOBILE
+    ===================================== */
+
+    @media (max-width: 600px) {
 
         .payment-methods {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: 1fr;
         }
 
-        .payment-method {
-            border: 2px solid #eeeeee;
-            background: #ffffff;
-            border-radius: 15px;
-            padding: 20px 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.25s ease;
-            user-select: none;
-        }
-
-        .payment-method:hover {
-            border-color: #ff80ab;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.12);
-        }
-
-        .payment-method.active {
-            border-color: #e91e63;
-            background: #fff0f5;
-            box-shadow: 0 8px 22px rgba(233, 30, 99, 0.18);
-            transform: translateY(-2px);
-        }
-
-        .payment-method-icon {
-            display: block;
-            font-size: 35px;
-            margin-bottom: 8px;
-        }
-
-        .payment-method span {
-            display: block;
-            font-size: 15px;
-            font-weight: 800;
-            color: #333;
-        }
-
-        .payment-method.active span {
-            color: #e91e63;
-        }
-
-
-        /* =====================================
-           PAYMENT PANELS
-        ===================================== */
-
-        .payment-panel {
-            display: none;
-            margin-top: 20px;
-            padding: 22px;
-            background: #fff8fb;
-            border: 1px solid #f5d9e4;
-            border-radius: 16px;
-            animation: paymentPanelShow 0.3s ease;
-        }
-
-        .payment-panel.active {
-            display: block;
-        }
-
-        @keyframes paymentPanelShow {
-
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-        }
-
-
-        /* =====================================
-           QR SECTION
-        ===================================== */
-
-        .qr-box {
-            text-align: center;
-        }
-
-        .qr-placeholder {
-            width: 190px;
-            height: 190px;
-            margin: 15px auto;
-            background: #ffffff;
-            border: 2px dashed #e91e63;
-            border-radius: 15px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 65px;
-        }
-
-        .qr-box h3 {
-            color: #e91e63;
-            margin-bottom: 8px;
-        }
-
-        .qr-box p {
-            color: #666;
-            line-height: 1.5;
-            margin: 5px 0;
-        }
-
-
-        /* =====================================
-           CARD FORM
-        ===================================== */
-
-        .payment-input {
-            width: 100%;
-            padding: 14px 15px;
-            margin-top: 7px;
-            margin-bottom: 15px;
-
-            border: 1px solid #dddddd;
-            border-radius: 10px;
-
-            font-size: 15px;
-            outline: none;
-            box-sizing: border-box;
-        }
-
-        .payment-input:focus {
-            border-color: #e91e63;
-            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
+        .bank-list {
+            grid-template-columns: 1fr;
         }
 
         .card-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .payment-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            color: #555;
-        }
-
-
-        /* =====================================
-           NET BANKING
-        ===================================== */
-
-        .bank-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .bank-option {
-            padding: 14px;
-            background: #ffffff;
-            border: 1px solid #dddddd;
-            border-radius: 10px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: 700;
-            color: #444;
-            transition: 0.2s ease;
-        }
-
-        .bank-option:hover {
-            border-color: #e91e63;
-            color: #e91e63;
-        }
-
-        .bank-option.selected {
-            background: #fff0f5;
-            border-color: #e91e63;
-            color: #e91e63;
-        }
-
-
-        /* =====================================
-           SELECTED PAYMENT TEXT
-        ===================================== */
-
-        .selected-payment {
-            margin-top: 18px;
-            padding: 12px 15px;
-            background: #fff0f5;
-            border-radius: 10px;
-            color: #e91e63;
-            font-size: 14px;
-            font-weight: 700;
-            text-align: center;
-        }
-
-
-        /* =====================================
-           POPUP
-        ===================================== */
-
-        .payment-popup-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            padding: 20px;
-
-            background: rgba(20, 10, 15, 0.65);
-            backdrop-filter: blur(6px);
-
-            opacity: 0;
-            visibility: hidden;
-
-            transition: 0.3s ease;
-        }
-
-        .payment-popup-overlay.show {
-            opacity: 1;
-            visibility: visible;
+            grid-template-columns: 1fr;
+            gap: 0;
         }
 
         .payment-popup {
-            width: 100%;
-            max-width: 430px;
-
-            background: #ffffff;
-            border-radius: 24px;
-
-            padding: 35px 25px 28px;
-
-            text-align: center;
-
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
-
-            transform: scale(0.8);
-            transition: 0.3s ease;
+            max-width: 360px;
         }
 
-        .payment-popup-overlay.show .payment-popup {
-            transform: scale(1);
-        }
+    }
 
-        .payment-popup-icon {
-            width: 80px;
-            height: 80px;
+</style>
 
-            margin: 0 auto 18px;
-
-            border-radius: 50%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: #fff0f5;
-
-            font-size: 42px;
-        }
-
-        .payment-popup h2 {
-            margin: 0 0 10px;
-            color: #e91e63;
-        }
-
-        .payment-popup p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 22px;
-        }
-
-        .payment-popup-button {
-            width: 100%;
-            padding: 14px 20px;
-
-            border: none;
-            border-radius: 12px;
-
-            background: linear-gradient(
-                135deg,
-                #e91e63,
-                #ff4081
-            );
-
-            color: #ffffff;
-
-            font-size: 16px;
-            font-weight: 800;
-
-            cursor: pointer;
-        }
-
-
-        /* =====================================
-           MOBILE
-        ===================================== */
-
-        @media (max-width: 600px) {
-
-            .payment-methods {
-                grid-template-columns: 1fr;
-            }
-
-            .bank-list {
-                grid-template-columns: 1fr;
-            }
-
-            .card-row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-
-            .payment-popup {
-                max-width: 360px;
-            }
-
-        }
-
-    </style>
 
 </head>
 
-
 <body>
-
 
 <!-- =====================================
      LOADING SCREEN
@@ -370,22 +392,23 @@
 
 <div id="loadingScreen" class="loading-screen">
 
-    <div class="loading-logo">
-        🎁
-    </div>
 
-    <h2>
-        Gift Zone
-    </h2>
-
-    <p>
-        Preparing secure payment...
-    </p>
-
-    <div class="loading-spinner"></div>
-
+<div class="loading-logo">
+    🎁
 </div>
 
+<h2>
+    Gift Zone
+</h2>
+
+<p>
+    Preparing secure payment...
+</p>
+
+<div class="loading-spinner"></div>
+
+
+</div>
 
 <!-- =====================================
      HEADER
@@ -393,36 +416,37 @@
 
 <header class="main-header">
 
-    <div class="logo">
-        🎁 <span>GIFT ZONE</span>
-    </div>
 
-    <nav class="main-nav">
+<div class="logo">
+    🎁 <span>GIFT ZONE</span>
+</div>
 
-        <a href="index.html">
-            Home
-        </a>
+<nav class="main-nav">
 
-        <a href="index.html#gifts">
-            Gifts
-        </a>
+    <a href="index.html">
+        Home
+    </a>
 
-        <a href="checkout.html">
-            Surprise Delivery
-        </a>
+    <a href="index.html#gifts">
+        Gifts
+    </a>
 
-        <a href="orders.html">
-            My Orders
-        </a>
+    <a href="checkout.html">
+        Surprise Delivery
+    </a>
 
-        <a href="cart.html">
-            🛒 Cart
-        </a>
+    <a href="orders.html">
+        My Orders
+    </a>
 
-    </nav>
+    <a href="cart.html">
+        🛒 Cart
+    </a>
+
+</nav>
+
 
 </header>
-
 
 <!-- =====================================
      PAYMENT
@@ -430,349 +454,425 @@
 
 <main class="checkout-container payment-page">
 
-    <h1>
-        💳 Secure Payment
-    </h1>
 
-    <p class="checkout-subtitle">
-        Complete your payment to confirm the surprise delivery.
+<h1>
+    💳 Secure Payment
+</h1>
+
+<p class="checkout-subtitle">
+    Complete your payment to confirm the surprise delivery.
+</p>
+
+
+<!-- ORDER SUMMARY -->
+
+<section class="checkout-section payment-box">
+
+    <h2>
+        🎁 Gift Zone Order
+    </h2>
+
+    <div id="paymentItems"></div>
+
+
+    <div class="payment-summary">
+
+        <div class="payment-row">
+
+            <span>
+                Gift Amount
+            </span>
+
+            <strong id="giftAmount">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <div class="payment-row">
+
+            <span>
+                Delivery & Surprise Service
+            </span>
+
+            <strong id="deliveryAmount">
+                ₹50
+            </strong>
+
+        </div>
+
+
+        <div class="payment-total">
+
+            <span>
+                Total Amount
+            </span>
+
+            <strong id="totalAmount">
+                ₹0
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ONLINE PAYMENT -->
+
+<section class="checkout-section online-payment">
+
+    <h2>
+        💳 Choose Payment Method
+    </h2>
+
+    <p class="payment-description">
+        Select how you would like to pay.
     </p>
 
 
-    <!-- =====================================
-         ORDER SUMMARY
-    ===================================== -->
-
-    <section class="checkout-section payment-box">
-
-        <h2>
-            🎁 Gift Zone Order
-        </h2>
-
-        <div id="paymentItems"></div>
-
-
-        <div class="payment-summary">
-
-            <div class="payment-row">
-
-                <span>
-                    Gift Amount
-                </span>
-
-                <strong id="giftAmount">
-                    ₹0
-                </strong>
-
-            </div>
-
-
-            <div class="payment-row">
-
-                <span>
-                    Delivery & Surprise Service
-                </span>
-
-                <strong id="deliveryAmount">
-                    ₹50
-                </strong>
-
-            </div>
-
-
-            <div class="payment-total">
-
-                <span>
-                    Total Amount
-                </span>
-
-                <strong id="totalAmount">
-                    ₹0
-                </strong>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================
-         ONLINE PAYMENT
-    ===================================== -->
-
-    <section class="checkout-section online-payment">
-
-        <h2>
-            💳 Choose Payment Method
-        </h2>
-
-        <p class="payment-description">
-            Select how you would like to pay.
-        </p>
-
-
-        <div class="payment-methods">
-
-            <div
-                class="payment-method active"
-                data-method="UPI / QR Code"
-                id="upiMethod"
-            >
-
-                <span class="payment-method-icon">
-                    📱
-                </span>
-
-                <span>
-                    UPI / QR Code
-                </span>
-
-            </div>
-
-
-            <div
-                class="payment-method"
-                data-method="Debit / Credit Card"
-                id="cardMethod"
-            >
-
-                <span class="payment-method-icon">
-                    💳
-                </span>
-
-                <span>
-                    Debit / Credit Card
-                </span>
-
-            </div>
-
-
-            <div
-                class="payment-method"
-                data-method="Net Banking"
-                id="netBankingMethod"
-            >
-
-                <span class="payment-method-icon">
-                    🏦
-                </span>
-
-                <span>
-                    Net Banking
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- UPI -->
+    <div class="payment-methods">
 
         <div
-            id="upiPanel"
-            class="payment-panel active"
+            class="payment-method active"
+            data-method="UPI / QR Code"
+            id="upiMethod"
         >
 
-            <div class="qr-box">
+            <span class="payment-method-icon">
+                📱
+            </span>
 
-                <h3>
-                    📱 UPI / QR Payment
-                </h3>
-
-                <p>
-                    Scan the QR code using your UPI app.
-                </p>
-
-                <div class="qr-placeholder">
-                    📱
-                </div>
-
-                <p>
-                    <strong>
-                        Demo Payment
-                    </strong>
-                </p>
-
-                <p>
-                    Real QR payment will be connected
-                    when the payment gateway is added.
-                </p>
-
-            </div>
+            <span>
+                UPI / QR Code
+            </span>
 
         </div>
 
-
-        <!-- CARD -->
 
         <div
-            id="cardPanel"
-            class="payment-panel"
+            class="payment-method"
+            data-method="Debit / Credit Card"
+            id="cardMethod"
         >
 
-            <h3>
-                💳 Card Payment
-            </h3>
+            <span class="payment-method-icon">
+                💳
+            </span>
 
-            <p>
-                Enter your card details.
-            </p>
-
-
-            <label class="payment-label">
-                Card Number
-            </label>
-
-            <input
-                type="text"
-                id="cardNumber"
-                class="payment-input"
-                placeholder="1234 5678 9012 3456"
-                maxlength="19"
-            >
-
-
-            <label class="payment-label">
-                Card Holder Name
-            </label>
-
-            <input
-                type="text"
-                id="cardName"
-                class="payment-input"
-                placeholder="Name on card"
-            >
-
-
-            <div class="card-row">
-
-                <div>
-
-                    <label class="payment-label">
-                        Expiry Date
-                    </label>
-
-                    <input
-                        type="text"
-                        id="cardExpiry"
-                        class="payment-input"
-                        placeholder="MM/YY"
-                        maxlength="5"
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <label class="payment-label">
-                        CVV
-                    </label>
-
-                    <input
-                        type="password"
-                        id="cardCvv"
-                        class="payment-input"
-                        placeholder="•••"
-                        maxlength="3"
-                    >
-
-                </div>
-
-            </div>
+            <span>
+                Debit / Credit Card
+            </span>
 
         </div>
 
-
-        <!-- NET BANKING -->
 
         <div
-            id="netBankingPanel"
-            class="payment-panel"
+            class="payment-method"
+            data-method="Net Banking"
+            id="netBankingMethod"
         >
 
-            <h3>
-                🏦 Net Banking
-            </h3>
+            <span class="payment-method-icon">
+                🏦
+            </span>
 
-            <p>
-                Select your bank.
-            </p>
-
-
-            <div class="bank-list">
-
-                <div class="bank-option">
-                    SBI
-                </div>
-
-                <div class="bank-option">
-                    HDFC Bank
-                </div>
-
-                <div class="bank-option">
-                    ICICI Bank
-                </div>
-
-                <div class="bank-option">
-                    Axis Bank
-                </div>
-
-                <div class="bank-option">
-                    Canara Bank
-                </div>
-
-                <div class="bank-option">
-                    Union Bank
-                </div>
-
-            </div>
+            <span>
+                Net Banking
+            </span>
 
         </div>
 
-
-        <!-- SELECTED METHOD -->
-
-        <div
-            id="selectedPayment"
-            class="selected-payment"
-        >
-            Selected: 📱 UPI / QR Code
-        </div>
+    </div>
 
 
-        <!-- PAY NOW -->
+    <!-- UPI -->
 
-        <button
-            type="button"
-            id="payButton"
-            class="pay-now-button"
-        >
-            💳 Pay ₹0
-        </button>
-
-
-        <p class="secure-payment">
-            🔒 Secure payment • Your payment information is protected.
-        </p>
-
-
-    </section>
-
-
-    <!-- BACK -->
-
-    <a
-        href="checkout.html"
-        class="continue-shopping payment-back"
+    <div
+        id="upiPanel"
+        class="payment-panel active"
     >
-        ← Back to Checkout
-    </a>
+
+        <div class="qr-box">
+
+            <h3>
+                📱 UPI / QR Payment
+            </h3>
+
+            <p>
+                Scan the QR code using your UPI app.
+            </p>
+
+            <div class="qr-placeholder">
+                📱
+            </div>
+
+            <p>
+                <strong>
+                    Demo Payment
+                </strong>
+            </p>
+
+            <p>
+                Real QR payment will be connected
+                when the payment gateway is added.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- CARD -->
+
+    <div
+        id="cardPanel"
+        class="payment-panel"
+    >
+
+        <h3>
+            💳 Card Payment
+        </h3>
+
+        <p>
+            Enter your card details.
+        </p>
+
+
+        <label class="payment-label">
+            Card Number
+        </label>
+
+        <input
+            type="text"
+            id="cardNumber"
+            class="payment-input"
+            placeholder="1234 5678 9012 3456"
+            maxlength="19"
+        >
+
+
+        <label class="payment-label">
+            Card Holder Name
+        </label>
+
+        <input
+            type="text"
+            id="cardName"
+            class="payment-input"
+            placeholder="Name on card"
+        >
+
+
+        <div class="card-row">
+
+            <div>
+
+                <label class="payment-label">
+                    Expiry Date
+                </label>
+
+                <input
+                    type="text"
+                    id="cardExpiry"
+                    class="payment-input"
+                    placeholder="MM/YY"
+                    maxlength="5"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label class="payment-label">
+                    CVV
+                </label>
+
+                <input
+                    type="password"
+                    id="cardCvv"
+                    class="payment-input"
+                    placeholder="•••"
+                    maxlength="3"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NET BANKING -->
+
+    <div
+        id="netBankingPanel"
+        class="payment-panel"
+    >
+
+        <h3>
+            🏦 Net Banking
+        </h3>
+
+        <p>
+            Select your bank.
+        </p>
+
+
+        <div class="bank-list">
+
+            <div class="bank-option">
+                State Bank of India (SBI)
+            </div>
+
+            <div class="bank-option">
+                HDFC Bank
+            </div>
+
+            <div class="bank-option">
+                ICICI Bank
+            </div>
+
+            <div class="bank-option">
+                Axis Bank
+            </div>
+
+            <div class="bank-option">
+                Kotak Mahindra Bank
+            </div>
+
+            <div class="bank-option">
+                IndusInd Bank
+            </div>
+
+            <div class="bank-option">
+                Yes Bank
+            </div>
+
+            <div class="bank-option">
+                IDFC FIRST Bank
+            </div>
+
+            <div class="bank-option">
+                Federal Bank
+            </div>
+
+            <div class="bank-option">
+                Bank of Baroda
+            </div>
+
+            <div class="bank-option">
+                Punjab National Bank (PNB)
+            </div>
+
+            <div class="bank-option">
+                Canara Bank
+            </div>
+
+            <div class="bank-option">
+                Union Bank of India
+            </div>
+
+            <div class="bank-option">
+                Bank of India
+            </div>
+
+            <div class="bank-option">
+                Indian Bank
+            </div>
+
+            <div class="bank-option">
+                Indian Overseas Bank
+            </div>
+
+            <div class="bank-option">
+                Central Bank of India
+            </div>
+
+            <div class="bank-option">
+                UCO Bank
+            </div>
+
+            <div class="bank-option">
+                Bank of Maharashtra
+            </div>
+
+            <div class="bank-option">
+                Punjab & Sind Bank
+            </div>
+
+            <div class="bank-option">
+                South Indian Bank
+            </div>
+
+            <div class="bank-option">
+                RBL Bank
+            </div>
+
+            <div class="bank-option">
+                Karnataka Bank
+            </div>
+
+            <div class="bank-option">
+                City Union Bank
+            </div>
+
+        </div>
+
+
+        <div
+            id="selectedBank"
+            class="selected-bank"
+        >
+            Selected Bank:
+        </div>
+
+    </div>
+
+
+    <!-- SELECTED PAYMENT -->
+
+    <div
+        id="selectedPayment"
+        class="selected-payment"
+    >
+        Selected: 📱 UPI / QR Code
+    </div>
+
+
+    <!-- PAY NOW -->
+
+    <button
+        type="button"
+        id="payButton"
+        class="pay-now-button"
+    >
+        💳 Pay ₹0
+    </button>
+
+
+    <p class="secure-payment">
+        🔒 Secure payment • Your payment information is protected.
+    </p>
+
+
+</section>
+
+
+<!-- BACK -->
+
+<a
+    href="checkout.html"
+    class="continue-shopping payment-back"
+>
+    ← Back to Checkout
+</a>
 
 
 </main>
-
 
 <!-- =====================================
      PAYMENT POPUP
@@ -783,35 +883,36 @@
     class="payment-popup-overlay"
 >
 
-    <div class="payment-popup">
 
-        <div
-            id="paymentPopupIcon"
-            class="payment-popup-icon"
-        >
-            💳
-        </div>
+<div class="payment-popup">
 
-        <h2 id="paymentPopupTitle">
-            Confirm Payment
-        </h2>
-
-        <p id="paymentPopupMessage">
-            Please confirm your payment.
-        </p>
-
-        <button
-            type="button"
-            id="paymentPopupButton"
-            class="payment-popup-button"
-        >
-            Confirm Payment
-        </button>
-
+    <div
+        id="paymentPopupIcon"
+        class="payment-popup-icon"
+    >
+        💳
     </div>
+
+    <h2 id="paymentPopupTitle">
+        Confirm Payment
+    </h2>
+
+    <p id="paymentPopupMessage">
+        Please confirm your payment.
+    </p>
+
+    <button
+        type="button"
+        id="paymentPopupButton"
+        class="payment-popup-button"
+    >
+        Confirm Payment
+    </button>
 
 </div>
 
+
+</div>
 
 <!-- =====================================
      FIREBASE + PAYMENT SCRIPT
@@ -904,6 +1005,9 @@ const totalAmount =
 
 const payButton =
     document.getElementById("payButton");
+
+const selectedBank =
+    document.getElementById("selectedBank");
 
 
 // =====================================
@@ -1108,7 +1212,16 @@ bankOptions.forEach(function (bank) {
 
         });
 
+
         bank.classList.add("selected");
+
+
+        selectedBank.textContent =
+            "Selected Bank: " +
+            bank.textContent.trim();
+
+
+        selectedBank.classList.add("show");
 
     });
 
@@ -1185,10 +1298,6 @@ async function saveOrderToFirestore(
 
     try {
 
-        // =================================
-        // GET FIREBASE AUTH USER
-        // =================================
-
         const currentUser =
             auth.currentUser;
 
@@ -1202,43 +1311,34 @@ async function saveOrderToFirestore(
         }
 
 
-        // =================================
-        // HUMAN-FRIENDLY ORDER ID
-        // =================================
-
         const orderId =
             "GZ-" +
             Date.now();
 
 
-        // =================================
-        // INTERNAL FIREBASE USER ID
-        // =================================
-        // This is stored only in Firestore.
-        // It will NOT be shown as Customer ID.
-        // =================================
-
         const userId =
             currentUser.uid;
 
 
-        // =================================
-        // CREATE ORDER DATA
-        // =================================
+        const selectedBankElement =
+            document.querySelector(
+                ".bank-option.selected"
+            );
+
+
+        const selectedBankName =
+            selectedBankElement
+            ? selectedBankElement.textContent.trim()
+            : "";
+
 
         const newOrder = {
 
             orderId:
                 orderId,
 
-
             userId:
                 userId,
-
-
-            // =================================
-            // CUSTOMER INFORMATION
-            // =================================
 
             customerName:
                 loggedInCustomer?.name ||
@@ -1247,13 +1347,11 @@ async function saveOrderToFirestore(
                 currentUser.displayName ||
                 "",
 
-
             customerPhone:
                 checkoutDetails.customerPhone ||
                 loggedInCustomer?.mobile ||
                 currentUser.phoneNumber ||
                 "",
-
 
             customerEmail:
                 currentUser.email ||
@@ -1261,113 +1359,66 @@ async function saveOrderToFirestore(
                 checkoutDetails.customerEmail ||
                 "",
 
-
-            // =================================
-            // RECIPIENT INFORMATION
-            // =================================
-
             recipientName:
                 checkoutDetails.recipientName ||
                 "",
-
 
             recipientPhone:
                 checkoutDetails.recipientPhone ||
                 "",
 
-
-            // =================================
-            // DELIVERY INFORMATION
-            // =================================
-
             address:
                 checkoutDetails.address ||
                 "",
-
 
             deliveryDate:
                 checkoutDetails.deliveryDate ||
                 "",
 
-
             deliveryTime:
                 checkoutDetails.deliveryTime ||
                 "",
-
-
-            // =================================
-            // SURPRISE DETAILS
-            // =================================
 
             surpriseMessage:
                 checkoutDetails.surpriseMessage ||
                 "",
 
-
             specialInstructions:
                 checkoutDetails.specialInstructions ||
                 "",
 
-
-            // =================================
-            // GIFTS
-            // =================================
-
             cart:
                 cart,
-
-
-            // =================================
-            // PAYMENT
-            // =================================
 
             giftTotal:
                 giftTotal,
 
-
             deliveryCharge:
                 deliveryCharge,
-
 
             total:
                 finalTotal,
 
-
             paymentMethod:
                 selectedMethod,
 
+            selectedBank:
+                selectedBankName,
 
             paymentStatus:
                 "Demo Payment Successful",
 
-
-            // =================================
-            // INITIAL STATUS
-            // =================================
-
             orderStatus:
                 "Order Placed",
 
-
-            // =================================
-            // TIME
-            // =================================
-
             orderCreatedAt:
                 serverTimestamp(),
-
 
             statusUpdatedAt:
                 serverTimestamp()
 
         };
 
-
-        // =================================
-        // SAVE TO FIRESTORE
-        // =================================
-        // Document ID = human-friendly order ID
-        // =================================
 
         await setDoc(
             doc(
@@ -1377,10 +1428,6 @@ async function saveOrderToFirestore(
             newOrder
         );
 
-
-        // =================================
-        // SUCCESS
-        // =================================
 
         localStorage.removeItem(
             "giftZoneCart"
@@ -1467,10 +1514,6 @@ payButton.addEventListener(
     async function () {
 
 
-        // =================================
-        // CHECK FIREBASE LOGIN
-        // =================================
-
         const currentUser =
             auth.currentUser;
 
@@ -1495,10 +1538,6 @@ payButton.addEventListener(
         }
 
 
-        // =================================
-        // CHECK CART
-        // =================================
-
         if (cart.length === 0) {
 
             showPaymentPopup(
@@ -1518,10 +1557,6 @@ payButton.addEventListener(
 
         }
 
-
-        // =================================
-        // GET SELECTED METHOD
-        // =================================
 
         const activeMethod =
             document.querySelector(
@@ -1595,13 +1630,13 @@ payButton.addEventListener(
             "Net Banking"
         ) {
 
-            const selectedBank =
+            const selectedBankElement =
                 document.querySelector(
                     ".bank-option.selected"
                 );
 
 
-            if (!selectedBank) {
+            if (!selectedBankElement) {
 
                 showPaymentPopup(
                     "🏦",
@@ -1652,28 +1687,16 @@ payButton.addEventListener(
 
             async function () {
 
-                // =================================
-                // PREVENT DOUBLE CLICK
-                // =================================
-
                 payButton.disabled = true;
 
                 payButton.textContent =
                     "⏳ Saving Order...";
 
 
-                // =================================
-                // SAVE ORDER TO FIRESTORE
-                // =================================
-
                 await saveOrderToFirestore(
                     selectedMethod
                 );
 
-
-                // =================================
-                // ENABLE BUTTON AGAIN
-                // =================================
 
                 payButton.disabled = false;
 
@@ -1689,8 +1712,6 @@ payButton.addEventListener(
 
 </script>
 
-
 </body>
 
 </html>
-
