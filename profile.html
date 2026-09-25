@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -87,6 +88,12 @@
             word-break: break-word;
         }
 
+        .customer-id-value {
+            color: #e91e63;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
         .profile-buttons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -150,6 +157,20 @@
             font-weight: bold;
         }
 
+        .error-message {
+            max-width: 500px;
+            margin: 100px auto;
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+        }
+
+        .error-message h2 {
+            color: #e91e63;
+        }
+
         @media (max-width: 600px) {
 
             .profile-page {
@@ -194,43 +215,108 @@
 </div>
 
 
-<script>
+<script type="module">
 
 // =====================================
 // GIFT ZONE CUSTOMER PROFILE
 // =====================================
+
+import {
+    auth
+} from "./firebase.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
 
 const profileContent =
     document.getElementById("profileContent");
 
 
 // =====================================
-// GET LOGGED-IN CUSTOMER
+// CREATE GIFT ZONE CUSTOMER ID
 // =====================================
+//
+// Firebase UID stays hidden.
+// This creates a readable Gift Zone ID
+// from the Firebase UID.
+//
+// Example:
+// GZ-CUST-9HZXEQLV
+//
+// The same Firebase UID always creates
+// the same Gift Zone Customer ID.
+//
 
-let customer = null;
+function createGiftZoneCustomerId(uid) {
 
-try {
+    if (!uid) {
 
-    customer =
-        JSON.parse(
-            localStorage.getItem(
-                "giftZoneLoggedInCustomer"
-            )
+        return "GZ-CUST-UNKNOWN";
+
+    }
+
+    const cleanUid =
+        String(uid)
+            .replace(/[^a-zA-Z0-9]/g, "")
+            .toUpperCase();
+
+    const shortUid =
+        cleanUid.substring(
+            Math.max(0, cleanUid.length - 8)
         );
 
-} catch (error) {
-
-    customer = null;
+    return "GZ-CUST-" + shortUid;
 
 }
 
 
 // =====================================
-// CHECK LOGIN
+// GET LOCAL CUSTOMER INFORMATION
 // =====================================
 
-if (!customer) {
+function getLocalCustomer() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "giftZoneLoggedInCustomer"
+            )
+        );
+
+    } catch (error) {
+
+        return null;
+
+    }
+
+}
+
+
+// =====================================
+// ESCAPE HTML
+// =====================================
+
+function escapeHTML(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// =====================================
+// SHOW LOGIN REQUIRED
+// =====================================
+
+function showLoginRequired() {
 
     profileContent.innerHTML = `
 
@@ -260,143 +346,243 @@ if (!customer) {
 
     `;
 
-} else {
-
-
-    // =====================================
-    // SHOW CUSTOMER PROFILE
-    // =====================================
-
-    profileContent.innerHTML = `
-
-        <div class="profile-header">
-
-            <div class="profile-icon">
-                👤
-            </div>
-
-            <h1>
-                Welcome, ${escapeHTML(customer.name)}
-            </h1>
-
-            <p>
-                Gift Zone Customer
-            </p>
-
-        </div>
-
-
-        <div class="profile-card">
-
-            <h2 class="profile-title">
-                👤 My Profile
-            </h2>
-
-
-            <div class="profile-row">
-
-                <span class="profile-label">
-                    Customer ID
-                </span>
-
-                <span class="profile-value">
-                    ${escapeHTML(customer.customerId || "Not available")}
-                </span>
-
-            </div>
-
-
-            <div class="profile-row">
-
-                <span class="profile-label">
-                    Full Name
-                </span>
-
-                <span class="profile-value">
-                    ${escapeHTML(customer.name || "Not available")}
-                </span>
-
-            </div>
-
-
-            <div class="profile-row">
-
-                <span class="profile-label">
-                    📱 Mobile Number
-                </span>
-
-                <span class="profile-value">
-                    ${escapeHTML(customer.mobile || "Not available")}
-                </span>
-
-            </div>
-
-
-            <div class="profile-row">
-
-                <span class="profile-label">
-                    📧 Email
-                </span>
-
-                <span class="profile-value">
-                    ${escapeHTML(customer.email || "Not available")}
-                </span>
-
-            </div>
-
-
-            <div class="profile-row">
-
-                <span class="profile-label">
-                    🕒 Login Time
-                </span>
-
-                <span class="profile-value">
-                    ${escapeHTML(customer.loginTime || "Not available")}
-                </span>
-
-            </div>
-
-
-            <div class="profile-buttons">
-
-                <a
-                    href="orders.html"
-                    class="profile-button orders-button"
-                >
-                    📦 My Orders
-                </a>
-
-
-                <a
-                    href="index.html"
-                    class="profile-button home-button"
-                >
-                    🏠 Home
-                </a>
-
-
-                <button
-                    onclick="logoutCustomer()"
-                    class="profile-button logout-button"
-                >
-                    🚪 Logout
-                </button>
-
-            </div>
-
-        </div>
-
-    `;
-
 }
+
+
+// =====================================
+// FIREBASE LOGIN CHECK
+// =====================================
+
+onAuthStateChanged(
+    auth,
+    function(currentUser) {
+
+        if (!currentUser) {
+
+            showLoginRequired();
+
+            return;
+
+        }
+
+
+        // =================================
+        // GET LOCAL PROFILE INFORMATION
+        // =================================
+
+        const customer =
+            getLocalCustomer() || {};
+
+
+        // =================================
+        // CREATE CUSTOMER ID
+        // =================================
+        //
+        // IMPORTANT:
+        // Firebase UID is NOT displayed.
+        //
+
+        const giftZoneCustomerId =
+            createGiftZoneCustomerId(
+                currentUser.uid
+            );
+
+
+        // =================================
+        // SAVE DISPLAY CUSTOMER ID LOCALLY
+        // =================================
+
+        const updatedCustomer = {
+
+            ...customer,
+
+            customerId: giftZoneCustomerId,
+
+            firebaseUid: currentUser.uid,
+
+            name:
+                customer.name ||
+                currentUser.displayName ||
+                "Gift Zone Customer",
+
+            email:
+                customer.email ||
+                currentUser.email ||
+                "Not available",
+
+            mobile:
+                customer.mobile ||
+                currentUser.phoneNumber ||
+                "Not available"
+
+        };
+
+
+        localStorage.setItem(
+            "giftZoneLoggedInCustomer",
+            JSON.stringify(updatedCustomer)
+        );
+
+
+        // =================================
+        // SHOW PROFILE
+        // =================================
+
+        profileContent.innerHTML = `
+
+            <div class="profile-header">
+
+                <div class="profile-icon">
+                    👤
+                </div>
+
+                <h1>
+                    Welcome, ${escapeHTML(updatedCustomer.name)}
+                </h1>
+
+                <p>
+                    Gift Zone Customer
+                </p>
+
+            </div>
+
+
+            <div class="profile-card">
+
+                <h2 class="profile-title">
+                    👤 My Profile
+                </h2>
+
+
+                <div class="profile-row">
+
+                    <span class="profile-label">
+                        Customer ID
+                    </span>
+
+                    <span class="profile-value customer-id-value">
+                        ${escapeHTML(giftZoneCustomerId)}
+                    </span>
+
+                </div>
+
+
+                <div class="profile-row">
+
+                    <span class="profile-label">
+                        Full Name
+                    </span>
+
+                    <span class="profile-value">
+                        ${escapeHTML(
+                            updatedCustomer.name ||
+                            "Not available"
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="profile-row">
+
+                    <span class="profile-label">
+                        📱 Mobile Number
+                    </span>
+
+                    <span class="profile-value">
+                        ${escapeHTML(
+                            updatedCustomer.mobile ||
+                            "Not available"
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="profile-row">
+
+                    <span class="profile-label">
+                        📧 Email
+                    </span>
+
+                    <span class="profile-value">
+                        ${escapeHTML(
+                            updatedCustomer.email ||
+                            "Not available"
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="profile-row">
+
+                    <span class="profile-label">
+                        🕒 Login Time
+                    </span>
+
+                    <span class="profile-value">
+                        ${escapeHTML(
+                            updatedCustomer.loginTime ||
+                            "Not available"
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="profile-buttons">
+
+                    <a
+                        href="orders.html"
+                        class="profile-button orders-button"
+                    >
+                        📦 My Orders
+                    </a>
+
+
+                    <a
+                        href="index.html"
+                        class="profile-button home-button"
+                    >
+                        🏠 Home
+                    </a>
+
+
+                    <button
+                        id="logoutButton"
+                        class="profile-button logout-button"
+                    >
+                        🚪 Logout
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        // =================================
+        // LOGOUT BUTTON
+        // =================================
+
+        document
+            .getElementById("logoutButton")
+            .addEventListener(
+                "click",
+                logoutCustomer
+            );
+
+    }
+);
 
 
 // =====================================
 // LOGOUT
 // =====================================
 
-function logoutCustomer() {
+async function logoutCustomer() {
 
     const confirmLogout =
         confirm(
@@ -411,34 +597,36 @@ function logoutCustomer() {
     }
 
 
-    localStorage.removeItem(
-        "giftZoneLoggedInCustomer"
-    );
+    try {
+
+        await signOut(auth);
 
 
-    alert(
-        "You have been logged out successfully."
-    );
+        localStorage.removeItem(
+            "giftZoneLoggedInCustomer"
+        );
 
 
-    window.location.href =
-        "index.html";
+        alert(
+            "You have been logged out successfully."
+        );
 
-}
 
+        window.location.href =
+            "index.html";
 
-// =====================================
-// SECURITY HELPER
-// =====================================
+    } catch (error) {
 
-function escapeHTML(value) {
+        alert(
+            "Logout failed. Please try again."
+        );
 
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        console.error(
+            "Gift Zone logout error:",
+            error
+        );
+
+    }
 
 }
 
@@ -447,3 +635,4 @@ function escapeHTML(value) {
 </body>
 
 </html>
+
