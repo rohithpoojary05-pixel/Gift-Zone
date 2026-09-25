@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gift Zone - Admin Login</title>
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+<div class="login-page">
+
+
+<div class="login-box">
+
+    <div class="login-logo">
+        🎁
+    </div>
+
+    <h1>Gift Zone</h1>
+
+    <p class="login-subtitle">
+        👨‍💼 Distributor / Admin Login
+    </p>
+
+
+    <!-- ==========================================
+         ADMIN LOGIN FORM
+    =========================================== -->
+
+    <form id="adminLoginForm">
+
+        <label for="adminEmail">
+            Admin Email Address
+        </label>
+
+        <input
+            type="email"
+            id="adminEmail"
+            placeholder="Enter admin email"
+            required
+        >
+
+
+        <label for="adminPassword">
+            Admin Password
+        </label>
+
+        <input
+            type="password"
+            id="adminPassword"
+            placeholder="Enter admin password"
+            required
+        >
+
+
+        <button
+            type="submit"
+            class="login-button"
+            id="adminLoginButton"
+        >
+            👨‍💼 Admin Login
+        </button>
+
+    </form>
+
+
+    <br>
+
+
+    <a
+        href="index.html"
+        class="continue-shopping"
+    >
+        ← Back to Gift Zone
+    </a>
+
+</div>
+
+
+</div>
+
+<!-- ==========================================
+     FIREBASE ADMIN LOGIN
+=========================================== -->
+
+<script type="module">
+
+    import {
+        signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+    import {
+        doc,
+        getDoc
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+    import {
+        auth,
+        db
+    } from "./firebase.js";
+
+
+    // ==========================================
+    // ADMIN LOGIN FORM
+    // ==========================================
+
+    document
+        .getElementById("adminLoginForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const email =
+                document
+                    .getElementById("adminEmail")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+
+            const password =
+                document
+                    .getElementById("adminPassword")
+                    .value;
+
+
+            const loginButton =
+                document.getElementById("adminLoginButton");
+
+
+            loginButton.disabled = true;
+
+            loginButton.textContent =
+                "🔄 Checking Admin Account...";
+
+
+            try {
+
+                // ==========================================
+                // FIREBASE AUTH LOGIN
+                // ==========================================
+
+                const userCredential =
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                const user =
+                    userCredential.user;
+
+
+                // ==========================================
+                // CHECK ADMINS COLLECTION
+                // ==========================================
+
+                const adminRef =
+                    doc(
+                        db,
+                        "admins",
+                        user.uid
+                    );
+
+
+                const adminSnapshot =
+                    await getDoc(adminRef);
+
+
+                // ==========================================
+                // NOT AN ADMIN
+                // ==========================================
+
+                if (!adminSnapshot.exists()) {
+
+                    await auth.signOut();
+
+                    alert(
+                        "❌ This account is not registered as a Gift Zone Admin."
+                    );
+
+                    loginButton.disabled = false;
+
+                    loginButton.textContent =
+                        "👨‍💼 Admin Login";
+
+                    return;
+
+                }
+
+
+                // ==========================================
+                // CHECK ADMIN ROLE
+                // ==========================================
+
+                const adminData =
+                    adminSnapshot.data();
+
+
+                if (adminData.role !== "admin") {
+
+                    await auth.signOut();
+
+                    alert(
+                        "❌ Admin permission not found for this account."
+                    );
+
+                    loginButton.disabled = false;
+
+                    loginButton.textContent =
+                        "👨‍💼 Admin Login";
+
+                    return;
+
+                }
+
+
+                // ==========================================
+                // ADMIN LOGIN SUCCESS
+                // ==========================================
+
+                localStorage.setItem(
+                    "giftZoneAdminLoggedIn",
+                    "true"
+                );
+
+
+                localStorage.setItem(
+                    "giftZoneAdminEmail",
+                    user.email
+                );
+
+
+                alert(
+                    "✅ Admin Login Successful!\n\n" +
+                    "Welcome to Gift Zone Distributor Panel."
+                );
+
+
+                // ==========================================
+                // OPEN ADMIN ORDERS
+                // ==========================================
+
+                window.location.href =
+                    "admin-orders.html";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Admin Login Error:",
+                    error
+                );
+
+
+                if (
+                    error.code ===
+                    "auth/invalid-credential"
+                ) {
+
+                    alert(
+                        "❌ Incorrect admin email or password."
+                    );
+
+                }
+
+                else if (
+                    error.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    alert(
+                        "❌ Please enter a valid email address."
+                    );
+
+                }
+
+                else if (
+                    error.code ===
+                    "auth/too-many-requests"
+                ) {
+
+                    alert(
+                        "⚠️ Too many login attempts.\n\n" +
+                        "Please wait and try again."
+                    );
+
+                }
+
+                else if (
+                    error.code ===
+                    "permission-denied"
+                ) {
+
+                    alert(
+                        "❌ Firebase permission denied.\n\n" +
+                        "Please check the Admin Firestore setup."
+                    );
+
+                }
+
+                else {
+
+                    alert(
+                        "❌ Admin login failed.\n\n" +
+                        error.message
+                    );
+
+                }
+
+
+                loginButton.disabled = false;
+
+                loginButton.textContent =
+                    "👨‍💼 Admin Login";
+
+            }
+
+        });
+
+</script>
+
+</body>
+
+</html>
