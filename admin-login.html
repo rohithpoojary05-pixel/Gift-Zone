@@ -12,6 +12,84 @@
 
 <link rel="stylesheet" href="style.css">
 
+<style>
+
+    /* ==========================================
+       ADMIN LOGIN SIZE
+    ========================================== */
+
+    .login-box {
+        width: 100%;
+        max-width: 430px;
+        padding: 35px 30px;
+    }
+
+    .login-box h1 {
+        font-size: 32px;
+        margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+        font-size: 17px;
+        margin-bottom: 25px;
+    }
+
+    .login-box label {
+        display: block;
+        text-align: left;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 15px 0 7px;
+    }
+
+    .login-box input {
+        width: 100%;
+        box-sizing: border-box;
+        height: 52px;
+        padding: 0 15px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        outline: none;
+    }
+
+    .password-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .password-wrapper input {
+        padding-right: 65px;
+    }
+
+    .show-password-button {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 8px;
+    }
+
+    .login-button {
+        width: 100%;
+        min-height: 52px;
+        margin-top: 22px;
+        font-size: 17px;
+        cursor: pointer;
+    }
+
+    .continue-shopping {
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+</style>
+
 
 </head>
 
@@ -47,6 +125,7 @@
             type="email"
             id="adminEmail"
             placeholder="Enter admin email"
+            autocomplete="username"
             required
         >
 
@@ -55,12 +134,25 @@
             Admin Password
         </label>
 
-        <input
-            type="password"
-            id="adminPassword"
-            placeholder="Enter admin password"
-            required
-        >
+        <div class="password-wrapper">
+
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Enter admin password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button
+                type="button"
+                class="show-password-button"
+                id="showPasswordButton"
+            >
+                👁️ Show
+            </button>
+
+        </div>
 
 
         <button
@@ -72,9 +164,6 @@
         </button>
 
     </form>
-
-
-    <br>
 
 
     <a
@@ -111,7 +200,42 @@
 
 
     // ==========================================
-    // ADMIN LOGIN FORM
+    // SHOW / HIDE PASSWORD
+    // ==========================================
+
+    const passwordInput =
+        document.getElementById("adminPassword");
+
+    const showPasswordButton =
+        document.getElementById("showPasswordButton");
+
+
+    showPasswordButton.addEventListener(
+        "click",
+        function() {
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+                showPasswordButton.textContent =
+                    "🙈 Hide";
+
+            } else {
+
+                passwordInput.type = "password";
+
+                showPasswordButton.textContent =
+                    "👁️ Show";
+
+            }
+
+        }
+    );
+
+
+    // ==========================================
+    // ADMIN LOGIN
     // ==========================================
 
     document
@@ -130,9 +254,7 @@
 
 
             const password =
-                document
-                    .getElementById("adminPassword")
-                    .value;
+                passwordInput.value;
 
 
             const loginButton =
@@ -147,10 +269,6 @@
 
             try {
 
-                // ==========================================
-                // FIREBASE AUTH LOGIN
-                // ==========================================
-
                 const userCredential =
                     await signInWithEmailAndPassword(
                         auth,
@@ -164,7 +282,7 @@
 
 
                 // ==========================================
-                // CHECK ADMINS COLLECTION
+                // CHECK ADMIN DOCUMENT
                 // ==========================================
 
                 const adminRef =
@@ -178,10 +296,6 @@
                 const adminSnapshot =
                     await getDoc(adminRef);
 
-
-                // ==========================================
-                // NOT AN ADMIN
-                // ==========================================
 
                 if (!adminSnapshot.exists()) {
 
@@ -228,14 +342,13 @@
 
 
                 // ==========================================
-                // ADMIN LOGIN SUCCESS
+                // SAVE ADMIN SESSION
                 // ==========================================
 
                 localStorage.setItem(
                     "giftZoneAdminLoggedIn",
                     "true"
                 );
-
 
                 localStorage.setItem(
                     "giftZoneAdminEmail",
@@ -248,10 +361,6 @@
                     "Welcome to Gift Zone Distributor Panel."
                 );
 
-
-                // ==========================================
-                // OPEN ADMIN ORDERS
-                // ==========================================
 
                 window.location.href =
                     "admin-orders.html";
