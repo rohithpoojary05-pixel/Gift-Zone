@@ -29,8 +29,9 @@
         padding-right: 48px !important;
     }
 
+
     /* ==========================================
-       SMALL EYE ICON INSIDE PASSWORD FIELD
+       SIMPLE EYE BUTTON
     ========================================== */
 
     .password-wrapper .password-eye {
@@ -38,7 +39,6 @@
 
         right: 10px !important;
         top: 50% !important;
-
         transform: translateY(-50%) !important;
 
         width: 30px !important;
@@ -59,9 +59,6 @@
         background: transparent !important;
         box-shadow: none !important;
 
-        font-size: 17px !important;
-        line-height: 30px !important;
-
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -72,13 +69,76 @@
         -webkit-appearance: none !important;
     }
 
+
+    /* ==========================================
+       CSS EYE
+    ========================================== */
+
+    .eye-icon {
+        position: relative;
+
+        width: 17px;
+        height: 11px;
+
+        border: 1.8px solid #777;
+        border-radius: 80% 20% 80% 20% / 70% 30% 70% 30%;
+
+        transform: rotate(45deg);
+
+        display: block;
+    }
+
+    .eye-icon::after {
+        content: "";
+
+        position: absolute;
+
+        width: 5px;
+        height: 5px;
+
+        background: #777;
+
+        border-radius: 50%;
+
+        top: 50%;
+        left: 50%;
+
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+
+    /* ==========================================
+       HIDDEN EYE / SLASH
+    ========================================== */
+
+    .eye-icon.hidden::before {
+        content: "";
+
+        position: absolute;
+
+        width: 22px;
+        height: 1.8px;
+
+        background: #777;
+
+        top: 50%;
+        left: 50%;
+
+        transform: translate(-50%, -50%) rotate(-45deg);
+
+        z-index: 2;
+    }
+
+
     .password-wrapper .password-eye:hover,
     .password-wrapper .password-eye:focus,
     .password-wrapper .password-eye:active {
+
         background: transparent !important;
         box-shadow: none !important;
         border: none !important;
         outline: none !important;
+
     }
 
 </style>
@@ -127,7 +187,7 @@
         </label>
 
 
-        <!-- PASSWORD WITH SMALL EYE -->
+        <!-- PASSWORD FIELD -->
 
         <div class="password-wrapper">
 
@@ -146,7 +206,12 @@
                 aria-label="Show password"
                 title="Show password"
             >
-                👁️
+
+                <span
+                    class="eye-icon"
+                    id="eyeIcon"
+                ></span>
+
             </button>
 
         </div>
@@ -218,10 +283,6 @@
 
 <script type="module">
 
-    // ==========================================
-    // FIREBASE IMPORTS
-    // ==========================================
-
     import {
         signInWithEmailAndPassword,
         sendPasswordResetEmail
@@ -242,6 +303,9 @@
     const passwordEye =
         document.getElementById("passwordEye");
 
+    const eyeIcon =
+        document.getElementById("eyeIcon");
+
 
     passwordEye.addEventListener(
         "click",
@@ -252,7 +316,7 @@
                 // Show password
                 passwordInput.type = "text";
 
-                passwordEye.textContent = "🙈";
+                eyeIcon.classList.add("hidden");
 
                 passwordEye.setAttribute(
                     "aria-label",
@@ -269,7 +333,7 @@
                 // Hide password
                 passwordInput.type = "password";
 
-                passwordEye.textContent = "👁️";
+                eyeIcon.classList.remove("hidden");
 
                 passwordEye.setAttribute(
                     "aria-label",
@@ -316,10 +380,6 @@
                     document.getElementById("loginButton");
 
 
-                // ==========================================
-                // CHECK DETAILS
-                // ==========================================
-
                 if (!email || !password) {
 
                     alert(
@@ -331,10 +391,6 @@
                 }
 
 
-                // ==========================================
-                // CHANGE LOGIN BUTTON
-                // ==========================================
-
                 loginButton.disabled = true;
 
                 loginButton.textContent =
@@ -342,10 +398,6 @@
 
 
                 try {
-
-                    // ==========================================
-                    // FIREBASE LOGIN
-                    // ==========================================
 
                     const userCredential =
                         await signInWithEmailAndPassword(
@@ -358,10 +410,6 @@
                     const user =
                         userCredential.user;
 
-
-                    // ==========================================
-                    // SAVE CUSTOMER SESSION
-                    // ==========================================
 
                     const loggedInCustomer = {
 
@@ -391,19 +439,11 @@
                     );
 
 
-                    // ==========================================
-                    // SUCCESS
-                    // ==========================================
-
                     alert(
                         "❤️ Login successful!\n\n" +
                         "Welcome to Gift Zone!"
                     );
 
-
-                    // ==========================================
-                    // GO TO HOME
-                    // ==========================================
 
                     window.location.href =
                         "index.html";
@@ -416,10 +456,6 @@
                         error
                     );
 
-
-                    // ==========================================
-                    // ERROR MESSAGES
-                    // ==========================================
 
                     if (
                         error.code ===
@@ -488,10 +524,6 @@
                     }
 
 
-                    // ==========================================
-                    // RESTORE LOGIN BUTTON
-                    // ==========================================
-
                     loginButton.disabled = false;
 
                     loginButton.textContent =
@@ -548,10 +580,8 @@
 
 
                     alert(
-
                         "📧 Password reset email sent!\n\n" +
                         "Please check your email and follow the instructions."
-
                     );
 
 
