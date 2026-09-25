@@ -14,7 +14,7 @@
 <style>
 
 /* =========================================
-   GIFT SEARCHa
+   GIFT SEARCH
 ========================================= */
 
 .gift-search-box {
@@ -425,10 +425,6 @@
     }
 
 
-    /* -------------------------------
-       MOBILE HEADER
-    -------------------------------- */
-
     .main-header {
         min-height: 64px;
         padding: 10px 15px;
@@ -442,21 +438,15 @@
     }
 
 
-    /* Hide desktop navigation */
-
     .main-nav {
         display: none;
     }
 
 
-    /* Hide old non-clickable mobile cart */
-
     .mobile-cart {
         display: none !important;
     }
 
-
-    /* Search stays below header */
 
     .header-search {
         position: absolute;
@@ -484,10 +474,6 @@
         right: 15px;
     }
 
-
-    /* -------------------------------
-       MOBILE CATEGORY ROW
-    -------------------------------- */
 
     .mobile-category-strip {
         display: flex;
@@ -531,35 +517,20 @@
     }
 
 
-    /* -------------------------------
-       MOBILE ORDER OF CONTENT
-    -------------------------------- */
-
     .banner-section {
         margin-top: 0;
     }
 
-
-    /* Features are hidden on mobile
-       so the flow becomes:
-       Search → Categories → Advertisement → Gifts */
 
     .features {
         display: none;
     }
 
 
-    /* Full desktop category grid is
-       replaced by the mobile category row */
-
     .categories {
         display: none;
     }
 
-
-    /* -------------------------------
-       MOBILE GIFTS
-    -------------------------------- */
 
     .popular-gifts {
         width: 94%;
@@ -588,20 +559,12 @@
     }
 
 
-    /* -------------------------------
-       MOBILE SURPRISE SECTION
-    -------------------------------- */
-
     .surprise {
         width: 94%;
         margin: 45px auto;
         padding: 40px 20px;
     }
 
-
-    /* -------------------------------
-       MOBILE BOTTOM NAV
-    -------------------------------- */
 
     .mobile-bottom-nav {
         position: fixed;
@@ -752,12 +715,12 @@
 
 <body>
 
+
 <!-- =========================================
      HEADER
 ========================================= -->
 
 <header class="main-header">
-
 
 <div class="logo">
     <span>GIFT ZONE</span>
@@ -794,8 +757,6 @@
 </div>
 
 
-<!-- DESKTOP NAVIGATION -->
-
 <nav class="main-nav">
 
     <a href="index.html" class="active">Home</a>
@@ -819,18 +780,15 @@
 </nav>
 
 
-<!-- Old mobile cart is hidden on mobile -->
-
 <div class="mobile-cart">
     Cart
 </div>
 
-
 </header>
+
 
 <!-- =========================================
      MOBILE CATEGORY ROW
-     Uses ONLY existing Gift Zone categories
 ========================================= -->
 
 <div class="mobile-category-strip">
@@ -843,12 +801,14 @@
     Birthday
 </button>
 
+
 <button
     type="button"
     class="mobile-category-button"
     onclick="showCategory('Anniversary')">
     Anniversary
 </button>
+
 
 <button
     type="button"
@@ -857,12 +817,14 @@
     Celebrations
 </button>
 
+
 <button
     type="button"
     class="mobile-category-button"
     onclick="showCategory('Raksha Bandhan')">
     Raksha Bandhan
 </button>
+
 
 <button
     type="button"
@@ -871,12 +833,24 @@
     Mother's Day
 </button>
 
+
 <button
     type="button"
     class="mobile-category-button"
     onclick="showCategory('Fathers Day')">
     Father's Day
 </button>
+
+
+<!-- NEW TEACHER'S DAY -->
+
+<button
+    type="button"
+    class="mobile-category-button"
+    onclick="showCategory('Teachers Day')">
+    Teacher's Day
+</button>
+
 
 <button
     type="button"
@@ -885,12 +859,14 @@
     Love
 </button>
 
+
 <button
     type="button"
     class="mobile-category-button"
     onclick="showCategory('Flowers')">
     Flowers
 </button>
+
 
 <button
     type="button"
@@ -899,12 +875,14 @@
     Cakes
 </button>
 
+
 <button
     type="button"
     class="mobile-category-button"
     onclick="showCategory('Combos')">
     Gift Combos
 </button>
+
 
 <button
     type="button"
@@ -915,6 +893,7 @@
 
 
 </div>
+
 
 <!-- =========================================
      BANNER
@@ -1050,30 +1029,28 @@
 
 </div>
 
+
 <button
  type="button"
  class="banner-arrow banner-prev"
  onclick="changeBanner(-1)">
 
-
 ❮
 
-
 </button>
+
 
 <button
  type="button"
  class="banner-arrow banner-next"
  onclick="changeBanner(1)">
 
-
 ❯
-
 
 </button>
 
-<div class="banner-dots">
 
+<div class="banner-dots">
 
 <span
     class="banner-dot active-dot"
@@ -1090,10 +1067,10 @@
     onclick="showBanner(2)">
 </span>
 
-
 </div>
 
 </section>
+
 
 <!-- =========================================
      FEATURES
@@ -1160,6 +1137,7 @@
 
 </section>
 
+
 <!-- =========================================
      DESKTOP CATEGORIES
 ========================================= -->
@@ -1178,186 +1156,206 @@
 <div class="category-container">
 
 
-    <div class="category" onclick="showCategory('Birthday')">
+<div class="category" onclick="showCategory('Birthday')">
 
-        <div class="professional-category-icon">
+    <div class="professional-category-icon">
 
-            <img
-                src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
-                alt="Birthday gifts"
-                loading="lazy">
-
-        </div>
-
-        <h3>Birthday</h3>
+        <img
+            src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
+            alt="Birthday gifts"
+            loading="lazy">
 
     </div>
 
-
-    <div class="category" onclick="showCategory('Anniversary')">
-
-        <div class="professional-category-icon">
-
-            <img
-                src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
-                alt="Anniversary gifts"
-                loading="lazy">
-
-        </div>
-
-        <h3>Anniversary</h3>
-
-    </div>
-
-
-    <div class="category" onclick="showCategory('Celebrations')">
-
-        <div class="professional-category-icon">
-
-            <img
-                src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
-                alt="Celebration gifts"
-                loading="lazy">
-
-        </div>
-
-        <h3>Celebrations</h3>
-
-    </div>
-
-
-    <div class="category" onclick="showCategory('Raksha Bandhan')">
-
-        <div class="professional-category-icon">
-
-            <img
-                src="https://mesmerizeindia.com/cdn/shop/articles/Rakhi_2026_Blog_Image_85afbaba-1f6d-4d0d-a0e4-96a7581bb205.jpg?v=1784184317&width=2048"
-                alt="Raksha Bandhan rakhi gifts"
-                loading="lazy">
-
-        </div>
-
-        <h3>Raksha Bandhan</h3>
-
-    </div>
-
-
-    <div class="category" onclick="showCategory('Mothers Day')">
-
-        <div class="professional-category-icon">
-
-            <img
-                src="https://imgcdn.floweraura.com/captivating-hamper-for-mom-9817800co-B_0.jpg"
-                alt="Mother's Day flower gifts"
-                loading="lazy">
-
-        </div>
-
-        <h3>Mother's Day</h3>
-
-    </div>
-
-
-    <div class="category" onclick="showCategory('Fathers Day')">
-
-        <div class="professional-category-icon">
-
-            <img
-                src="https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282"
-                alt="Father's Day gifts"
-                loading="lazy">
-
-        </div>
-
-        <h3>Father's Day</h3>
-
-    </div>
-
-
-    <div class="category" onclick="showCategory('Love')">
-
-        <div class="professional-category-icon">
-
-            <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10"
-                alt="Love gifts"
-                loading="lazy">
-
-        </div>
-
-        <h3>Love</h3>
-
-    </div>
-
-
-    <div class="category" onclick="showCategory('Flowers')">
-
-        <div class="professional-category-icon">
-
-            <img
-                src="https://halfpe.com/cdn/shop/files/bGgFnGnreh.jpg?v=1732943085"
-                alt="Flower bouquet gifts"
-                loading="lazy">
-
-        </div>
-
-        <h3>Flowers</h3>
-
-    </div>
-
-
-    <div class="category" onclick="showCategory('Cakes')">
-
-        <div class="professional-category-icon">
-
-            <img
-                src="https://creativflowers.com/cdn/shop/products/gdsthumbnails_505x505px_ver_2_bs1allaboutcake.jpg?v=1680459275&width=1445"
-                alt="Cake gifts"
-                loading="lazy">
-
-        </div>
-
-        <h3>Cakes</h3>
-
-    </div>
-
-
-    <div class="category" onclick="showCategory('Combos')">
-
-        <div class="professional-category-icon">
-
-            <img
-                src="https://www.classicflora.com/uploads/product-pics/img3/org/1770721419_mixed-rose-basket-with-gypsophila-teddy-chocolates-choco-chips-cake.jpg"
-                alt="Gift combo"
-                loading="lazy">
-
-        </div>
-
-        <h3>Gift Combos</h3>
-
-    </div>
-
-
-    <div class="category" onclick="showAllGifts()">
-
-        <div class="professional-category-icon">
-
-            <img
-                src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
-                alt="All gifts"
-                loading="lazy">
-
-        </div>
-
-        <h3>All Gifts</h3>
-
-    </div>
-
+    <h3>Birthday</h3>
 
 </div>
 
 
+<div class="category" onclick="showCategory('Anniversary')">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
+            alt="Anniversary gifts"
+            loading="lazy">
+
+    </div>
+
+    <h3>Anniversary</h3>
+
+</div>
+
+
+<div class="category" onclick="showCategory('Celebrations')">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
+            alt="Celebration gifts"
+            loading="lazy">
+
+    </div>
+
+    <h3>Celebrations</h3>
+
+</div>
+
+
+<div class="category" onclick="showCategory('Raksha Bandhan')">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://mesmerizeindia.com/cdn/shop/articles/Rakhi_2026_Blog_Image_85afbaba-1f6d-4d0d-a0e4-96a7581bb205.jpg?v=1784184317&width=2048"
+            alt="Raksha Bandhan rakhi gifts"
+            loading="lazy">
+
+    </div>
+
+    <h3>Raksha Bandhan</h3>
+
+</div>
+
+
+<div class="category" onclick="showCategory('Mothers Day')">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://imgcdn.floweraura.com/captivating-hamper-for-mom-9817800co-B_0.jpg"
+            alt="Mother's Day flower gifts"
+            loading="lazy">
+
+    </div>
+
+    <h3>Mother's Day</h3>
+
+</div>
+
+
+<div class="category" onclick="showCategory('Fathers Day')">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282"
+            alt="Father's Day gifts"
+            loading="lazy">
+
+    </div>
+
+    <h3>Father's Day</h3>
+
+</div>
+
+
+<!-- =========================================
+     NEW TEACHER'S DAY CATEGORY
+========================================= -->
+
+<div class="category" onclick="showCategory('Teachers Day')">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://www.fnp.com/images/pr/x/v20230818165234/best-teacher-ever-hamper_1.jpg"
+            alt="Teacher's Day gifts"
+            loading="lazy">
+
+    </div>
+
+    <h3>Teacher's Day</h3>
+
+</div>
+
+
+<div class="category" onclick="showCategory('Love')">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10"
+            alt="Love gifts"
+            loading="lazy">
+
+    </div>
+
+    <h3>Love</h3>
+
+</div>
+
+
+<div class="category" onclick="showCategory('Flowers')">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://halfpe.com/cdn/shop/files/bGgFnGnreh.jpg?v=1732943085"
+            alt="Flower bouquet gifts"
+            loading="lazy">
+
+    </div>
+
+    <h3>Flowers</h3>
+
+</div>
+
+
+<div class="category" onclick="showCategory('Cakes')">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://creativflowers.com/cdn/shop/products/gdsthumbnails_505x505px_ver_2_bs1allaboutcake.jpg?v=1680459275&width=1445"
+            alt="Cake gifts"
+            loading="lazy">
+
+    </div>
+
+    <h3>Cakes</h3>
+
+</div>
+
+
+<div class="category" onclick="showCategory('Combos')">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://www.classicflora.com/uploads/product-pics/img3/org/1770721419_mixed-rose-basket-with-gypsophila-teddy-chocolates-choco-chips-cake.jpg"
+            alt="Gift combo"
+            loading="lazy">
+
+    </div>
+
+    <h3>Gift Combos</h3>
+
+</div>
+
+
+<div class="category" onclick="showAllGifts()">
+
+    <div class="professional-category-icon">
+
+        <img
+            src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
+            alt="All gifts"
+            loading="lazy">
+
+    </div>
+
+    <h3>All Gifts</h3>
+
+</div>
+
+
+</div>
+
 </section>
+
 
 <!-- =========================================
      BEST SELLERS
@@ -1383,259 +1381,332 @@
 <div class="gift-container">
 
 
-    <div class="gift-card" data-category="Birthday">
+<!-- BIRTHDAY -->
 
-        <div class="professional-gift-image">
+<div class="gift-card" data-category="Birthday">
 
-            <img
-                src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
-                alt="Birthday Cake Chocolate Hamper"
-                loading="lazy">
+    <div class="professional-gift-image">
 
-        </div>
-
-        <h3>Birthday Cake & Chocolate Hamper</h3>
-
-        <p class="price">₹999</p>
-
-        <p class="stock-left">Only 7 left</p>
-
-        <button type="button">ADD TO CART</button>
+        <img
+            src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
+            alt="Birthday Cake Chocolate Hamper"
+            loading="lazy">
 
     </div>
 
+    <h3>Birthday Cake & Chocolate Hamper</h3>
 
-    <div class="gift-card" data-category="Anniversary">
+    <p class="price">₹999</p>
 
-        <div class="professional-gift-image">
+    <p class="stock-left">Only 7 left</p>
 
-            <img
-                src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
-                alt="Anniversary Rose Chocolate Hamper"
-                loading="lazy">
-
-        </div>
-
-        <h3>Anniversary Rose & Chocolate Hamper</h3>
-
-        <p class="price">₹1,499</p>
-
-        <p class="stock-left">Only 6 left</p>
-
-        <button type="button">ADD TO CART</button>
-
-    </div>
-
-
-    <div class="gift-card" data-category="Celebrations">
-
-        <div class="professional-gift-image">
-
-            <img
-                src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
-                alt="Celebration Balloon Gift"
-                loading="lazy">
-
-        </div>
-
-        <h3>Celebration Balloon & Cake Gift</h3>
-
-        <p class="price">₹1,199</p>
-
-        <p class="stock-left">Only 8 left</p>
-
-        <button type="button">ADD TO CART</button>
-
-    </div>
-
-
-    <div class="gift-card" data-category="Raksha Bandhan">
-
-        <div class="professional-gift-image">
-
-            <img
-                src="https://mesmerizeindia.com/cdn/shop/articles/Rakhi_2026_Blog_Image_85afbaba-1f6d-4d0d-a0e4-96a7581bb205.jpg?v=1784184317&width=2048"
-                alt="Raksha Bandhan Rakhi Gift"
-                loading="lazy">
-
-        </div>
-
-        <h3>Rakhi Chocolate Celebration Box</h3>
-
-        <p class="price">₹899</p>
-
-        <p class="stock-left">Only 9 left</p>
-
-        <button type="button">ADD TO CART</button>
-
-    </div>
-
-
-    <div class="gift-card" data-category="Mothers Day">
-
-        <div class="professional-gift-image">
-
-            <img
-                src="https://imgcdn.floweraura.com/captivating-hamper-for-mom-9817800co-B_0.jpg"
-                alt="Mother's Day Flower Gift"
-                loading="lazy">
-
-        </div>
-
-        <h3>Mother's Day Flower & Chocolate Hamper</h3>
-
-        <p class="price">₹1,399</p>
-
-        <p class="stock-left">Only 6 left</p>
-
-        <button type="button">ADD TO CART</button>
-
-    </div>
-
-
-    <div class="gift-card" data-category="Fathers Day">
-
-        <div class="professional-gift-image">
-
-            <img
-                src="https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282"
-                alt="Father's Day Wallet Gift"
-                loading="lazy">
-
-        </div>
-
-        <h3>Father's Day Wallet & Watch Set</h3>
-
-        <p class="price">₹1,499</p>
-
-        <p class="stock-left">Only 7 left</p>
-
-        <button type="button">ADD TO CART</button>
-
-    </div>
-
-
-    <div class="gift-card" data-category="Love">
-
-        <div class="professional-gift-image">
-
-            <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10"
-                alt="Pink Roses Love Gift"
-                loading="lazy">
-
-        </div>
-
-        <h3>Pink Roses & Chocolate Love Hamper</h3>
-
-        <p class="price">₹1,199</p>
-
-        <p class="stock-left">Only 8 left</p>
-
-        <button type="button">ADD TO CART</button>
-
-    </div>
-
-
-    <div class="gift-card" data-category="Flowers">
-
-        <div class="professional-gift-image">
-
-            <img
-                src="https://halfpe.com/cdn/shop/files/bGgFnGnreh.jpg?v=1732943085"
-                alt="Red Rose Flower Basket"
-                loading="lazy">
-
-        </div>
-
-        <h3>Premium Red Rose Basket</h3>
-
-        <p class="price">₹999</p>
-
-        <p class="stock-left">Only 10 left</p>
-
-        <button type="button">ADD TO CART</button>
-
-    </div>
-
-
-    <div class="gift-card" data-category="Cakes">
-
-        <div class="professional-gift-image">
-
-            <img
-                src="https://creativflowers.com/cdn/shop/products/gdsthumbnails_505x505px_ver_2_bs1allaboutcake.jpg?v=1680459275&width=1445"
-                alt="Premium Chocolate Cake"
-                loading="lazy">
-
-        </div>
-
-        <h3>Premium Chocolate Celebration Cake</h3>
-
-        <p class="price">₹699</p>
-
-        <p class="stock-left">Only 8 left</p>
-
-        <button type="button">ADD TO CART</button>
-
-    </div>
-
-
-    <div class="gift-card" data-category="Combos">
-
-        <div class="professional-gift-image">
-
-            <img
-                src="https://www.classicflora.com/uploads/product-pics/img3/org/1770721419_mixed-rose-basket-with-gypsophila-teddy-chocolates-choco-chips-cake.jpg"
-                alt="Flowers Cake Chocolate Teddy Gift Combo"
-                loading="lazy">
-
-        </div>
-
-        <h3>Flowers, Cake, Chocolate & Teddy Combo</h3>
-
-        <p class="price">₹1,699</p>
-
-        <p class="stock-left">Only 4 left</p>
-
-        <button type="button">ADD TO CART</button>
-
-    </div>
-
-
-    <div class="gift-card" data-category="Personalized">
-
-        <div class="professional-gift-image">
-
-            <img
-                src="https://product.hstatic.net/200000350831/product/12_11fb8d0386104597bfc98c23ecf51be8_grande.png"
-                alt="Personalized Premium Gift Set"
-                loading="lazy">
-
-        </div>
-
-        <h3>Personalized Premium Gift Set</h3>
-
-        <p class="price">₹1,499</p>
-
-        <p class="stock-left">Only 6 left</p>
-
-        <button type="button">ADD TO CART</button>
-
-    </div>
-
+    <button type="button">ADD TO CART</button>
 
 </div>
 
 
+<!-- ANNIVERSARY -->
+
+<div class="gift-card" data-category="Anniversary">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
+            alt="Anniversary Rose Chocolate Hamper"
+            loading="lazy">
+
+    </div>
+
+    <h3>Anniversary Rose & Chocolate Hamper</h3>
+
+    <p class="price">₹1,499</p>
+
+    <p class="stock-left">Only 6 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- CELEBRATIONS -->
+
+<div class="gift-card" data-category="Celebrations">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
+            alt="Celebration Balloon Gift"
+            loading="lazy">
+
+    </div>
+
+    <h3>Celebration Balloon & Cake Gift</h3>
+
+    <p class="price">₹1,199</p>
+
+    <p class="stock-left">Only 8 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- RAKSHA BANDHAN -->
+
+<div class="gift-card" data-category="Raksha Bandhan">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://mesmerizeindia.com/cdn/shop/articles/Rakhi_2026_Blog_Image_85afbaba-1f6d-4d0d-a0e4-96a7581bb205.jpg?v=1784184317&width=2048"
+            alt="Raksha Bandhan Rakhi Gift"
+            loading="lazy">
+
+    </div>
+
+    <h3>Rakhi Chocolate Celebration Box</h3>
+
+    <p class="price">₹899</p>
+
+    <p class="stock-left">Only 9 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- MOTHER'S DAY -->
+
+<div class="gift-card" data-category="Mothers Day">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://imgcdn.floweraura.com/captivating-hamper-for-mom-9817800co-B_0.jpg"
+            alt="Mother's Day Flower Gift"
+            loading="lazy">
+
+    </div>
+
+    <h3>Mother's Day Flower & Chocolate Hamper</h3>
+
+    <p class="price">₹1,399</p>
+
+    <p class="stock-left">Only 6 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- FATHER'S DAY -->
+
+<div class="gift-card" data-category="Fathers Day">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282"
+            alt="Father's Day Wallet Gift"
+            loading="lazy">
+
+    </div>
+
+    <h3>Father's Day Wallet & Watch Set</h3>
+
+    <p class="price">₹1,499</p>
+
+    <p class="stock-left">Only 7 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- =========================================
+     NEW TEACHER'S DAY GIFT 1
+========================================= -->
+
+<div class="gift-card" data-category="Teachers Day">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://www.fnp.com/images/pr/x/v20230818165234/best-teacher-ever-hamper_1.jpg"
+            alt="Best Teacher Ever Hamper"
+            loading="lazy">
+
+    </div>
+
+    <h3>Best Teacher Ever Gift Hamper</h3>
+
+    <p class="price">₹1,499</p>
+
+    <p class="stock-left">Only 7 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- =========================================
+     NEW TEACHER'S DAY GIFT 2
+========================================= -->
+
+<div class="gift-card" data-category="Teachers Day">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://static-assets-prod.fnp.com/images/pr/l/v20250822183310/teachers-day-tea-chocolate-n-makhana-gift-box_1.jpg"
+            alt="Teacher's Day Tea Chocolate Gift Box"
+            loading="lazy">
+
+    </div>
+
+    <h3>Teacher's Day Tea, Chocolate & Gift Box</h3>
+
+    <p class="price">₹1,299</p>
+
+    <p class="stock-left">Only 8 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- LOVE -->
+
+<div class="gift-card" data-category="Love">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10"
+            alt="Pink Roses Love Gift"
+            loading="lazy">
+
+    </div>
+
+    <h3>Pink Roses & Chocolate Love Hamper</h3>
+
+    <p class="price">₹1,199</p>
+
+    <p class="stock-left">Only 8 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- FLOWERS -->
+
+<div class="gift-card" data-category="Flowers">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://halfpe.com/cdn/shop/files/bGgFnGnreh.jpg?v=1732943085"
+            alt="Red Rose Flower Basket"
+            loading="lazy">
+
+    </div>
+
+    <h3>Premium Red Rose Basket</h3>
+
+    <p class="price">₹999</p>
+
+    <p class="stock-left">Only 10 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- CAKES -->
+
+<div class="gift-card" data-category="Cakes">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://creativflowers.com/cdn/shop/products/gdsthumbnails_505x505px_ver_2_bs1allaboutcake.jpg?v=1680459275&width=1445"
+            alt="Premium Chocolate Cake"
+            loading="lazy">
+
+    </div>
+
+    <h3>Premium Chocolate Celebration Cake</h3>
+
+    <p class="price">₹699</p>
+
+    <p class="stock-left">Only 8 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- COMBOS -->
+
+<div class="gift-card" data-category="Combos">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://www.classicflora.com/uploads/product-pics/img3/org/1770721419_mixed-rose-basket-with-gypsophila-teddy-chocolates-choco-chips-cake.jpg"
+            alt="Flowers Cake Chocolate Teddy Gift Combo"
+            loading="lazy">
+
+    </div>
+
+    <h3>Flowers, Cake, Chocolate & Teddy Combo</h3>
+
+    <p class="price">₹1,699</p>
+
+    <p class="stock-left">Only 4 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+<!-- PERSONALIZED -->
+
+<div class="gift-card" data-category="Personalized">
+
+    <div class="professional-gift-image">
+
+        <img
+            src="https://product.hstatic.net/200000350831/product/12_11fb8d0386104597bfc98c23ecf51be8_grande.png"
+            alt="Personalized Premium Gift Set"
+            loading="lazy">
+
+    </div>
+
+    <h3>Personalized Premium Gift Set</h3>
+
+    <p class="price">₹1,499</p>
+
+    <p class="stock-left">Only 6 left</p>
+
+    <button type="button">ADD TO CART</button>
+
+</div>
+
+
+</div>
+
 </section>
+
 
 <!-- =========================================
      SURPRISE DELIVERY
 ========================================= -->
 
 <section class="surprise">
-
 
 <h2>
     Want To Make It Extra Special?
@@ -1655,8 +1726,8 @@
 
 </button>
 
-
 </section>
+
 
 <!-- =========================================
      FOOTER
@@ -1664,15 +1735,14 @@
 
 <footer>
 
-
 <h2>GIFT ZONE</h2>
 
 <p>Gifts that create memories.</p>
 
 <p>© 2026 Gift Zone. All Rights Reserved.</p>
 
-
 </footer>
+
 
 <!-- =========================================
      MOBILE BOTTOM NAVIGATION
@@ -1729,6 +1799,7 @@
 
 </nav>
 
+
 <!-- =========================================
      LOADING SCREEN
 ========================================= -->
@@ -1751,8 +1822,8 @@
 
 <div class="loading-spinner"></div>
 
-
 </div>
+
 
 <!-- =========================================
      POPUP
@@ -1805,7 +1876,9 @@
 
 </div>
 
+
 <script src="script.js"></script>
+
 
 <script>
 
@@ -1832,6 +1905,11 @@ const giftZoneReliableImages = {
 
     "Fathers Day":
         "https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282",
+
+    /* NEW */
+
+    "Teachers Day":
+        "https://www.fnp.com/images/pr/x/v20230818165234/best-teacher-ever-hamper_1.jpg",
 
     "Love":
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10",
@@ -2069,6 +2147,8 @@ const searchExamples = [
     "Search for Mother's Day gifts...",
 
     "Search for Father's Day gifts...",
+
+    "Search for Teacher's Day gifts...",
 
     "Search for Cakes...",
 
