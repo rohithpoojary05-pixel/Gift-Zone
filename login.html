@@ -14,7 +14,9 @@
 
 <style>
 
-    /* Password show / hide only */
+    /* ==========================================
+       SMALL PASSWORD EYE
+    ========================================== */
 
     .password-wrapper {
         position: relative;
@@ -24,20 +26,31 @@
     .password-wrapper input {
         width: 100%;
         box-sizing: border-box;
-        padding-right: 75px;
+        padding-right: 45px;
     }
 
-    .show-password-button {
+    .password-eye {
         position: absolute;
-        right: 8px;
+        right: 12px;
         top: 50%;
         transform: translateY(-50%);
         border: none;
         background: transparent;
+        padding: 3px;
+        margin: 0;
+        width: auto;
+        height: auto;
+        min-width: 0;
+        min-height: 0;
+        font-size: 18px;
+        line-height: 1;
         cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        padding: 8px;
+        box-shadow: none;
+    }
+
+    .password-eye:hover {
+        background: transparent;
+        box-shadow: none;
     }
 
 </style>
@@ -97,10 +110,12 @@
 
             <button
                 type="button"
-                class="show-password-button"
-                id="showPasswordButton"
+                class="password-eye"
+                id="passwordEye"
+                aria-label="Show password"
+                title="Show password"
             >
-                👁️ Show
+                👁️
             </button>
 
         </div>
@@ -189,11 +204,11 @@
     const passwordInput =
         document.getElementById("loginPassword");
 
-    const showPasswordButton =
-        document.getElementById("showPasswordButton");
+    const passwordEye =
+        document.getElementById("passwordEye");
 
 
-    showPasswordButton.addEventListener(
+    passwordEye.addEventListener(
         "click",
         function() {
 
@@ -201,15 +216,33 @@
 
                 passwordInput.type = "text";
 
-                showPasswordButton.textContent =
-                    "🙈 Hide";
+                passwordEye.textContent = "🙈";
+
+                passwordEye.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
+
+                passwordEye.setAttribute(
+                    "title",
+                    "Hide password"
+                );
 
             } else {
 
                 passwordInput.type = "password";
 
-                showPasswordButton.textContent =
-                    "👁️ Show";
+                passwordEye.textContent = "👁️";
+
+                passwordEye.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
+
+                passwordEye.setAttribute(
+                    "title",
+                    "Show password"
+                );
 
             }
 
