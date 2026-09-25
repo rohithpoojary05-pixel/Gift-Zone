@@ -1,379 +1,378 @@
-
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Gift Zone - Distributor Orders</title>
+<title>Gift Zone - Distributor Orders</title>
 
-    <style>
+<style>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #fff5f8;
-            color: #222;
-            padding-bottom: 40px;
-        }
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#fff5f8;
+    color:#222;
+    padding-bottom:40px;
+}
 
-        header {
-            background: #e91e63;
-            color: white;
-            padding: 18px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-        }
+header{
+    background:#e91e63;
+    color:white;
+    padding:18px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
 
-        .logo {
-            font-size: 25px;
-            font-weight: bold;
-        }
+.logo{
+    font-size:25px;
+    font-weight:bold;
+}
 
-        .admin-title {
-            font-size: 15px;
-            background: white;
-            color: #e91e63;
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
+.admin-title{
+    font-size:15px;
+    background:white;
+    color:#e91e63;
+    padding:8px 14px;
+    border-radius:20px;
+    font-weight:bold;
+}
 
-        .container {
-            width: 95%;
-            max-width: 1200px;
-            margin: 30px auto;
-        }
+.container{
+    width:95%;
+    max-width:1200px;
+    margin:30px auto;
+}
 
-        .page-title {
-            text-align: center;
-            margin-bottom: 8px;
-            color: #e91e63;
-            font-size: 30px;
-        }
+.page-title{
+    text-align:center;
+    margin-bottom:8px;
+    color:#e91e63;
+    font-size:30px;
+}
 
-        .page-subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 25px;
-        }
+.page-subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+}
 
-        .top-bar {
-            background: white;
-            padding: 18px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-            margin-bottom: 25px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+.top-bar{
+    background:white;
+    padding:18px;
+    border-radius:12px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    margin-bottom:25px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
 
-        .search-box {
-            flex: 1;
-            min-width: 220px;
-        }
+.search-box{
+    flex:1;
+    min-width:220px;
+}
 
-        .search-box input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-        }
+.search-box input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+}
 
-        .search-box input:focus {
-            border-color: #e91e63;
-        }
+.search-box input:focus{
+    border-color:#e91e63;
+}
 
-        .refresh-btn {
-            background: #e91e63;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+.refresh-btn{
+    background:#e91e63;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
 
-        .refresh-btn:hover {
-            background: #c2185b;
-        }
+.refresh-btn:hover{
+    background:#c2185b;
+}
 
-        .refresh-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+.refresh-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
 
-        .order-count {
-            background: white;
-            padding: 15px 18px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-            font-weight: bold;
-            color: #555;
-        }
+.order-count{
+    background:white;
+    padding:15px 18px;
+    border-radius:10px;
+    margin-bottom:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.06);
+    font-weight:bold;
+    color:#555;
+}
 
-        .order-count span {
-            color: #e91e63;
-        }
+.order-count span{
+    color:#e91e63;
+}
 
-        .order-card {
-            background: white;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            padding: 22px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.09);
-            border-left: 5px solid #e91e63;
-        }
+.loading-message{
+    background:white;
+    padding:40px 20px;
+    border-radius:15px;
+    text-align:center;
+    color:#666;
+}
 
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-            margin-bottom: 18px;
-        }
+.error-message{
+    background:white;
+    color:#c62828;
+    border:1px solid #ef9a9a;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    line-height:1.7;
+}
 
-        .order-id {
-            font-size: 18px;
-            font-weight: bold;
-            color: #e91e63;
-        }
+.no-orders{
+    background:white;
+    text-align:center;
+    padding:50px 20px;
+    border-radius:15px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
 
-        .order-date {
-            color: #777;
-            font-size: 14px;
-            margin-top: 5px;
-        }
+.no-orders-icon{
+    font-size:55px;
+    margin-bottom:15px;
+}
 
-        .section-title {
-            color: #e91e63;
-            font-size: 17px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+.no-orders h2{
+    color:#e91e63;
+    margin-bottom:8px;
+}
 
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
-        }
+.no-orders p{
+    color:#777;
+}
 
-        .detail-box {
-            background: #fff8fa;
-            padding: 13px;
-            border-radius: 8px;
-            border: 1px solid #f5d8e2;
-        }
+.order-card{
+    background:white;
+    border-radius:15px;
+    margin-bottom:25px;
+    padding:22px;
+    box-shadow:0 4px 15px rgba(0,0,0,.09);
+    border-left:5px solid #e91e63;
+}
 
-        .detail-label {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 4px;
-            font-weight: bold;
-        }
+.order-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+    border-bottom:1px solid #eee;
+    padding-bottom:15px;
+    margin-bottom:18px;
+}
 
-        .detail-value {
-            font-size: 15px;
-            color: #222;
-            word-break: break-word;
-        }
+.order-id{
+    font-size:18px;
+    font-weight:bold;
+    color:#e91e63;
+}
 
-        .gift-list {
-            background: #fff8fa;
-            border: 1px solid #f5d8e2;
-            padding: 14px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+.order-date{
+    color:#777;
+    font-size:14px;
+    margin-top:5px;
+}
 
-        .gift-item {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
+.section-title{
+    color:#e91e63;
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
 
-        .gift-item:last-child {
-            border-bottom: none;
-        }
+.details-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:12px;
+    margin-bottom:20px;
+}
 
-        .message-box {
-            background: #fff0f5;
-            border-radius: 8px;
-            padding: 14px;
-            margin-bottom: 20px;
-            word-break: break-word;
-        }
+.detail-box{
+    background:#fff8fa;
+    padding:13px;
+    border-radius:8px;
+    border:1px solid #f5d8e2;
+}
 
-        .message-box strong {
-            color: #e91e63;
-        }
+.detail-label{
+    font-size:12px;
+    color:#888;
+    margin-bottom:4px;
+    font-weight:bold;
+}
 
-        .total-box {
-            background: #f8f8f8;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+.detail-value{
+    font-size:15px;
+    color:#222;
+    word-break:break-word;
+}
 
-        .total {
-            font-size: 22px;
-            font-weight: bold;
-            color: #e91e63;
-        }
+.gift-list{
+    background:#fff8fa;
+    border:1px solid #f5d8e2;
+    padding:14px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
 
-        .status-area {
-            background: #fff4f7;
-            border: 1px solid #f2c8d7;
-            padding: 18px;
-            border-radius: 10px;
-            margin-top: 10px;
-        }
+.gift-item{
+    padding:8px 0;
+    border-bottom:1px solid #eee;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
 
-        .status-label {
-            font-weight: bold;
-            color: #555;
-            margin-bottom: 8px;
-        }
+.gift-item:last-child{
+    border-bottom:none;
+}
 
-        .status-controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+.message-box{
+    background:#fff0f5;
+    border-radius:8px;
+    padding:14px;
+    margin-bottom:20px;
+    word-break:break-word;
+}
 
-        .status-select {
-            flex: 1;
-            min-width: 240px;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: white;
-            font-size: 15px;
-            cursor: pointer;
-        }
+.message-box strong{
+    color:#e91e63;
+}
 
-        .update-btn {
-            background: #e91e63;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+.total-box{
+    background:#f8f8f8;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
 
-        .update-btn:hover {
-            background: #c2185b;
-        }
+.total{
+    font-size:22px;
+    font-weight:bold;
+    color:#e91e63;
+}
 
-        .update-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+.status-area{
+    background:#fff4f7;
+    border:1px solid #f2c8d7;
+    padding:18px;
+    border-radius:10px;
+    margin-top:10px;
+}
 
-        .status-message {
-            margin-top: 10px;
-            color: #388e3c;
-            font-weight: bold;
-            display: none;
-        }
+.status-label{
+    font-weight:bold;
+    color:#555;
+    margin-bottom:8px;
+}
 
-        .error-message {
-            background: #fff;
-            color: #c62828;
-            border: 1px solid #ef9a9a;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
+.status-controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
 
-        .loading-message {
-            background: white;
-            padding: 40px 20px;
-            border-radius: 15px;
-            text-align: center;
-            color: #666;
-        }
+.status-select{
+    flex:1;
+    min-width:240px;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    background:white;
+    font-size:15px;
+}
 
-        .no-orders {
-            background: white;
-            text-align: center;
-            padding: 50px 20px;
-            border-radius: 15px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-        }
+.update-btn{
+    background:#e91e63;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
 
-        .no-orders-icon {
-            font-size: 55px;
-            margin-bottom: 15px;
-        }
+.update-btn:hover{
+    background:#c2185b;
+}
 
-        .no-orders h2 {
-            color: #e91e63;
-            margin-bottom: 8px;
-        }
+.update-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
 
-        .no-orders p {
-            color: #777;
-        }
+.status-message{
+    margin-top:10px;
+    color:#388e3c;
+    font-weight:bold;
+    display:none;
+}
 
-        @media (max-width: 600px) {
+@media(max-width:600px){
 
-            header {
-                justify-content: center;
-                text-align: center;
-            }
+    header{
+        justify-content:center;
+        text-align:center;
+    }
 
-            .page-title {
-                font-size: 25px;
-            }
+    .page-title{
+        font-size:25px;
+    }
 
-            .container {
-                width: 93%;
-            }
+    .container{
+        width:93%;
+    }
 
-            .order-card {
-                padding: 16px;
-            }
+    .order-card{
+        padding:16px;
+    }
 
-            .gift-item {
-                flex-direction: column;
-            }
+    .gift-item{
+        flex-direction:column;
+    }
 
-            .status-controls {
-                flex-direction: column;
-            }
+    .status-controls{
+        flex-direction:column;
+    }
 
-            .status-select,
-            .update-btn {
-                width: 100%;
-            }
-        }
+    .status-select,
+    .update-btn{
+        width:100%;
+    }
 
-    </style>
+}
+
+</style>
 
 </head>
 
@@ -381,270 +380,309 @@
 
 <header>
 
-    <div class="logo">
-        🎁 Gift Zone
-    </div>
 
-    <div class="admin-title">
-        👨‍💼 Distributor / Admin
-    </div>
+<div class="logo">
+    🎁 Gift Zone
+</div>
+
+<div class="admin-title">
+    👨‍💼 Distributor / Admin
+</div>
+
 
 </header>
 
-
 <div class="container">
 
-    <h1 class="page-title">
-        📦 All Customer Orders
-    </h1>
 
-    <p class="page-subtitle">
-        Prepare gifts, manage deliveries and update customer order status
-    </p>
+<h1 class="page-title">
+    📦 All Customer Orders
+</h1>
+
+<p class="page-subtitle">
+    Prepare gifts, manage deliveries and update customer order status
+</p>
 
 
-    <div class="top-bar">
+<div class="top-bar">
 
-        <div class="search-box">
+    <div class="search-box">
 
-            <input
-                type="text"
-                id="searchOrders"
-                placeholder="🔎 Search Order ID, Customer or Recipient..."
-            >
-
-        </div>
-
-        <button
-            class="refresh-btn"
-            id="refreshBtn"
+        <input
+            type="text"
+            id="searchOrders"
+            placeholder="🔎 Search Order ID, Customer or Recipient..."
         >
-            🔄 Refresh Orders
-        </button>
 
     </div>
 
+    <button
+        class="refresh-btn"
+        id="refreshBtn"
+    >
+        🔄 Refresh Orders
+    </button>
 
-    <div class="order-count">
-
-        Total Orders:
-        <span id="orderCount">0</span>
-
-    </div>
+</div>
 
 
-    <div id="ordersContainer">
+<div class="order-count">
 
-        <div class="loading-message">
-            🔄 Loading orders...
-        </div>
+    Total Orders:
+    <span id="orderCount">0</span>
 
+</div>
+
+
+<div id="ordersContainer">
+
+    <div class="loading-message">
+        🔄 Connecting to Gift Zone Firebase...
     </div>
 
 </div>
 
 
+</div>
+
 <script type="module">
 
-    /* ==========================================
-       FIREBASE
-    ========================================== */
+/* =====================================================
+   FIREBASE IMPORT
+===================================================== */
 
-    import {
-        auth,
-        db
-    } from "./firebase.js";
+import { auth, db } from "./firebase.js";
 
-    import {
-        collection,
-        getDocs,
-        query,
-        orderBy,
-        updateDoc,
-        doc,
-        getDoc,
-        serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import {
+    collection,
+    getDocs,
+    doc,
+    getDoc,
+    updateDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-    import {
-        onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 
-    /* ==========================================
-       STATUS LIST
-    ========================================== */
+/* =====================================================
+   VARIABLES
+===================================================== */
 
-    const statusList = [
-
-        "Order Placed",
-        "Gift Being Packed",
-        "Gift Ready",
-        "Delivery Person Picked Up",
-        "Out for Delivery",
-        "Delivered"
-
-    ];
+let allOrders = [];
+let currentAdmin = null;
 
 
-    /* ==========================================
-       VARIABLES
-    ========================================== */
+/* =====================================================
+   STATUS LIST
+===================================================== */
 
-    let allOrders = [];
+const statusList = [
 
-    let isAdmin = false;
+    "Order Placed",
+    "Gift Being Packed",
+    "Gift Ready",
+    "Delivery Person Picked Up",
+    "Out for Delivery",
+    "Delivered"
 
-
-    /* ==========================================
-       ELEMENTS
-    ========================================== */
-
-    const ordersContainer =
-        document.getElementById("ordersContainer");
-
-    const orderCount =
-        document.getElementById("orderCount");
-
-    const searchInput =
-        document.getElementById("searchOrders");
-
-    const refreshBtn =
-        document.getElementById("refreshBtn");
+];
 
 
-    /* ==========================================
-       CUSTOMER ID
-       Same format used in profile/orders
-    ========================================== */
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-    function createGiftZoneCustomerId(uid) {
+const ordersContainer =
+    document.getElementById("ordersContainer");
 
-        if (!uid) {
-            return "GZ-CUST-000000";
-        }
+const orderCount =
+    document.getElementById("orderCount");
 
-        let hash = 0;
+const searchInput =
+    document.getElementById("searchOrders");
 
-        for (
-            let i = 0;
-            i < uid.length;
-            i++
-        ) {
+const refreshBtn =
+    document.getElementById("refreshBtn");
 
-            hash =
-                ((hash << 5) - hash) +
-                uid.charCodeAt(i);
 
-            hash |= 0;
+/* =====================================================
+   CUSTOMER ID
+===================================================== */
 
-        }
+function createCustomerId(uid){
 
-        const number =
-            Math.abs(hash)
-                .toString()
-                .padStart(6, "0")
-                .slice(-6);
+    if(!uid){
+        return "GZ-CUST-000000";
+    }
 
-        return "GZ-CUST-" + number;
+    let hash = 0;
+
+    for(let i = 0; i < uid.length; i++){
+
+        hash =
+            ((hash << 5) - hash) +
+            uid.charCodeAt(i);
+
+        hash |= 0;
 
     }
 
+    const number =
+        Math.abs(hash)
+        .toString()
+        .padStart(6,"0")
+        .slice(-6);
 
-    /* ==========================================
-       HTML SAFETY
-    ========================================== */
+    return "GZ-CUST-" + number;
 
-    function escapeHTML(value) {
+}
 
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
 
+/* =====================================================
+   SAFE HTML
+===================================================== */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function formatDate(value){
+
+    if(!value){
+        return "-";
     }
 
-
-    /* ==========================================
-       DATE FORMAT
-    ========================================== */
-
-    function formatDate(value) {
-
-        if (!value) {
-            return "-";
-        }
+    try{
 
         let date;
 
-        try {
+        if(
+            value &&
+            typeof value.toDate === "function"
+        ){
 
-            if (
-                typeof value === "object" &&
-                typeof value.toDate === "function"
-            ) {
+            date = value.toDate();
 
-                date = value.toDate();
+        }
+        else if(
+            value &&
+            typeof value.seconds === "number"
+        ){
 
-            } else if (
-                typeof value === "object" &&
-                typeof value.seconds === "number"
-            ) {
+            date =
+                new Date(
+                    value.seconds * 1000
+                );
 
-                date =
-                    new Date(
-                        value.seconds * 1000
-                    );
+        }
+        else{
 
-            } else {
-
-                date = new Date(value);
-
-            }
-
-        } catch (error) {
-
-            return "-";
+            date = new Date(value);
 
         }
 
-        if (
-            !date ||
-            isNaN(date.getTime())
-        ) {
-
+        if(isNaN(date.getTime())){
             return "-";
-
         }
 
         return date.toLocaleString(
             "en-IN",
             {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit"
+                day:"2-digit",
+                month:"short",
+                year:"numeric",
+                hour:"2-digit",
+                minute:"2-digit"
             }
         );
 
     }
+    catch(error){
+
+        return "-";
+
+    }
+
+}
 
 
-    /* ==========================================
-       CHECK ADMIN
-    ========================================== */
+/* =====================================================
+   SHOW ERROR
+===================================================== */
 
-    async function checkAdmin(user) {
+function showError(message){
 
-        if (!user) {
+    ordersContainer.innerHTML = `
 
-            isAdmin = false;
+        <div class="error-message">
+
+            ❌ <strong>Gift Zone Admin Error</strong>
+
+            <br><br>
+
+            ${message}
+
+        </div>
+
+    `;
+
+    orderCount.textContent = "0";
+
+}
+
+
+/* =====================================================
+   CHECK ADMIN
+===================================================== */
+
+async function verifyAdmin(user){
+
+    if(!user){
+
+        showError(
+            "You are not logged in.<br><br>" +
+            "Please log in with:<br>" +
+            "<strong>rohithpoojary05@gmail.com</strong>"
+        );
+
+        return false;
+
+    }
+
+
+    try{
+
+        const adminRef =
+            doc(
+                db,
+                "admins",
+                user.uid
+            );
+
+        const adminSnapshot =
+            await getDoc(adminRef);
+
+
+        if(!adminSnapshot.exists()){
 
             showError(
-                "Please log in with your Gift Zone admin account."
+                "Your Firebase account is logged in, " +
+                "but this account is not registered as an admin."
             );
 
             return false;
@@ -652,1059 +690,922 @@
         }
 
 
-        try {
-
-            const adminRef =
-                doc(
-                    db,
-                    "admins",
-                    user.uid
-                );
-
-            const adminSnap =
-                await getDoc(adminRef);
+        const adminData =
+            adminSnapshot.data();
 
 
-            if (!adminSnap.exists()) {
-
-                isAdmin = false;
-
-                showError(
-                    "This account does not have Gift Zone Admin access."
-                );
-
-                return false;
-
-            }
-
-
-            const adminData =
-                adminSnap.data();
-
-
-            if (adminData.role !== "admin") {
-
-                isAdmin = false;
-
-                showError(
-                    "This account is not configured as a Gift Zone admin."
-                );
-
-                return false;
-
-            }
-
-
-            isAdmin = true;
-
-            return true;
-
-        } catch (error) {
-
-            console.error(
-                "Admin verification error:",
-                error
-            );
-
-            isAdmin = false;
+        if(adminData.role !== "admin"){
 
             showError(
-                "Could not verify admin access. Please check your Firebase Rules."
+                "Admin document was found, " +
+                "but the role is not 'admin'."
             );
 
             return false;
 
         }
 
+
+        currentAdmin = user;
+
+        return true;
+
+    }
+    catch(error){
+
+        console.error(
+            "ADMIN CHECK ERROR:",
+            error
+        );
+
+        showError(
+            "Admin verification failed.<br><br>" +
+            "<strong>Firebase error:</strong><br>" +
+            escapeHTML(
+                error.message ||
+                "Unknown Firebase error"
+            )
+        );
+
+        return false;
+
     }
 
-
-    /* ==========================================
-       LOAD ALL ORDERS FROM FIRESTORE
-    ========================================== */
-
-    async function loadAdminOrders() {
-
-        if (!isAdmin) {
-            return;
-        }
+}
 
 
-        ordersContainer.innerHTML = `
+/* =====================================================
+   LOAD ORDERS
+===================================================== */
 
-            <div class="loading-message">
-                🔄 Loading orders from Firebase...
-            </div>
+async function loadOrders(){
 
-        `;
+    if(!currentAdmin){
 
-
-        refreshBtn.disabled = true;
-
-
-        try {
-
-            const ordersRef =
-                collection(
-                    db,
-                    "orders"
-                );
-
-
-            let ordersSnapshot;
-
-
-            try {
-
-                const orderedQuery =
-                    query(
-                        ordersRef,
-                        orderBy(
-                            "orderCreatedAt",
-                            "desc"
-                        )
-                    );
-
-                ordersSnapshot =
-                    await getDocs(
-                        orderedQuery
-                    );
-
-            } catch (indexOrDateError) {
-
-                console.warn(
-                    "Ordered query failed. Loading without orderBy.",
-                    indexOrDateError
-                );
-
-                ordersSnapshot =
-                    await getDocs(
-                        ordersRef
-                    );
-
-            }
-
-
-            allOrders =
-                ordersSnapshot.docs.map(
-                    snapshot => {
-
-                        return {
-
-                            id: snapshot.id,
-
-                            ...snapshot.data()
-
-                        };
-
-                    }
-                );
-
-
-            sortOrders();
-
-            renderOrders();
-
-
-        } catch (error) {
-
-            console.error(
-                "Firestore order loading error:",
-                error
-            );
-
-
-            showError(
-                "Could not load customer orders.<br><br>" +
-                "<strong>Firebase error:</strong> " +
-                escapeHTML(
-                    error.message || "Unknown error"
-                )
-            );
-
-        } finally {
-
-            refreshBtn.disabled = false;
-
-        }
+        return;
 
     }
 
 
-    /* ==========================================
-       SORT ORDERS
-    ========================================== */
+    refreshBtn.disabled = true;
 
-    function sortOrders() {
+    refreshBtn.textContent =
+        "⏳ Loading...";
+
+
+    ordersContainer.innerHTML = `
+
+        <div class="loading-message">
+            🔄 Loading customer orders from Firestore...
+        </div>
+
+    `;
+
+
+    try{
+
+        const ordersRef =
+            collection(
+                db,
+                "orders"
+            );
+
+
+        const snapshot =
+            await getDocs(
+                ordersRef
+            );
+
+
+        allOrders =
+            snapshot.docs.map(
+                item => ({
+
+                    documentId:item.id,
+
+                    ...item.data()
+
+                })
+            );
+
 
         allOrders.sort(
-            (a, b) => {
+            (a,b) => {
 
                 const getTime = order => {
 
                     const value =
-                        order.orderCreatedAt ||
-                        order.orderDate;
+                        order.orderCreatedAt;
 
-                    if (!value) {
+                    if(!value){
                         return 0;
                     }
 
-                    if (
+                    if(
                         typeof value.toMillis === "function"
-                    ) {
+                    ){
 
                         return value.toMillis();
 
                     }
 
-                    if (
+                    if(
                         typeof value.toDate === "function"
-                    ) {
+                    ){
 
                         return value.toDate().getTime();
 
                     }
 
-                    if (
+                    if(
                         typeof value.seconds === "number"
-                    ) {
+                    ){
 
                         return value.seconds * 1000;
 
                     }
 
-                    const parsed =
-                        new Date(value).getTime();
-
-                    return isNaN(parsed)
-                        ? 0
-                        : parsed;
+                    return 0;
 
                 };
-
 
                 return getTime(b) - getTime(a);
 
             }
         );
 
+
+        renderOrders();
+
+
     }
+    catch(error){
 
+        console.error(
+            "LOAD ORDERS ERROR:",
+            error
+        );
 
-    /* ==========================================
-       SEARCH + DISPLAY
-    ========================================== */
+        showError(
+            "Could not load customer orders.<br><br>" +
+            "<strong>Firebase error:</strong><br>" +
+            escapeHTML(
+                error.message ||
+                "Unknown error"
+            )
+        );
 
-    function renderOrders() {
+    }
+    finally{
 
-        const searchText =
-            searchInput.value
-                .toLowerCase()
-                .trim();
+        refreshBtn.disabled = false;
 
-
-        let filteredOrders =
-            allOrders;
-
-
-        if (searchText) {
-
-            filteredOrders =
-                allOrders.filter(
-                    order => {
-
-                        const customerId =
-                            createGiftZoneCustomerId(
-                                order.userId
-                            );
-
-
-                        const searchableText = [
-
-                            order.orderId,
-                            customerId,
-                            order.customerName,
-                            order.customerPhone,
-                            order.customerEmail,
-                            order.recipientName,
-                            order.recipientPhone,
-                            order.address
-
-                        ]
-                            .map(
-                                value =>
-                                    String(
-                                        value || ""
-                                    ).toLowerCase()
-                            )
-                            .join(" ");
-
-
-                        return searchableText
-                            .includes(searchText);
-
-                    }
-                );
-
-        }
-
-
-        orderCount.textContent =
-            filteredOrders.length;
-
-
-        if (
-            filteredOrders.length === 0
-        ) {
-
-            ordersContainer.innerHTML = `
-
-                <div class="no-orders">
-
-                    <div class="no-orders-icon">
-                        📦
-                    </div>
-
-                    <h2>No Orders Found</h2>
-
-                    <p>
-                        ${
-                            allOrders.length === 0
-                                ? "No customer orders have been placed yet."
-                                : "No order matches your search."
-                        }
-                    </p>
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        ordersContainer.innerHTML =
-            filteredOrders
-                .map(
-                    order =>
-                        createOrderCard(order)
-                )
-                .join("");
+        refreshBtn.textContent =
+            "🔄 Refresh Orders";
 
     }
 
-
-    /* ==========================================
-       CREATE ORDER CARD
-    ========================================== */
-
-    function createOrderCard(order) {
-
-        const orderStatus =
-            order.orderStatus ||
-            "Order Placed";
+}
 
 
-        const customerId =
-            createGiftZoneCustomerId(
-                order.userId
-            );
+/* =====================================================
+   RENDER ORDERS
+===================================================== */
+
+function renderOrders(){
+
+    const searchText =
+        searchInput.value
+        .toLowerCase()
+        .trim();
 
 
-        /* GIFTS */
-
-        let giftsHTML =
-            `<div class="gift-item">
-                No gift information available
-            </div>`;
+    let filteredOrders =
+        allOrders;
 
 
-        if (
-            Array.isArray(order.cart) &&
-            order.cart.length > 0
-        ) {
+    if(searchText){
 
-            giftsHTML =
-                order.cart
+        filteredOrders =
+            allOrders.filter(
+                order => {
+
+                    const customerId =
+                        createCustomerId(
+                            order.userId
+                        );
+
+
+                    const text = [
+
+                        order.orderId,
+                        order.documentId,
+                        customerId,
+                        order.customerName,
+                        order.customerPhone,
+                        order.customerEmail,
+                        order.recipientName,
+                        order.recipientPhone,
+                        order.address
+
+                    ]
                     .map(
-                        item => {
-
-                            return `
-
-                                <div class="gift-item">
-
-                                    <span>
-                                        🎁
-                                        ${escapeHTML(
-                                            item.name ||
-                                            "Gift"
-                                        )}
-                                        ×
-                                        ${escapeHTML(
-                                            item.quantity ||
-                                            1
-                                        )}
-                                    </span>
-
-                                    <strong>
-                                        ₹${escapeHTML(
-                                            item.price ||
-                                            0
-                                        )}
-                                    </strong>
-
-                                </div>
-
-                            `;
-
-                        }
+                        value =>
+                            String(
+                                value || ""
+                            ).toLowerCase()
                     )
-                    .join("");
+                    .join(" ");
 
-        }
 
-
-        /* STATUS OPTIONS */
-
-        const statusOptions =
-            statusList
-                .map(
-                    status => {
-
-                        const selected =
-                            status === orderStatus
-                                ? "selected"
-                                : "";
-
-
-                        return `
-
-                            <option
-                                value="${escapeHTML(status)}"
-                                ${selected}
-                            >
-                                ${escapeHTML(status)}
-                            </option>
-
-                        `;
-
-                    }
-                )
-                .join("");
-
-
-        const orderCreatedAt =
-            order.orderCreatedAt ||
-            order.orderDate;
-
-
-        return `
-
-            <div
-                class="order-card"
-                data-order-id="${escapeHTML(order.orderId || order.id)}"
-            >
-
-                <div class="order-header">
-
-                    <div>
-
-                        <div class="order-id">
-                            🧾
-                            ${escapeHTML(
-                                order.orderId ||
-                                order.id ||
-                                "Unknown Order"
-                            )}
-                        </div>
-
-                        <div class="order-date">
-
-                            Ordered:
-                            ${formatDate(orderCreatedAt)}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- CUSTOMER -->
-
-                <div class="section-title">
-                    👤 Customer Details
-                </div>
-
-                <div class="details-grid">
-
-                    <div class="detail-box">
-
-                        <div class="detail-label">
-                            CUSTOMER ID
-                        </div>
-
-                        <div class="detail-value">
-                            ${escapeHTML(customerId)}
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <div class="detail-label">
-                            CUSTOMER NAME
-                        </div>
-
-                        <div class="detail-value">
-                            ${escapeHTML(
-                                order.customerName ||
-                                "-"
-                            )}
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <div class="detail-label">
-                            CUSTOMER PHONE
-                        </div>
-
-                        <div class="detail-value">
-                            ${escapeHTML(
-                                order.customerPhone ||
-                                "-"
-                            )}
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <div class="detail-label">
-                            CUSTOMER EMAIL
-                        </div>
-
-                        <div class="detail-value">
-                            ${escapeHTML(
-                                order.customerEmail ||
-                                "-"
-                            )}
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- RECIPIENT -->
-
-                <div class="section-title">
-                    🎉 Recipient Details
-                </div>
-
-                <div class="details-grid">
-
-                    <div class="detail-box">
-
-                        <div class="detail-label">
-                            RECIPIENT NAME
-                        </div>
-
-                        <div class="detail-value">
-                            ${escapeHTML(
-                                order.recipientName ||
-                                "-"
-                            )}
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <div class="detail-label">
-                            RECIPIENT PHONE
-                        </div>
-
-                        <div class="detail-value">
-                            ${escapeHTML(
-                                order.recipientPhone ||
-                                "-"
-                            )}
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- DELIVERY -->
-
-                <div class="section-title">
-                    🚚 Delivery Details
-                </div>
-
-                <div class="details-grid">
-
-                    <div class="detail-box">
-
-                        <div class="detail-label">
-                            DELIVERY DATE
-                        </div>
-
-                        <div class="detail-value">
-                            ${escapeHTML(
-                                order.deliveryDate ||
-                                "-"
-                            )}
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <div class="detail-label">
-                            DELIVERY TIME
-                        </div>
-
-                        <div class="detail-value">
-                            ${escapeHTML(
-                                order.deliveryTime ||
-                                "-"
-                            )}
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <div class="detail-label">
-                            DELIVERY ADDRESS
-                        </div>
-
-                        <div class="detail-value">
-                            ${escapeHTML(
-                                order.address ||
-                                "-"
-                            )}
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- GIFTS -->
-
-                <div class="section-title">
-                    🎁 Gift Details
-                </div>
-
-                <div class="gift-list">
-
-                    ${giftsHTML}
-
-                </div>
-
-
-                <!-- MESSAGE -->
-
-                <div class="message-box">
-
-                    <strong>
-                        💌 Surprise Message:
-                    </strong>
-
-                    <br><br>
-
-                    ${escapeHTML(
-                        order.surpriseMessage ||
-                        "No message"
-                    )}
-
-                </div>
-
-
-                <div class="message-box">
-
-                    <strong>
-                        📝 Special Instructions:
-                    </strong>
-
-                    <br><br>
-
-                    ${escapeHTML(
-                        order.specialInstructions ||
-                        "No special instructions"
-                    )}
-
-                </div>
-
-
-                <!-- PAYMENT -->
-
-                <div class="total-box">
-
-                    <div>
-                        💳 Payment:
-                        ${escapeHTML(
-                            order.paymentMethod ||
-                            "-"
-                        )}
-                    </div>
-
-                    <div>
-                        Payment Status:
-                        ${escapeHTML(
-                            order.paymentStatus ||
-                            "-"
-                        )}
-                    </div>
-
-                    <br>
-
-                    <div class="total">
-                        Total:
-                        ₹${escapeHTML(
-                            order.total ||
-                            0
-                        )}
-                    </div>
-
-                </div>
-
-
-                <!-- STATUS -->
-
-                <div class="status-area">
-
-                    <div class="status-label">
-                        📍 Current Order Status
-                    </div>
-
-                    <div class="status-controls">
-
-                        <select
-                            class="status-select"
-                            id="status-${escapeHTML(
-                                order.orderId ||
-                                order.id
-                            )}"
-                        >
-
-                            ${statusOptions}
-
-                        </select>
-
-
-                        <button
-                            class="update-btn"
-                            data-order-id="${escapeHTML(
-                                order.orderId ||
-                                order.id
-                            )}"
-                        >
-                            💾 Update Status
-                        </button>
-
-                    </div>
-
-
-                    <div
-                        class="status-message"
-                        id="message-${escapeHTML(
-                            order.orderId ||
-                            order.id
-                        )}"
-                    >
-                        ✅ Status updated successfully!
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-
-
-    /* ==========================================
-       UPDATE ORDER STATUS
-    ========================================== */
-
-    async function updateOrderStatus(orderId) {
-
-        if (!isAdmin) {
-
-            alert(
-                "Admin access is required."
-            );
-
-            return;
-
-        }
-
-
-        const select =
-            document.getElementById(
-                "status-" + orderId
-            );
-
-
-        if (!select) {
-
-            alert(
-                "Status selector not found."
-            );
-
-            return;
-
-        }
-
-
-        const newStatus =
-            select.value;
-
-
-        const updateButton =
-            document.querySelector(
-                `.update-btn[data-order-id="${CSS.escape(orderId)}"]`
-            );
-
-
-        if (updateButton) {
-            updateButton.disabled = true;
-            updateButton.textContent =
-                "⏳ Updating...";
-        }
-
-
-        try {
-
-            const orderRef =
-                doc(
-                    db,
-                    "orders",
-                    orderId
-                );
-
-
-            await updateDoc(
-                orderRef,
-                {
-
-                    orderStatus:
-                        newStatus,
-
-                    statusUpdatedAt:
-                        serverTimestamp()
+                    return text.includes(
+                        searchText
+                    );
 
                 }
             );
 
-
-            const order =
-                allOrders.find(
-                    item =>
-                        String(
-                            item.orderId ||
-                            item.id
-                        ) === String(orderId)
-                );
-
-
-            if (order) {
-
-                order.orderStatus =
-                    newStatus;
-
-            }
-
-
-            const message =
-                document.getElementById(
-                    "message-" + orderId
-                );
-
-
-            if (message) {
-
-                message.textContent =
-                    "✅ Status updated successfully!";
-
-                message.style.display =
-                    "block";
-
-                setTimeout(
-                    () => {
-
-                        message.style.display =
-                            "none";
-
-                    },
-                    3000
-                );
-
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "Status update error:",
-                error
-            );
-
-
-            alert(
-                "Could not update status.\n\n" +
-                (
-                    error.message ||
-                    "Unknown Firebase error"
-                )
-            );
-
-        } finally {
-
-            if (updateButton) {
-
-                updateButton.disabled =
-                    false;
-
-                updateButton.textContent =
-                    "💾 Update Status";
-
-            }
-
-        }
-
     }
 
 
-    /* ==========================================
-       BUTTON CLICK
-    ========================================== */
-
-    ordersContainer.addEventListener(
-        "click",
-        event => {
-
-            const button =
-                event.target.closest(
-                    ".update-btn"
-                );
+    orderCount.textContent =
+        filteredOrders.length;
 
 
-            if (!button) {
-                return;
-            }
-
-
-            const orderId =
-                button.dataset.orderId;
-
-
-            updateOrderStatus(
-                orderId
-            );
-
-        }
-    );
-
-
-    /* ==========================================
-       SEARCH
-    ========================================== */
-
-    searchInput.addEventListener(
-        "input",
-        renderOrders
-    );
-
-
-    /* ==========================================
-       REFRESH
-    ========================================== */
-
-    refreshBtn.addEventListener(
-        "click",
-        loadAdminOrders
-    );
-
-
-    /* ==========================================
-       ERROR SCREEN
-    ========================================== */
-
-    function showError(message) {
+    if(filteredOrders.length === 0){
 
         ordersContainer.innerHTML = `
 
-            <div class="error-message">
+            <div class="no-orders">
 
-                ❌ <strong>Unable to load orders</strong>
+                <div class="no-orders-icon">
+                    📦
+                </div>
 
-                <br><br>
+                <h2>No Orders Found</h2>
 
-                ${message}
+                <p>
+                    ${
+                        allOrders.length === 0
+                        ? "No customer orders have been found in Firestore."
+                        : "No order matches your search."
+                    }
+                </p>
 
             </div>
 
         `;
 
-        orderCount.textContent = "0";
+        return;
 
     }
 
 
-    /* ==========================================
-       AUTHENTICATION
-    ========================================== */
+    ordersContainer.innerHTML =
+        filteredOrders
+        .map(
+            order =>
+                createOrderCard(order)
+        )
+        .join("");
 
-    onAuthStateChanged(
-        auth,
-        async user => {
+}
 
-            if (!user) {
 
-                isAdmin = false;
+/* =====================================================
+   CREATE ORDER CARD
+===================================================== */
 
-                showError(
-                    "Please log in with your Gift Zone admin account before opening this page."
-                );
+function createOrderCard(order){
 
-                return;
+    const orderId =
+        order.documentId ||
+        order.orderId;
+
+
+    const customerId =
+        createCustomerId(
+            order.userId
+        );
+
+
+    const orderStatus =
+        order.orderStatus ||
+        "Order Placed";
+
+
+    let giftsHTML =
+
+        `<div class="gift-item">
+            No gift information available
+        </div>`;
+
+
+    if(
+        Array.isArray(order.cart) &&
+        order.cart.length > 0
+    ){
+
+        giftsHTML =
+            order.cart
+            .map(
+                item => `
+
+                    <div class="gift-item">
+
+                        <span>
+                            🎁
+                            ${escapeHTML(
+                                item.name || "Gift"
+                            )}
+                            ×
+                            ${escapeHTML(
+                                item.quantity || 1
+                            )}
+                        </span>
+
+                        <strong>
+                            ₹${escapeHTML(
+                                item.price || 0
+                            )}
+                        </strong>
+
+                    </div>
+
+                `
+            )
+            .join("");
+
+    }
+
+
+    const statusOptions =
+        statusList
+        .map(
+            status => `
+
+                <option
+                    value="${escapeHTML(status)}"
+                    ${
+                        status === orderStatus
+                        ? "selected"
+                        : ""
+                    }
+                >
+                    ${escapeHTML(status)}
+                </option>
+
+            `
+        )
+        .join("");
+
+
+    return `
+
+        <div
+            class="order-card"
+            data-order-id="${escapeHTML(orderId)}"
+        >
+
+            <div class="order-header">
+
+                <div>
+
+                    <div class="order-id">
+
+                        🧾
+                        ${escapeHTML(
+                            order.orderId ||
+                            orderId ||
+                            "Unknown"
+                        )}
+
+                    </div>
+
+                    <div class="order-date">
+
+                        Ordered:
+                        ${formatDate(
+                            order.orderCreatedAt
+                        )}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-title">
+                👤 Customer Details
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        CUSTOMER ID
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHTML(customerId)}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        CUSTOMER NAME
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHTML(
+                            order.customerName || "-"
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        CUSTOMER PHONE
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHTML(
+                            order.customerPhone || "-"
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        CUSTOMER EMAIL
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHTML(
+                            order.customerEmail || "-"
+                        )}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-title">
+                🎉 Recipient Details
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        RECIPIENT NAME
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHTML(
+                            order.recipientName || "-"
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        RECIPIENT PHONE
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHTML(
+                            order.recipientPhone || "-"
+                        )}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-title">
+                🚚 Delivery Details
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        DELIVERY DATE
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHTML(
+                            order.deliveryDate || "-"
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        DELIVERY TIME
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHTML(
+                            order.deliveryTime || "-"
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        DELIVERY ADDRESS
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHTML(
+                            order.address || "-"
+                        )}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-title">
+                🎁 Gift Details
+            </div>
+
+            <div class="gift-list">
+
+                ${giftsHTML}
+
+            </div>
+
+
+            <div class="message-box">
+
+                <strong>
+                    💌 Surprise Message
+                </strong>
+
+                <br><br>
+
+                ${escapeHTML(
+                    order.surpriseMessage ||
+                    "No message"
+                )}
+
+            </div>
+
+
+            <div class="message-box">
+
+                <strong>
+                    📝 Special Instructions
+                </strong>
+
+                <br><br>
+
+                ${escapeHTML(
+                    order.specialInstructions ||
+                    "No special instructions"
+                )}
+
+            </div>
+
+
+            <div class="total-box">
+
+                <div>
+                    💳 Payment Method:
+                    ${escapeHTML(
+                        order.paymentMethod || "-"
+                    )}
+                </div>
+
+                <div>
+                    Payment Status:
+                    ${escapeHTML(
+                        order.paymentStatus || "-"
+                    )}
+                </div>
+
+                <br>
+
+                <div class="total">
+
+                    Total:
+                    ₹${escapeHTML(
+                        order.total || 0
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="status-area">
+
+                <div class="status-label">
+
+                    📍 Current Order Status:
+                    <strong>
+                        ${escapeHTML(orderStatus)}
+                    </strong>
+
+                </div>
+
+
+                <div class="status-controls">
+
+                    <select
+                        class="status-select"
+                        data-status-for="${escapeHTML(orderId)}"
+                    >
+
+                        ${statusOptions}
+
+                    </select>
+
+
+                    <button
+                        class="update-btn"
+                        data-update-order="${escapeHTML(orderId)}"
+                    >
+
+                        💾 Update Status
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="status-message"
+                    data-message-for="${escapeHTML(orderId)}"
+                >
+                    ✅ Status updated successfully!
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   UPDATE STATUS
+===================================================== */
+
+async function updateStatus(orderId, button){
+
+    if(!currentAdmin){
+
+        alert(
+            "Admin login is required."
+        );
+
+        return;
+
+    }
+
+
+    const card =
+        button.closest(".order-card");
+
+
+    if(!card){
+
+        return;
+
+    }
+
+
+    const select =
+        card.querySelector(
+            ".status-select"
+        );
+
+
+    if(!select){
+
+        alert(
+            "Status selector not found."
+        );
+
+        return;
+
+    }
+
+
+    const newStatus =
+        select.value;
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "⏳ Updating...";
+
+
+    try{
+
+        const orderRef =
+            doc(
+                db,
+                "orders",
+                orderId
+            );
+
+
+        await updateDoc(
+            orderRef,
+            {
+
+                orderStatus:
+                    newStatus,
+
+                statusUpdatedAt:
+                    serverTimestamp()
 
             }
+        );
 
 
-            const adminVerified =
-                await checkAdmin(user);
+        const order =
+            allOrders.find(
+                item =>
+                    String(
+                        item.documentId
+                    ) === String(orderId)
+            );
 
 
-            if (!adminVerified) {
-                return;
-            }
+        if(order){
 
-
-            await loadAdminOrders();
+            order.orderStatus =
+                newStatus;
 
         }
-    );
+
+
+        const message =
+            card.querySelector(
+                ".status-message"
+            );
+
+
+        if(message){
+
+            message.textContent =
+                "✅ Status updated successfully!";
+
+            message.style.display =
+                "block";
+
+        }
+
+
+    }
+    catch(error){
+
+        console.error(
+            "UPDATE STATUS ERROR:",
+            error
+        );
+
+        alert(
+            "Could not update order status.\n\n" +
+            (
+                error.message ||
+                "Unknown Firebase error"
+            )
+        );
+
+    }
+    finally{
+
+        button.disabled = false;
+
+        button.textContent =
+            "💾 Update Status";
+
+    }
+
+}
+
+
+/* =====================================================
+   BUTTON EVENTS
+===================================================== */
+
+ordersContainer.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(
+                ".update-btn"
+            );
+
+
+        if(!button){
+
+            return;
+
+        }
+
+
+        const orderId =
+            button.dataset.updateOrder;
+
+
+        updateStatus(
+            orderId,
+            button
+        );
+
+    }
+);
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+searchInput.addEventListener(
+    "input",
+    renderOrders
+);
+
+
+/* =====================================================
+   REFRESH
+===================================================== */
+
+refreshBtn.addEventListener(
+    "click",
+    loadOrders
+);
+
+
+/* =====================================================
+   FIREBASE AUTH
+===================================================== */
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        console.log(
+            "Gift Zone Firebase Auth User:",
+            user
+        );
+
+
+        const verified =
+            await verifyAdmin(user);
+
+
+        if(!verified){
+
+            return;
+
+        }
+
+
+        await loadOrders();
+
+    }
+);
 
 </script>
 
 </body>
 
 </html>
-
