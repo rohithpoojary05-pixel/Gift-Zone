@@ -1,15 +1,47 @@
-
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Gift Zone - Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>Gift Zone - Login</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+    /* Password show / hide only */
+
+    .password-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .password-wrapper input {
+        width: 100%;
+        box-sizing: border-box;
+        padding-right: 75px;
+    }
+
+    .show-password-button {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 8px;
+    }
+
+</style>
+
 
 </head>
 
@@ -17,108 +49,122 @@
 
 <div class="login-page">
 
-    <div class="login-box">
 
-        <div class="login-logo">
-            🎁
-        </div>
+<div class="login-box">
 
-        <h1>Gift Zone</h1>
+    <div class="login-logo">
+        🎁
+    </div>
 
-        <p class="login-subtitle">
-            Login to continue your surprise journey ❤️
-        </p>
+    <h1>Gift Zone</h1>
 
-
-        <!-- ==============================
-             LOGIN FORM
-        =============================== -->
-
-        <form id="loginForm">
-
-            <label for="loginEmail">
-                Email Address
-            </label>
-
-            <input
-                type="email"
-                id="loginEmail"
-                placeholder="Enter your email address"
-                required
-            >
+    <p class="login-subtitle">
+        Login to continue your surprise journey ❤️
+    </p>
 
 
-            <label for="loginPassword">
-                Password
-            </label>
+    <!-- ==============================
+         LOGIN FORM
+    =============================== -->
+
+    <form id="loginForm">
+
+        <label for="loginEmail">
+            Email Address
+        </label>
+
+        <input
+            type="email"
+            id="loginEmail"
+            placeholder="Enter your email address"
+            required
+        >
+
+
+        <label for="loginPassword">
+            Password
+        </label>
+
+        <div class="password-wrapper">
 
             <input
                 type="password"
                 id="loginPassword"
                 placeholder="Enter your password"
+                autocomplete="current-password"
                 required
             >
 
-
             <button
-                type="submit"
-                class="login-button"
-                id="loginButton"
+                type="button"
+                class="show-password-button"
+                id="showPasswordButton"
             >
-                🔐 Login
+                👁️ Show
             </button>
 
-        </form>
-
-
-        <!-- ==============================
-             FORGOT PASSWORD
-        =============================== -->
-
-        <a
-            href="#"
-            class="forgot-password"
-            id="forgotPassword"
-        >
-            Forgot Password?
-        </a>
-
-
-        <div class="login-divider">
-            <span>OR</span>
         </div>
 
 
-        <!-- ==============================
-             CREATE ACCOUNT
-        =============================== -->
-
-        <p class="create-account">
-
-            Don't have an account?
-
-            <a href="register.html">
-                Create Account
-            </a>
-
-        </p>
-
-
-        <!-- ==============================
-             CONTINUE SHOPPING
-        =============================== -->
-
-        <a
-            href="index.html"
-            class="continue-shopping"
+        <button
+            type="submit"
+            class="login-button"
+            id="loginButton"
         >
-            ← Continue Shopping
+            🔐 Login
+        </button>
+
+    </form>
+
+
+    <!-- ==============================
+         FORGOT PASSWORD
+    =============================== -->
+
+    <a
+        href="#"
+        class="forgot-password"
+        id="forgotPassword"
+    >
+        Forgot Password?
+    </a>
+
+
+    <div class="login-divider">
+        <span>OR</span>
+    </div>
+
+
+    <!-- ==============================
+         CREATE ACCOUNT
+    =============================== -->
+
+    <p class="create-account">
+
+        Don't have an account?
+
+        <a href="register.html">
+            Create Account
         </a>
 
-    </div>
+    </p>
+
+
+    <!-- ==============================
+         CONTINUE SHOPPING
+    =============================== -->
+
+    <a
+        href="index.html"
+        class="continue-shopping"
+    >
+        ← Continue Shopping
+    </a>
 
 </div>
 
+
+</div>
 
 <!-- ==========================================
      FIREBASE LOGIN
@@ -126,16 +172,49 @@
 
 <script type="module">
 
-    // Import Firebase Authentication
     import {
         signInWithEmailAndPassword,
         sendPasswordResetEmail
     } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
-    // Import our Firebase connection
     import {
         auth
     } from "./firebase.js";
+
+
+    // ==========================================
+    // SHOW / HIDE PASSWORD
+    // ==========================================
+
+    const passwordInput =
+        document.getElementById("loginPassword");
+
+    const showPasswordButton =
+        document.getElementById("showPasswordButton");
+
+
+    showPasswordButton.addEventListener(
+        "click",
+        function() {
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+                showPasswordButton.textContent =
+                    "🙈 Hide";
+
+            } else {
+
+                passwordInput.type = "password";
+
+                showPasswordButton.textContent =
+                    "👁️ Show";
+
+            }
+
+        }
+    );
 
 
     // ==========================================
@@ -158,9 +237,7 @@
 
 
             const password =
-                document
-                    .getElementById("loginPassword")
-                    .value;
+                passwordInput.value;
 
 
             const loginButton =
@@ -351,7 +428,6 @@
         });
 
 
-
     // ==========================================
     // FORGOT PASSWORD
     // ==========================================
@@ -447,8 +523,6 @@
 
 </script>
 
-
 </body>
 
 </html>
-
