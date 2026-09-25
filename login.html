@@ -15,7 +15,7 @@
 <style>
 
     /* ==========================================
-       SMALL PASSWORD EYE
+       PASSWORD FIELD
     ========================================== */
 
     .password-wrapper {
@@ -26,31 +26,59 @@
     .password-wrapper input {
         width: 100%;
         box-sizing: border-box;
-        padding-right: 45px;
+        padding-right: 48px !important;
     }
 
-    .password-eye {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        border: none;
-        background: transparent;
-        padding: 3px;
-        margin: 0;
-        width: auto;
-        height: auto;
-        min-width: 0;
-        min-height: 0;
-        font-size: 18px;
-        line-height: 1;
+    /* ==========================================
+       SMALL EYE ICON INSIDE PASSWORD FIELD
+    ========================================== */
+
+    .password-wrapper .password-eye {
+        position: absolute !important;
+
+        right: 10px !important;
+        top: 50% !important;
+
+        transform: translateY(-50%) !important;
+
+        width: 30px !important;
+        height: 30px !important;
+
+        min-width: 30px !important;
+        min-height: 30px !important;
+
+        max-width: 30px !important;
+        max-height: 30px !important;
+
+        padding: 0 !important;
+        margin: 0 !important;
+
+        border: none !important;
+        outline: none !important;
+
+        background: transparent !important;
+        box-shadow: none !important;
+
+        font-size: 17px !important;
+        line-height: 30px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
         cursor: pointer;
-        box-shadow: none;
+
+        appearance: none !important;
+        -webkit-appearance: none !important;
     }
 
-    .password-eye:hover {
-        background: transparent;
-        box-shadow: none;
+    .password-wrapper .password-eye:hover,
+    .password-wrapper .password-eye:focus,
+    .password-wrapper .password-eye:active {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        outline: none !important;
     }
 
 </style>
@@ -97,6 +125,9 @@
         <label for="loginPassword">
             Password
         </label>
+
+
+        <!-- PASSWORD WITH SMALL EYE -->
 
         <div class="password-wrapper">
 
@@ -187,6 +218,10 @@
 
 <script type="module">
 
+    // ==========================================
+    // FIREBASE IMPORTS
+    // ==========================================
+
     import {
         signInWithEmailAndPassword,
         sendPasswordResetEmail
@@ -198,7 +233,7 @@
 
 
     // ==========================================
-    // SHOW / HIDE PASSWORD
+    // PASSWORD SHOW / HIDE
     // ==========================================
 
     const passwordInput =
@@ -210,10 +245,11 @@
 
     passwordEye.addEventListener(
         "click",
-        function() {
+        function () {
 
             if (passwordInput.type === "password") {
 
+                // Show password
                 passwordInput.type = "text";
 
                 passwordEye.textContent = "🙈";
@@ -230,6 +266,7 @@
 
             } else {
 
+                // Hide password
                 passwordInput.type = "password";
 
                 passwordEye.textContent = "👁️";
@@ -256,209 +293,214 @@
 
     document
         .getElementById("loginForm")
-        .addEventListener("submit", async function(event) {
+        .addEventListener(
+            "submit",
+            async function (event) {
 
-            event.preventDefault();
-
-
-            const email =
-                document
-                    .getElementById("loginEmail")
-                    .value
-                    .trim()
-                    .toLowerCase();
+                event.preventDefault();
 
 
-            const password =
-                passwordInput.value;
+                const email =
+                    document
+                        .getElementById("loginEmail")
+                        .value
+                        .trim()
+                        .toLowerCase();
 
 
-            const loginButton =
-                document.getElementById("loginButton");
+                const password =
+                    passwordInput.value;
 
 
-            // ==========================================
-            // CHECK DETAILS
-            // ==========================================
-
-            if (!email || !password) {
-
-                alert(
-                    "Please enter your email and password."
-                );
-
-                return;
-
-            }
-
-
-            // ==========================================
-            // CHANGE BUTTON
-            // ==========================================
-
-            loginButton.disabled = true;
-
-            loginButton.textContent =
-                "🔄 Logging in...";
-
-
-            try {
-
-                // ==========================================
-                // FIREBASE LOGIN
-                // ==========================================
-
-                const userCredential =
-                    await signInWithEmailAndPassword(
-                        auth,
-                        email,
-                        password
-                    );
-
-
-                const user =
-                    userCredential.user;
+                const loginButton =
+                    document.getElementById("loginButton");
 
 
                 // ==========================================
-                // SAVE CUSTOMER SESSION
+                // CHECK DETAILS
                 // ==========================================
 
-                const loggedInCustomer = {
-
-                    customerId:
-                        user.uid,
-
-                    name:
-                        user.displayName || "",
-
-                    email:
-                        user.email,
-
-                    loginTime:
-                        new Date().toLocaleString("en-IN")
-
-                };
-
-
-                localStorage.setItem(
-
-                    "giftZoneLoggedInCustomer",
-
-                    JSON.stringify(
-                        loggedInCustomer
-                    )
-
-                );
-
-
-                // ==========================================
-                // SUCCESS
-                // ==========================================
-
-                alert(
-                    "❤️ Login successful!\n\n" +
-                    "Welcome to Gift Zone!"
-                );
-
-
-                // ==========================================
-                // GO TO HOME
-                // ==========================================
-
-                window.location.href =
-                    "index.html";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Firebase Login Error:",
-                    error
-                );
-
-
-                // ==========================================
-                // ERROR MESSAGES
-                // ==========================================
-
-                if (
-                    error.code ===
-                    "auth/invalid-credential"
-                ) {
+                if (!email || !password) {
 
                     alert(
-                        "❌ Incorrect email or password."
+                        "Please enter your email and password."
                     );
 
-                }
-
-                else if (
-                    error.code ===
-                    "auth/user-not-found"
-                ) {
-
-                    alert(
-                        "❌ No Gift Zone account found with this email.\n\n" +
-                        "Please create an account first."
-                    );
-
-                }
-
-                else if (
-                    error.code ===
-                    "auth/wrong-password"
-                ) {
-
-                    alert(
-                        "❌ Incorrect password."
-                    );
-
-                }
-
-                else if (
-                    error.code ===
-                    "auth/invalid-email"
-                ) {
-
-                    alert(
-                        "❌ Please enter a valid email address."
-                    );
-
-                }
-
-                else if (
-                    error.code ===
-                    "auth/too-many-requests"
-                ) {
-
-                    alert(
-                        "⚠️ Too many login attempts.\n\n" +
-                        "Please wait a while and try again."
-                    );
-
-                }
-
-                else {
-
-                    alert(
-                        "❌ Login failed.\n\n" +
-                        error.message
-                    );
+                    return;
 
                 }
 
 
-                // Restore button
+                // ==========================================
+                // CHANGE LOGIN BUTTON
+                // ==========================================
 
-                loginButton.disabled = false;
+                loginButton.disabled = true;
 
                 loginButton.textContent =
-                    "🔐 Login";
+                    "🔄 Logging in...";
+
+
+                try {
+
+                    // ==========================================
+                    // FIREBASE LOGIN
+                    // ==========================================
+
+                    const userCredential =
+                        await signInWithEmailAndPassword(
+                            auth,
+                            email,
+                            password
+                        );
+
+
+                    const user =
+                        userCredential.user;
+
+
+                    // ==========================================
+                    // SAVE CUSTOMER SESSION
+                    // ==========================================
+
+                    const loggedInCustomer = {
+
+                        customerId:
+                            user.uid,
+
+                        name:
+                            user.displayName || "",
+
+                        email:
+                            user.email,
+
+                        loginTime:
+                            new Date().toLocaleString("en-IN")
+
+                    };
+
+
+                    localStorage.setItem(
+
+                        "giftZoneLoggedInCustomer",
+
+                        JSON.stringify(
+                            loggedInCustomer
+                        )
+
+                    );
+
+
+                    // ==========================================
+                    // SUCCESS
+                    // ==========================================
+
+                    alert(
+                        "❤️ Login successful!\n\n" +
+                        "Welcome to Gift Zone!"
+                    );
+
+
+                    // ==========================================
+                    // GO TO HOME
+                    // ==========================================
+
+                    window.location.href =
+                        "index.html";
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Firebase Login Error:",
+                        error
+                    );
+
+
+                    // ==========================================
+                    // ERROR MESSAGES
+                    // ==========================================
+
+                    if (
+                        error.code ===
+                        "auth/invalid-credential"
+                    ) {
+
+                        alert(
+                            "❌ Incorrect email or password."
+                        );
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/user-not-found"
+                    ) {
+
+                        alert(
+                            "❌ No Gift Zone account found with this email.\n\n" +
+                            "Please create an account first."
+                        );
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/wrong-password"
+                    ) {
+
+                        alert(
+                            "❌ Incorrect password."
+                        );
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/invalid-email"
+                    ) {
+
+                        alert(
+                            "❌ Please enter a valid email address."
+                        );
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/too-many-requests"
+                    ) {
+
+                        alert(
+                            "⚠️ Too many login attempts.\n\n" +
+                            "Please wait a while and try again."
+                        );
+
+                    }
+
+                    else {
+
+                        alert(
+                            "❌ Login failed.\n\n" +
+                            error.message
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // RESTORE LOGIN BUTTON
+                    // ==========================================
+
+                    loginButton.disabled = false;
+
+                    loginButton.textContent =
+                        "🔐 Login";
+
+                }
 
             }
-
-        });
+        );
 
 
     // ==========================================
@@ -467,92 +509,95 @@
 
     document
         .getElementById("forgotPassword")
-        .addEventListener("click", async function(event) {
+        .addEventListener(
+            "click",
+            async function (event) {
 
-            event.preventDefault();
-
-
-            const email =
-                document
-                    .getElementById("loginEmail")
-                    .value
-                    .trim()
-                    .toLowerCase();
+                event.preventDefault();
 
 
-            if (!email) {
+                const email =
+                    document
+                        .getElementById("loginEmail")
+                        .value
+                        .trim()
+                        .toLowerCase();
 
-                alert(
-                    "Please enter your email address first."
-                );
 
-                document
-                    .getElementById("loginEmail")
-                    .focus();
+                if (!email) {
 
-                return;
+                    alert(
+                        "Please enter your email address first."
+                    );
+
+                    document
+                        .getElementById("loginEmail")
+                        .focus();
+
+                    return;
+
+                }
+
+
+                try {
+
+                    await sendPasswordResetEmail(
+                        auth,
+                        email
+                    );
+
+
+                    alert(
+
+                        "📧 Password reset email sent!\n\n" +
+                        "Please check your email and follow the instructions."
+
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Password Reset Error:",
+                        error
+                    );
+
+
+                    if (
+                        error.code ===
+                        "auth/user-not-found"
+                    ) {
+
+                        alert(
+                            "❌ No Gift Zone account was found with this email."
+                        );
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/invalid-email"
+                    ) {
+
+                        alert(
+                            "❌ Please enter a valid email address."
+                        );
+
+                    }
+
+                    else {
+
+                        alert(
+                            "❌ Could not send password reset email.\n\n" +
+                            error.message
+                        );
+
+                    }
+
+                }
 
             }
-
-
-            try {
-
-                await sendPasswordResetEmail(
-                    auth,
-                    email
-                );
-
-
-                alert(
-
-                    "📧 Password reset email sent!\n\n" +
-                    "Please check your email and follow the instructions."
-
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Password Reset Error:",
-                    error
-                );
-
-
-                if (
-                    error.code ===
-                    "auth/user-not-found"
-                ) {
-
-                    alert(
-                        "❌ No Gift Zone account was found with this email."
-                    );
-
-                }
-
-                else if (
-                    error.code ===
-                    "auth/invalid-email"
-                ) {
-
-                    alert(
-                        "❌ Please enter a valid email address."
-                    );
-
-                }
-
-                else {
-
-                    alert(
-                        "❌ Could not send password reset email.\n\n" +
-                        error.message
-                    );
-
-                }
-
-            }
-
-        });
+        );
 
 </script>
 
