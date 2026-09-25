@@ -430,7 +430,6 @@
 
 <main class="checkout-container payment-page">
 
-
     <h1>
         💳 Secure Payment
     </h1>
@@ -514,7 +513,6 @@
 
 
         <div class="payment-methods">
-
 
             <div
                 class="payment-method active"
@@ -751,9 +749,7 @@
             id="payButton"
             class="pay-now-button"
         >
-
             💳 Pay ₹0
-
         </button>
 
 
@@ -817,7 +813,23 @@
 </div>
 
 
-<script>
+<!-- =====================================
+     FIREBASE + PAYMENT SCRIPT
+===================================== -->
+
+<script type="module">
+
+import {
+    auth,
+    db
+} from "./firebase.js";
+
+import {
+    collection,
+    doc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
 // =====================================
@@ -863,7 +875,7 @@ const checkoutDetails =
 
 
 // =====================================
-// GET CURRENT LOGGED-IN CUSTOMER
+// GET LOCAL CUSTOMER DATA
 // =====================================
 
 const loggedInCustomer =
@@ -1164,19 +1176,306 @@ function showPaymentPopup(
 
 
 // =====================================
+// CREATE FIRESTORE ORDER
+// =====================================
+
+async function saveOrderToFirestore(
+    selectedMethod
+) {
+
+    try {
+
+        // =================================
+        // GET FIREBASE AUTH USER
+        // =================================
+
+        const currentUser =
+            auth.currentUser;
+
+
+        if (!currentUser) {
+
+            throw new Error(
+                "Firebase login session not found."
+            );
+
+        }
+
+
+        // =================================
+        // HUMAN-FRIENDLY ORDER ID
+        // =================================
+
+        const orderId =
+            "GZ-" +
+            Date.now();
+
+
+        // =================================
+        // INTERNAL FIREBASE USER ID
+        // =================================
+        // This is stored only in Firestore.
+        // It will NOT be shown as Customer ID.
+        // =================================
+
+        const userId =
+            currentUser.uid;
+
+
+        // =================================
+        // CREATE ORDER DATA
+        // =================================
+
+        const newOrder = {
+
+            orderId:
+                orderId,
+
+
+            userId:
+                userId,
+
+
+            // =================================
+            // CUSTOMER INFORMATION
+            // =================================
+
+            customerName:
+                loggedInCustomer?.name ||
+                loggedInCustomer?.loginName ||
+                checkoutDetails.customerName ||
+                currentUser.displayName ||
+                "",
+
+
+            customerPhone:
+                checkoutDetails.customerPhone ||
+                loggedInCustomer?.mobile ||
+                currentUser.phoneNumber ||
+                "",
+
+
+            customerEmail:
+                currentUser.email ||
+                loggedInCustomer?.email ||
+                checkoutDetails.customerEmail ||
+                "",
+
+
+            // =================================
+            // RECIPIENT INFORMATION
+            // =================================
+
+            recipientName:
+                checkoutDetails.recipientName ||
+                "",
+
+
+            recipientPhone:
+                checkoutDetails.recipientPhone ||
+                "",
+
+
+            // =================================
+            // DELIVERY INFORMATION
+            // =================================
+
+            address:
+                checkoutDetails.address ||
+                "",
+
+
+            deliveryDate:
+                checkoutDetails.deliveryDate ||
+                "",
+
+
+            deliveryTime:
+                checkoutDetails.deliveryTime ||
+                "",
+
+
+            // =================================
+            // SURPRISE DETAILS
+            // =================================
+
+            surpriseMessage:
+                checkoutDetails.surpriseMessage ||
+                "",
+
+
+            specialInstructions:
+                checkoutDetails.specialInstructions ||
+                "",
+
+
+            // =================================
+            // GIFTS
+            // =================================
+
+            cart:
+                cart,
+
+
+            // =================================
+            // PAYMENT
+            // =================================
+
+            giftTotal:
+                giftTotal,
+
+
+            deliveryCharge:
+                deliveryCharge,
+
+
+            total:
+                finalTotal,
+
+
+            paymentMethod:
+                selectedMethod,
+
+
+            paymentStatus:
+                "Demo Payment Successful",
+
+
+            // =================================
+            // INITIAL STATUS
+            // =================================
+
+            orderStatus:
+                "Order Placed",
+
+
+            // =================================
+            // TIME
+            // =================================
+
+            orderCreatedAt:
+                serverTimestamp(),
+
+
+            statusUpdatedAt:
+                serverTimestamp()
+
+        };
+
+
+        // =================================
+        // SAVE TO FIRESTORE
+        // =================================
+        // Document ID = human-friendly order ID
+        // =================================
+
+        await setDoc(
+            doc(
+                collection(db, "orders"),
+                orderId
+            ),
+            newOrder
+        );
+
+
+        // =================================
+        // SUCCESS
+        // =================================
+
+        localStorage.removeItem(
+            "giftZoneCart"
+        );
+
+
+        localStorage.removeItem(
+            "giftZoneCheckout"
+        );
+
+
+        showPaymentPopup(
+
+            "🎉",
+
+            "Order Confirmed!",
+
+            "Your Gift Zone order has been placed successfully." +
+
+            "<br><br>" +
+
+            "<strong>Order ID:</strong> " +
+            orderId +
+
+            "<br>" +
+
+            "<strong>Amount:</strong> ₹" +
+            finalTotal +
+
+            "<br><br>" +
+
+            "Your surprise delivery is now being prepared! 🎁",
+
+            "View My Order →",
+
+            function () {
+
+                window.location.href =
+                    "orders.html";
+
+            }
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Firestore order error:",
+            error
+        );
+
+
+        showPaymentPopup(
+
+            "❌",
+
+            "Order Could Not Be Saved",
+
+            "We could not save your order to Gift Zone." +
+
+            "<br><br>" +
+
+            "<small>" +
+            "Please check your internet connection and try again." +
+            "</small>",
+
+            "Try Again"
+
+        );
+
+    }
+
+}
+
+
+// =====================================
 // PAY NOW
 // =====================================
 
 payButton.addEventListener(
     "click",
-    function () {
+    async function () {
 
 
         // =================================
-        // CHECK LOGIN
+        // CHECK FIREBASE LOGIN
         // =================================
 
-        if (!loggedInCustomer) {
+        const currentUser =
+            auth.currentUser;
+
+
+        if (!currentUser) {
 
             showPaymentPopup(
                 "🔐",
@@ -1184,34 +1483,6 @@ payButton.addEventListener(
                 "Please login to your Gift Zone account before completing the order.",
                 "Go to Login",
                 function () {
-
-                    window.location.href =
-                        "login.html";
-
-                }
-            );
-
-            return;
-
-        }
-
-
-        // =================================
-        // CHECK CUSTOMER ID
-        // =================================
-
-        if (!loggedInCustomer.customerId) {
-
-            showPaymentPopup(
-                "🔐",
-                "Account Information Missing",
-                "Please logout and login again before placing the order.",
-                "Login Again",
-                function () {
-
-                    localStorage.removeItem(
-                        "giftZoneLoggedInCustomer"
-                    );
 
                     window.location.href =
                         "login.html";
@@ -1379,257 +1650,35 @@ payButton.addEventListener(
 
             "Confirm Payment",
 
-            function () {
+            async function () {
+
+                // =================================
+                // PREVENT DOUBLE CLICK
+                // =================================
+
+                payButton.disabled = true;
+
+                payButton.textContent =
+                    "⏳ Saving Order...";
 
 
                 // =================================
-                // CREATE ORDER ID
+                // SAVE ORDER TO FIRESTORE
                 // =================================
 
-                const orderId =
-                    "GZ-" +
-                    Date.now();
-
-
-                // =================================
-                // CURRENT CUSTOMER ID
-                // =================================
-                // IMPORTANT:
-                // ALWAYS use the customer who is
-                // currently logged in.
-                //
-                // Do NOT use checkoutDetails.customerId
-                // here.
-                // =================================
-
-                const customerId =
-                    String(
-                        loggedInCustomer.customerId
-                    ).trim();
-
-
-                // =================================
-                // CREATE ORDER
-                // =================================
-
-                const newOrder = {
-
-                    orderId:
-                        orderId,
-
-
-                    customerId:
-                        customerId,
-
-
-                    orderDate:
-                        new Date()
-                        .toLocaleString("en-IN"),
-
-
-                    // =================================
-                    // CUSTOMER INFORMATION
-                    // =================================
-
-                    customerName:
-                        loggedInCustomer.name ||
-                        loggedInCustomer.loginName ||
-                        checkoutDetails.customerName ||
-                        "",
-
-
-                    customerPhone:
-                        checkoutDetails.customerPhone ||
-                        loggedInCustomer.mobile ||
-                        "",
-
-
-                    customerEmail:
-                        loggedInCustomer.email ||
-                        checkoutDetails.customerEmail ||
-                        "",
-
-
-                    // =================================
-                    // RECIPIENT INFORMATION
-                    // =================================
-
-                    recipientName:
-                        checkoutDetails.recipientName ||
-                        "",
-
-
-                    recipientPhone:
-                        checkoutDetails.recipientPhone ||
-                        "",
-
-
-                    // =================================
-                    // DELIVERY INFORMATION
-                    // =================================
-
-                    address:
-                        checkoutDetails.address ||
-                        "",
-
-
-                    deliveryDate:
-                        checkoutDetails.deliveryDate ||
-                        "",
-
-
-                    deliveryTime:
-                        checkoutDetails.deliveryTime ||
-                        "",
-
-
-                    // =================================
-                    // SURPRISE DETAILS
-                    // =================================
-
-                    surpriseMessage:
-                        checkoutDetails.surpriseMessage ||
-                        "",
-
-
-                    specialInstructions:
-                        checkoutDetails.specialInstructions ||
-                        "",
-
-
-                    // =================================
-                    // GIFTS
-                    // =================================
-
-                    cart:
-                        cart,
-
-
-                    // =================================
-                    // PAYMENT
-                    // =================================
-
-                    giftTotal:
-                        giftTotal,
-
-
-                    deliveryCharge:
-                        deliveryCharge,
-
-
-                    total:
-                        finalTotal,
-
-
-                    paymentMethod:
-                        selectedMethod,
-
-
-                    paymentStatus:
-                        "Demo Payment Successful",
-
-
-                    // =================================
-                    // INITIAL STATUS
-                    // =================================
-
-                    orderStatus:
-                        "Order Placed"
-
-                };
-
-
-                // =================================
-                // GET ALL OLD ORDERS
-                // =================================
-
-                let orders =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "giftZoneOrders"
-                        )
-                    ) || [];
-
-
-                // =================================
-                // ADD NEW ORDER
-                // =================================
-
-                orders.push(
-                    newOrder
+                await saveOrderToFirestore(
+                    selectedMethod
                 );
 
 
                 // =================================
-                // SAVE ALL ORDERS
+                // ENABLE BUTTON AGAIN
                 // =================================
 
-                localStorage.setItem(
-                    "giftZoneOrders",
-                    JSON.stringify(
-                        orders
-                    )
-                );
+                payButton.disabled = false;
 
-
-                // =================================
-                // CLEAR CART
-                // =================================
-
-                localStorage.removeItem(
-                    "giftZoneCart"
-                );
-
-
-                // =================================
-                // CLEAR CHECKOUT DATA
-                // =================================
-                // Prevents old checkout details
-                // from being reused for another
-                // customer.
-                // =================================
-
-                localStorage.removeItem(
-                    "giftZoneCheckout"
-                );
-
-
-                // =================================
-                // SUCCESS
-                // =================================
-
-                showPaymentPopup(
-
-                    "🎉",
-
-                    "Order Confirmed!",
-
-                    "Your Gift Zone order has been placed successfully." +
-
-                    "<br><br>" +
-
-                    "<strong>Order ID:</strong> " +
-                    orderId +
-
-                    "<br>" +
-
-                    "<strong>Amount:</strong> ₹" +
-                    finalTotal +
-
-                    "<br><br>" +
-
-                    "Your surprise delivery is now being prepared! 🎁",
-
-                    "View My Order →",
-
-                    function () {
-
-                        window.location.href =
-                            "orders.html";
-
-                    }
-
-                );
+                payButton.textContent =
+                    "💳 Pay ₹" + finalTotal;
 
             }
 
@@ -1637,7 +1686,6 @@ payButton.addEventListener(
 
     }
 );
-
 
 </script>
 
