@@ -157,20 +157,6 @@
             font-weight: bold;
         }
 
-        .error-message {
-            max-width: 500px;
-            margin: 100px auto;
-            background: white;
-            padding: 35px;
-            text-align: center;
-            border-radius: 20px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
-        }
-
-        .error-message h2 {
-            color: #e91e63;
-        }
-
         @media (max-width: 600px) {
 
             .profile-page {
@@ -239,36 +225,49 @@ const profileContent =
 // CREATE GIFT ZONE CUSTOMER ID
 // =====================================
 //
+// Customer ID format:
+//
+// GZ-CUST-583214
+//
+// Only numbers are shown after GZ-CUST-.
+//
 // Firebase UID stays hidden.
-// This creates a readable Gift Zone ID
-// from the Firebase UID.
-//
-// Example:
-// GZ-CUST-9HZXEQLV
-//
-// The same Firebase UID always creates
-// the same Gift Zone Customer ID.
 //
 
 function createGiftZoneCustomerId(uid) {
 
     if (!uid) {
 
-        return "GZ-CUST-UNKNOWN";
+        return "GZ-CUST-000000";
 
     }
 
-    const cleanUid =
-        String(uid)
-            .replace(/[^a-zA-Z0-9]/g, "")
-            .toUpperCase();
+    let hash = 0;
 
-    const shortUid =
-        cleanUid.substring(
-            Math.max(0, cleanUid.length - 8)
-        );
 
-    return "GZ-CUST-" + shortUid;
+    for (
+        let i = 0;
+        i < uid.length;
+        i++
+    ) {
+
+        hash =
+            ((hash << 5) - hash) +
+            uid.charCodeAt(i);
+
+        hash |= 0;
+
+    }
+
+
+    const number =
+        Math.abs(hash)
+            .toString()
+            .padStart(6, "0")
+            .slice(-6);
+
+
+    return "GZ-CUST-" + number;
 
 }
 
@@ -367,7 +366,7 @@ onAuthStateChanged(
 
 
         // =================================
-        // GET LOCAL PROFILE INFORMATION
+        // GET CUSTOMER INFORMATION
         // =================================
 
         const customer =
@@ -377,10 +376,6 @@ onAuthStateChanged(
         // =================================
         // CREATE CUSTOMER ID
         // =================================
-        //
-        // IMPORTANT:
-        // Firebase UID is NOT displayed.
-        //
 
         const giftZoneCustomerId =
             createGiftZoneCustomerId(
@@ -389,16 +384,21 @@ onAuthStateChanged(
 
 
         // =================================
-        // SAVE DISPLAY CUSTOMER ID LOCALLY
+        // SAVE CUSTOMER INFORMATION
         // =================================
 
         const updatedCustomer = {
 
             ...customer,
 
-            customerId: giftZoneCustomerId,
+            customerId:
+                giftZoneCustomerId,
 
-            firebaseUid: currentUser.uid,
+            // Firebase UID is kept internally.
+            // It is NOT displayed to the customer.
+
+            firebaseUid:
+                currentUser.uid,
 
             name:
                 customer.name ||
@@ -437,7 +437,10 @@ onAuthStateChanged(
                 </div>
 
                 <h1>
-                    Welcome, ${escapeHTML(updatedCustomer.name)}
+                    Welcome,
+                    ${escapeHTML(
+                        updatedCustomer.name
+                    )}
                 </h1>
 
                 <p>
@@ -460,8 +463,12 @@ onAuthStateChanged(
                         Customer ID
                     </span>
 
-                    <span class="profile-value customer-id-value">
-                        ${escapeHTML(giftZoneCustomerId)}
+                    <span
+                        class="profile-value customer-id-value"
+                    >
+                        ${escapeHTML(
+                            giftZoneCustomerId
+                        )}
                     </span>
 
                 </div>
@@ -617,13 +624,14 @@ async function logoutCustomer() {
 
     } catch (error) {
 
-        alert(
-            "Logout failed. Please try again."
-        );
-
         console.error(
             "Gift Zone logout error:",
             error
+        );
+
+
+        alert(
+            "Logout failed. Please try again."
         );
 
     }
