@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,7 +73,9 @@
         }
 
         .login-message,
-        .empty-orders {
+        .empty-orders,
+        .error-message,
+        .loading-message {
             background: white;
             padding: 45px 20px;
             text-align: center;
@@ -81,7 +84,9 @@
         }
 
         .login-message h2,
-        .empty-orders h2 {
+        .empty-orders h2,
+        .error-message h2,
+        .loading-message h2 {
             color: #e91e63;
             margin-bottom: 12px;
         }
@@ -107,6 +112,16 @@
         }
 
         .customer-info strong {
+            color: #e91e63;
+        }
+
+        .customer-id {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .customer-id strong {
             color: #e91e63;
         }
 
@@ -414,10 +429,24 @@
         Track your surprise gift delivery
     </p>
 
-    <div id="ordersContainer"></div>
+    <div id="ordersContainer">
+
+        <div class="loading-message">
+
+            <h2>
+                ⏳ Loading Orders...
+            </h2>
+
+            <p>
+                Please wait while we load your Gift Zone orders.
+            </p>
+
+        </div>
+
+    </div>
 
     <div class="refresh-info">
-        🔄 Order status automatically updates every 5 seconds
+        🔄 Order status updates automatically
     </div>
 
     <a href="index.html" class="back-home">
@@ -427,7 +456,46 @@
 </div>
 
 
-<script>
+<script type="module">
+
+
+// =====================================
+// GIFT ZONE - CUSTOMER ORDERS
+// FIRESTORE VERSION
+// =====================================
+
+
+// =====================================
+// FIREBASE
+// =====================================
+
+import {
+    auth,
+    db
+} from "./firebase.js";
+
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+import {
+    collection,
+    query,
+    where,
+    onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+// =====================================
+// PAGE ELEMENT
+// =====================================
+
+const ordersContainer =
+    document.getElementById(
+        "ordersContainer"
+    );
 
 
 // =====================================
@@ -439,322 +507,206 @@ const statusSteps = [
     {
         key: "Order Placed",
         icon: "🛒",
-        message: "Your order has been successfully placed.",
-        next: "Our team will start preparing your gift."
+        message:
+            "Your order has been successfully placed.",
+        next:
+            "Our team will start preparing your gift."
     },
 
     {
         key: "Gift Being Packed",
         icon: "📦",
-        message: "Your gift is currently being packed.",
-        next: "Once packing is complete, your gift will be marked ready."
+        message:
+            "Your gift is currently being packed.",
+        next:
+            "Once packing is complete, your gift will be marked ready."
     },
 
     {
         key: "Gift Ready",
         icon: "🎁",
-        message: "Your gift is ready for delivery.",
-        next: "The delivery person will pick up your gift."
+        message:
+            "Your gift is ready for delivery.",
+        next:
+            "The delivery person will pick up your gift."
     },
 
     {
         key: "Delivery Person Picked Up",
         icon: "🚚",
-        message: "Our delivery person has picked up your gift.",
-        next: "Your gift will now be taken to the delivery location."
+        message:
+            "Our delivery person has picked up your gift.",
+        next:
+            "Your gift will now be taken to the delivery location."
     },
 
     {
         key: "Out for Delivery",
         icon: "🛵",
-        message: "Your gift is out for delivery.",
-        next: "The delivery person is on the way to the recipient."
+        message:
+            "Your gift is out for delivery.",
+        next:
+            "The delivery person is on the way to the recipient."
     },
 
     {
         key: "Delivered",
         icon: "🎉",
-        message: "Your gift has been successfully delivered.",
-        next: "Thank you for choosing Gift Zone! ❤️"
+        message:
+            "Your gift has been successfully delivered.",
+        next:
+            "Thank you for choosing Gift Zone! ❤️"
     }
 
 ];
 
 
 // =====================================
-// GET LOGGED-IN CUSTOMER
+// CREATE CUSTOMER ID
 // =====================================
 
-function getLoggedInCustomer() {
+function createGiftZoneCustomerId(uid) {
+
+    if (!uid) {
+
+        return "GZ-CUST-000000";
+
+    }
+
+    let hash = 0;
+
+
+    for (
+        let i = 0;
+        i < uid.length;
+        i++
+    ) {
+
+        hash =
+            ((hash << 5) - hash) +
+            uid.charCodeAt(i);
+
+        hash |= 0;
+
+    }
+
+
+    const number =
+        Math.abs(hash)
+            .toString()
+            .padStart(6, "0")
+            .slice(-6);
+
+
+    return "GZ-CUST-" + number;
+
+}
+
+
+// =====================================
+// ESCAPE HTML
+// =====================================
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// =====================================
+// FORMAT FIREBASE DATE
+// =====================================
+
+function formatDate(value) {
+
+    if (!value) {
+
+        return "Not available";
+
+    }
+
 
     try {
 
-        return JSON.parse(
-            localStorage.getItem(
-                "giftZoneLoggedInCustomer"
-            )
-        );
-
-    } catch (error) {
-
-        return null;
-
-    }
-
-}
-
-
-// =====================================
-// GET ALL ORDERS
-// =====================================
-
-function getAllOrders() {
-
-    try {
-
-        return JSON.parse(
-            localStorage.getItem(
-                "giftZoneOrders"
-            )
-        ) || [];
-
-    } catch (error) {
-
-        return [];
-
-    }
-
-}
-
-
-// =====================================
-// SAVE ORDERS
-// =====================================
-
-function saveAllOrders(orders) {
-
-    localStorage.setItem(
-        "giftZoneOrders",
-        JSON.stringify(orders)
-    );
-
-}
-
-
-// =====================================
-// LOAD CUSTOMER ORDERS
-// =====================================
-
-function loadOrders() {
-
-    const ordersContainer =
-        document.getElementById(
-            "ordersContainer"
-        );
-
-
-    const loggedInCustomer =
-        getLoggedInCustomer();
-
-
-    // =====================================
-    // LOGIN CHECK
-    // =====================================
-
-    if (!loggedInCustomer) {
-
-        ordersContainer.innerHTML = `
-
-            <div class="login-message">
-
-                <h2>
-                    🔐 Login Required
-                </h2>
-
-                <p>
-                    Please login to view your Gift Zone orders.
-                </p>
-
-                <a
-                    href="login.html"
-                    class="login-button"
-                >
-                    Login Now
-                </a>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    // =====================================
-    // CUSTOMER ID
-    // =====================================
-
-    const customerId =
-        String(
-            loggedInCustomer.customerId || ""
-        ).trim();
-
-
-    if (!customerId) {
-
-        ordersContainer.innerHTML = `
-
-            <div class="empty-orders">
-
-                <h2>
-                    ⚠️ Account Information Missing
-                </h2>
-
-                <p>
-                    Please logout and login again.
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    // =====================================
-    // GET ORDERS
-    // =====================================
-
-    const allOrders =
-        getAllOrders();
-
-
-    let customerOrders = [];
-
-    let ordersChanged = false;
-
-
-    // =====================================
-    // FILTER CUSTOMER ORDERS
-    // =====================================
-
-    allOrders.forEach(
-        function(order) {
-
-            if (!order) {
-                return;
-            }
-
-
-            const orderCustomerId =
-                String(
-                    order.customerId || ""
-                ).trim();
-
-
-            // =================================
-            // NEW ORDER WITH CUSTOMER ID
-            // =================================
-
-            if (orderCustomerId) {
-
-                if (
-                    orderCustomerId ===
-                    customerId
-                ) {
-
-                    customerOrders.push(order);
-
-                }
-
-                return;
-
-            }
-
-
-            // =================================
-            // OLD ORDER WITHOUT CUSTOMER ID
-            // =================================
-
-            const orderEmail =
-                String(
-                    order.customerEmail || ""
-                )
-                .toLowerCase()
-                .trim();
-
-
-            const customerEmail =
-                String(
-                    loggedInCustomer.email || ""
-                )
-                .toLowerCase()
-                .trim();
-
-
-            const orderPhone =
-                String(
-                    order.customerPhone || ""
-                ).trim();
-
-
-            const customerPhone =
-                String(
-                    loggedInCustomer.mobile || ""
-                ).trim();
-
-
-            const emailMatch =
-                orderEmail &&
-                customerEmail &&
-                orderEmail === customerEmail;
-
-
-            const phoneMatch =
-                orderPhone &&
-                customerPhone &&
-                orderPhone === customerPhone;
-
-
-            if (
-                emailMatch ||
-                phoneMatch
-            ) {
-
-                order.customerId =
-                    customerId;
-
-                customerOrders.push(order);
-
-                ordersChanged = true;
-
-            }
+        if (
+            typeof value.toDate ===
+            "function"
+        ) {
+
+            return value
+                .toDate()
+                .toLocaleString();
 
         }
-    );
 
 
-    // =====================================
-    // SAVE OLD ORDERS
-    // =====================================
+        if (
+            value instanceof Date
+        ) {
 
-    if (ordersChanged) {
+            return value.toLocaleString();
 
-        saveAllOrders(allOrders);
+        }
+
+
+        return String(value);
+
+    } catch (error) {
+
+        return "Not available";
+
+    }
+
+}
+
+
+// =====================================
+// GET ORDER DATE
+// =====================================
+
+function getOrderDate(order) {
+
+    if (order.orderCreatedAt) {
+
+        return formatDate(
+            order.orderCreatedAt
+        );
 
     }
 
 
-    // =====================================
-    // NO ORDERS
-    // =====================================
+    if (order.orderDate) {
 
-    if (
-        customerOrders.length === 0
-    ) {
+        return order.orderDate;
+
+    }
+
+
+    return "Not available";
+
+}
+
+
+// =====================================
+// RENDER ORDERS
+// =====================================
+
+function renderOrders(
+    orders,
+    currentUser
+) {
+
+    // =================================
+    // NO ORDERS
+    // =================================
+
+    if (!orders || orders.length === 0) {
 
         ordersContainer.innerHTML = `
 
@@ -783,9 +735,21 @@ function loadOrders() {
     }
 
 
-    // =====================================
+    // =================================
     // CUSTOMER INFORMATION
-    // =====================================
+    // =================================
+
+    const customerName =
+        currentUser.displayName ||
+        currentUser.email ||
+        "Customer";
+
+
+    const customerId =
+        createGiftZoneCustomerId(
+            currentUser.uid
+        );
+
 
     ordersContainer.innerHTML = `
 
@@ -794,554 +758,57 @@ function loadOrders() {
             👤 Logged in as:
 
             <strong>
-                ${
-                    loggedInCustomer.name ||
-                    "Customer"
-                }
+                ${escapeHTML(customerName)}
             </strong>
+
+            <div class="customer-id">
+
+                Customer ID:
+
+                <strong>
+                    ${escapeHTML(customerId)}
+                </strong>
+
+            </div>
 
         </div>
 
     `;
 
 
-    // =====================================
+    // =================================
     // NEWEST ORDER FIRST
-    // =====================================
+    // =================================
 
-    customerOrders
+    orders
         .slice()
-        .reverse()
+        .sort(
+            function(a, b) {
+
+                const aTime =
+                    a.orderCreatedAt &&
+                    typeof a.orderCreatedAt.toMillis ===
+                    "function"
+                        ? a.orderCreatedAt.toMillis()
+                        : 0;
+
+                const bTime =
+                    b.orderCreatedAt &&
+                    typeof b.orderCreatedAt.toMillis ===
+                    "function"
+                        ? b.orderCreatedAt.toMillis()
+                        : 0;
+
+                return bTime - aTime;
+
+            }
+        )
         .forEach(
             function(order) {
 
-
-                // =================================
-                // CURRENT STATUS
-                // =================================
-
-                let currentStatus =
-                    order.orderStatus ||
-                    "Order Placed";
-
-
-                if (
-                    currentStatus ===
-                    "Surprise Preparing"
-                ) {
-
-                    currentStatus =
-                        "Order Placed";
-
-                }
-
-
-                // =================================
-                // FIND STATUS INDEX
-                // =================================
-
-                let currentIndex =
-                    statusSteps.findIndex(
-                        function(step) {
-
-                            return (
-                                step.key ===
-                                currentStatus
-                            );
-
-                        }
-                    );
-
-
-                if (currentIndex === -1) {
-
-                    currentIndex = 0;
-
-                    currentStatus =
-                        "Order Placed";
-
-                }
-
-
-                const currentStep =
-                    statusSteps[currentIndex];
-
-
-                // =================================
-                // PROGRESS
-                // =================================
-
-                const progressPercent =
-                    currentIndex === 0
-                        ? 0
-                        : (
-                            currentIndex /
-                            (statusSteps.length - 1)
-                        ) * 90;
-
-
-                // =================================
-                // TRACKING
-                // =================================
-
-                let trackingHTML = "";
-
-
-                statusSteps.forEach(
-                    function(step, index) {
-
-                        let className = "";
-
-
-                        if (
-                            index <
-                            currentIndex
-                        ) {
-
-                            className =
-                                "completed";
-
-                        }
-
-                        else if (
-                            index ===
-                            currentIndex
-                        ) {
-
-                            className =
-                                "current";
-
-                        }
-
-
-                        trackingHTML += `
-
-                            <div
-                                class="tracking-step ${className}"
-                            >
-
-                                <div class="step-circle">
-                                    ${step.icon}
-                                </div>
-
-                                <div class="step-label">
-                                    ${step.key}
-                                </div>
-
-                            </div>
-
-                        `;
-
-                    }
-                );
-
-
-                // =================================
-                // NEXT STEP
-                // =================================
-
-                const nextStep =
-                    statusSteps[
-                        currentIndex + 1
-                    ];
-
-
-                const nextStepHTML =
-                    nextStep
-                    ? `
-                        <div class="next-step">
-
-                            <strong>
-                                🔜 Next:
-                            </strong>
-
-                            ${nextStep.icon}
-                            ${nextStep.key}
-
-                        </div>
-                    `
-                    : `
-                        <div class="next-step">
-
-                            <strong>
-                                ❤️ Completed
-                            </strong>
-
-                            Your surprise delivery is complete.
-
-                        </div>
-                    `;
-
-
-                // =================================
-                // LAST UPDATE
-                // =================================
-
-                let lastUpdateHTML =
-                    "";
-
-
-                if (
-                    order.statusUpdatedAt
-                ) {
-
-                    lastUpdateHTML = `
-
-                        <div class="last-update">
-
-                            🕐 Last status update:
-
-                            ${order.statusUpdatedAt}
-
-                        </div>
-
-                    `;
-
-                }
-
-
-                // =================================
-                // GIFTS
-                // =================================
-
-                let giftsHTML = "";
-
-
-                if (
-                    Array.isArray(order.cart)
-                ) {
-
-                    order.cart.forEach(
-                        function(item) {
-
-                            giftsHTML += `
-
-                                <div class="gift-item">
-
-                                    🎁
-
-                                    <strong>
-                                        ${item.name || "Gift"}
-                                    </strong>
-
-                                    <br>
-
-                                    Quantity:
-                                    ${item.quantity || 1}
-
-                                    <br>
-
-                                    Price:
-                                    ₹${item.price || 0}
-
-                                </div>
-
-                            `;
-
-                        }
-                    );
-
-                }
-
-
-                // =================================
-                // ORDER CARD
-                // =================================
-
-                const orderCard =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                orderCard.className =
-                    "order-card";
-
-
-                orderCard.innerHTML = `
-
-                    <div class="order-header">
-
-                        <div>
-
-                            <div class="order-id">
-                                ${order.orderId || "No Order ID"}
-                            </div>
-
-                            <div class="order-date">
-                                Ordered on:
-                                ${order.orderDate || ""}
-                            </div>
-
-                        </div>
-
-
-                        <div class="status-badge">
-
-                            ${currentStep.icon}
-
-                            ${currentStatus}
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- STATUS NOTIFICATION -->
-
-                    <div class="status-notification">
-
-                        <h3>
-
-                            ${currentStep.icon}
-
-                            ${currentStatus}
-
-                        </h3>
-
-                        <p>
-                            ${currentStep.message}
-                        </p>
-
-                        ${lastUpdateHTML}
-
-                    </div>
-
-
-                    <!-- TRACKING -->
-
-                    <div class="tracking-section">
-
-                        <h2 class="tracking-title">
-                            🚚 Surprise Delivery Tracking
-                        </h2>
-
-
-                        <div class="tracking">
-
-                            <div class="tracking-line"></div>
-
-                            <div
-                                class="tracking-progress"
-                                style="width:${progressPercent}%"
-                            ></div>
-
-                            ${trackingHTML}
-
-                        </div>
-
-
-                        ${nextStepHTML}
-
-                    </div>
-
-
-                    <!-- CUSTOMER DETAILS -->
-
-                    <h3 class="section-title">
-                        👤 Customer Details
-                    </h3>
-
-
-                    <div class="details-grid">
-
-                        <div class="detail-box">
-
-                            <strong>
-                                Name
-                            </strong>
-
-                            ${order.customerName || "N/A"}
-
-                        </div>
-
-
-                        <div class="detail-box">
-
-                            <strong>
-                                Phone
-                            </strong>
-
-                            ${order.customerPhone || "N/A"}
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- RECIPIENT -->
-
-                    <h3 class="section-title">
-                        🎁 Recipient Details
-                    </h3>
-
-
-                    <div class="details-grid">
-
-                        <div class="detail-box">
-
-                            <strong>
-                                Name
-                            </strong>
-
-                            ${order.recipientName || "N/A"}
-
-                        </div>
-
-
-                        <div class="detail-box">
-
-                            <strong>
-                                Phone
-                            </strong>
-
-                            ${order.recipientPhone || "N/A"}
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- DELIVERY -->
-
-                    <h3 class="section-title">
-                        📍 Delivery Details
-                    </h3>
-
-
-                    <div class="details-grid">
-
-                        <div class="detail-box">
-
-                            <strong>
-                                Address
-                            </strong>
-
-                            ${order.address || "N/A"}
-
-                        </div>
-
-
-                        <div class="detail-box">
-
-                            <strong>
-                                Delivery Date
-                            </strong>
-
-                            ${order.deliveryDate || "N/A"}
-
-                        </div>
-
-
-                        <div class="detail-box">
-
-                            <strong>
-                                Delivery Time
-                            </strong>
-
-                            ${order.deliveryTime || "N/A"}
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- GIFTS -->
-
-                    <h3 class="section-title">
-                        🎁 Ordered Gifts
-                    </h3>
-
-
-                    ${
-                        giftsHTML ||
-                        "<p>No gift details available.</p>"
-                    }
-
-
-                    <!-- SURPRISE MESSAGE -->
-
-                    <h3 class="section-title">
-                        💌 Surprise Message
-                    </h3>
-
-
-                    <div class="detail-box">
-
-                        ${
-                            order.surpriseMessage ||
-                            "No surprise message"
-                        }
-
-                    </div>
-
-
-                    <!-- SPECIAL INSTRUCTIONS -->
-
-                    <h3 class="section-title">
-                        📝 Special Instructions
-                    </h3>
-
-
-                    <div class="detail-box">
-
-                        ${
-                            order.specialInstructions ||
-                            "No special instructions"
-                        }
-
-                    </div>
-
-
-                    <!-- PAYMENT -->
-
-                    <h3 class="section-title">
-                        💳 Payment Details
-                    </h3>
-
-
-                    <div class="payment-box">
-
-                        Payment Method:
-
-                        <strong>
-                            ${order.paymentMethod || "N/A"}
-                        </strong>
-
-                        <br>
-
-                        Payment Status:
-
-                        <strong>
-                            ${order.paymentStatus || "N/A"}
-                        </strong>
-
-                        <br><br>
-
-                        Gift Total:
-                        ₹${order.giftTotal || 0}
-
-                        <br>
-
-                        Delivery Charge:
-                        ₹${order.deliveryCharge || 0}
-
-                        <br>
-
-                        <span class="total">
-
-                            Total:
-                            ₹${order.total || 0}
-
-                        </span>
-
-                    </div>
-
-                `;
-
-
-                ordersContainer.appendChild(
-                    orderCard
+                renderOrder(
+                    order,
+                    ordersContainer
                 );
 
             }
@@ -1351,25 +818,770 @@ function loadOrders() {
 
 
 // =====================================
-// INITIAL LOAD
+// RENDER ONE ORDER
 // =====================================
 
-loadOrders();
+function renderOrder(
+    order,
+    container
+) {
+
+    // =================================
+    // CURRENT STATUS
+    // =================================
+
+    let currentStatus =
+        order.orderStatus ||
+        "Order Placed";
+
+
+    if (
+        currentStatus ===
+        "Surprise Preparing"
+    ) {
+
+        currentStatus =
+            "Order Placed";
+
+    }
+
+
+    // =================================
+    // FIND STATUS INDEX
+    // =================================
+
+    let currentIndex =
+        statusSteps.findIndex(
+            function(step) {
+
+                return (
+                    step.key ===
+                    currentStatus
+                );
+
+            }
+        );
+
+
+    if (currentIndex === -1) {
+
+        currentIndex = 0;
+
+        currentStatus =
+            "Order Placed";
+
+    }
+
+
+    const currentStep =
+        statusSteps[currentIndex];
+
+
+    // =================================
+    // PROGRESS
+    // =================================
+
+    const progressPercent =
+        currentIndex === 0
+            ? 0
+            : (
+                currentIndex /
+                (statusSteps.length - 1)
+            ) * 90;
+
+
+    // =================================
+    // TRACKING HTML
+    // =================================
+
+    let trackingHTML = "";
+
+
+    statusSteps.forEach(
+        function(step, index) {
+
+            let className = "";
+
+
+            if (
+                index <
+                currentIndex
+            ) {
+
+                className =
+                    "completed";
+
+            }
+
+            else if (
+                index ===
+                currentIndex
+            ) {
+
+                className =
+                    "current";
+
+            }
+
+
+            trackingHTML += `
+
+                <div
+                    class="tracking-step ${className}"
+                >
+
+                    <div class="step-circle">
+                        ${step.icon}
+                    </div>
+
+                    <div class="step-label">
+                        ${escapeHTML(step.key)}
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    // =================================
+    // NEXT STEP
+    // =================================
+
+    const nextStep =
+        statusSteps[
+            currentIndex + 1
+        ];
+
+
+    const nextStepHTML =
+        nextStep
+            ? `
+
+                <div class="next-step">
+
+                    <strong>
+                        🔜 Next:
+                    </strong>
+
+                    ${nextStep.icon}
+
+                    ${escapeHTML(
+                        nextStep.key
+                    )}
+
+                </div>
+
+            `
+            : `
+
+                <div class="next-step">
+
+                    <strong>
+                        ❤️ Completed
+                    </strong>
+
+                    Your surprise delivery is complete.
+
+                </div>
+
+            `;
+
+
+    // =================================
+    // LAST UPDATE
+    // =================================
+
+    let lastUpdateHTML = "";
+
+
+    if (
+        order.statusUpdatedAt
+    ) {
+
+        lastUpdateHTML = `
+
+            <div class="last-update">
+
+                🕐 Last status update:
+
+                ${escapeHTML(
+                    formatDate(
+                        order.statusUpdatedAt
+                    )
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+
+    // =================================
+    // GIFTS
+    // =================================
+
+    let giftsHTML = "";
+
+
+    if (
+        Array.isArray(order.cart)
+    ) {
+
+        order.cart.forEach(
+            function(item) {
+
+                giftsHTML += `
+
+                    <div class="gift-item">
+
+                        🎁
+
+                        <strong>
+                            ${escapeHTML(
+                                item.name ||
+                                "Gift"
+                            )}
+                        </strong>
+
+                        <br>
+
+                        Quantity:
+                        ${escapeHTML(
+                            item.quantity ||
+                            1
+                        )}
+
+                        <br>
+
+                        Price:
+                        ₹${escapeHTML(
+                            item.price ||
+                            0
+                        )}
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+    // =================================
+    // ORDER CARD
+    // =================================
+
+    const orderCard =
+        document.createElement(
+            "div"
+        );
+
+
+    orderCard.className =
+        "order-card";
+
+
+    orderCard.innerHTML = `
+
+        <div class="order-header">
+
+            <div>
+
+                <div class="order-id">
+
+                    ${escapeHTML(
+                        order.orderId ||
+                        "No Order ID"
+                    )}
+
+                </div>
+
+                <div class="order-date">
+
+                    Ordered on:
+
+                    ${escapeHTML(
+                        getOrderDate(order)
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="status-badge">
+
+                ${currentStep.icon}
+
+                ${escapeHTML(
+                    currentStatus
+                )}
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS NOTIFICATION -->
+
+        <div class="status-notification">
+
+            <h3>
+
+                ${currentStep.icon}
+
+                ${escapeHTML(
+                    currentStatus
+                )}
+
+            </h3>
+
+            <p>
+
+                ${escapeHTML(
+                    currentStep.message
+                )}
+
+            </p>
+
+            ${lastUpdateHTML}
+
+        </div>
+
+
+        <!-- TRACKING -->
+
+        <div class="tracking-section">
+
+            <h2 class="tracking-title">
+
+                🚚 Surprise Delivery Tracking
+
+            </h2>
+
+
+            <div class="tracking">
+
+                <div class="tracking-line"></div>
+
+                <div
+                    class="tracking-progress"
+                    style="width:${progressPercent}%"
+                ></div>
+
+                ${trackingHTML}
+
+            </div>
+
+
+            ${nextStepHTML}
+
+        </div>
+
+
+        <!-- CUSTOMER DETAILS -->
+
+        <h3 class="section-title">
+
+            👤 Customer Details
+
+        </h3>
+
+
+        <div class="details-grid">
+
+            <div class="detail-box">
+
+                <strong>
+                    Name
+                </strong>
+
+                ${escapeHTML(
+                    order.customerName ||
+                    "N/A"
+                )}
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <strong>
+                    Phone
+                </strong>
+
+                ${escapeHTML(
+                    order.customerPhone ||
+                    "N/A"
+                )}
+
+            </div>
+
+        </div>
+
+
+        <!-- RECIPIENT -->
+
+        <h3 class="section-title">
+
+            🎁 Recipient Details
+
+        </h3>
+
+
+        <div class="details-grid">
+
+            <div class="detail-box">
+
+                <strong>
+                    Name
+                </strong>
+
+                ${escapeHTML(
+                    order.recipientName ||
+                    "N/A"
+                )}
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <strong>
+                    Phone
+                </strong>
+
+                ${escapeHTML(
+                    order.recipientPhone ||
+                    "N/A"
+                )}
+
+            </div>
+
+        </div>
+
+
+        <!-- DELIVERY -->
+
+        <h3 class="section-title">
+
+            📍 Delivery Details
+
+        </h3>
+
+
+        <div class="details-grid">
+
+            <div class="detail-box">
+
+                <strong>
+                    Address
+                </strong>
+
+                ${escapeHTML(
+                    order.address ||
+                    "N/A"
+                )}
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <strong>
+                    Delivery Date
+                </strong>
+
+                ${escapeHTML(
+                    order.deliveryDate ||
+                    "N/A"
+                )}
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <strong>
+                    Delivery Time
+                </strong>
+
+                ${escapeHTML(
+                    order.deliveryTime ||
+                    "N/A"
+                )}
+
+            </div>
+
+        </div>
+
+
+        <!-- GIFTS -->
+
+        <h3 class="section-title">
+
+            🎁 Ordered Gifts
+
+        </h3>
+
+
+        ${
+            giftsHTML ||
+            "<p>No gift details available.</p>"
+        }
+
+
+        <!-- SURPRISE MESSAGE -->
+
+        <h3 class="section-title">
+
+            💌 Surprise Message
+
+        </h3>
+
+
+        <div class="detail-box">
+
+            ${escapeHTML(
+                order.surpriseMessage ||
+                "No surprise message"
+            )}
+
+        </div>
+
+
+        <!-- SPECIAL INSTRUCTIONS -->
+
+        <h3 class="section-title">
+
+            📝 Special Instructions
+
+        </h3>
+
+
+        <div class="detail-box">
+
+            ${escapeHTML(
+                order.specialInstructions ||
+                "No special instructions"
+            )}
+
+        </div>
+
+
+        <!-- PAYMENT -->
+
+        <h3 class="section-title">
+
+            💳 Payment Details
+
+        </h3>
+
+
+        <div class="payment-box">
+
+            Payment Method:
+
+            <strong>
+
+                ${escapeHTML(
+                    order.paymentMethod ||
+                    "N/A"
+                )}
+
+            </strong>
+
+            <br>
+
+            Payment Status:
+
+            <strong>
+
+                ${escapeHTML(
+                    order.paymentStatus ||
+                    "N/A"
+                )}
+
+            </strong>
+
+            <br><br>
+
+            Gift Total:
+
+            ₹${escapeHTML(
+                order.giftTotal ||
+                0
+            )}
+
+            <br>
+
+            Delivery Charge:
+
+            ₹${escapeHTML(
+                order.deliveryCharge ||
+                0
+            )}
+
+            <br>
+
+            <span class="total">
+
+                Total:
+
+                ₹${escapeHTML(
+                    order.total ||
+                    0
+                )}
+
+            </span>
+
+        </div>
+
+    `;
+
+
+    container.appendChild(
+        orderCard
+    );
+
+}
 
 
 // =====================================
-// AUTO REFRESH EVERY 5 SECONDS
+// FIREBASE AUTHENTICATION
 // =====================================
 
-setInterval(
-    function() {
+onAuthStateChanged(
+    auth,
+    function(currentUser) {
 
-        loadOrders();
+        // =================================
+        // NOT LOGGED IN
+        // =================================
 
-    },
-    5000
+        if (!currentUser) {
+
+            ordersContainer.innerHTML = `
+
+                <div class="login-message">
+
+                    <h2>
+                        🔐 Login Required
+                    </h2>
+
+                    <p>
+                        Please login to view your Gift Zone orders.
+                    </p>
+
+                    <a
+                        href="login.html"
+                        class="login-button"
+                    >
+                        Login Now
+                    </a>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        // =================================
+        // FIRESTORE QUERY
+        // =================================
+
+        const ordersRef =
+            collection(
+                db,
+                "orders"
+            );
+
+
+        const customerOrdersQuery =
+            query(
+                ordersRef,
+                where(
+                    "userId",
+                    "==",
+                    currentUser.uid
+                )
+            );
+
+
+        // =================================
+        // REAL-TIME ORDER LISTENER
+        // =================================
+
+        onSnapshot(
+            customerOrdersQuery,
+
+            function(snapshot) {
+
+                const orders = [];
+
+
+                snapshot.forEach(
+                    function(docSnapshot) {
+
+                        orders.push(
+                            docSnapshot.data()
+                        );
+
+                    }
+                );
+
+
+                renderOrders(
+                    orders,
+                    currentUser
+                );
+
+            },
+
+            function(error) {
+
+                console.error(
+                    "Gift Zone Firestore order error:",
+                    error
+                );
+
+
+                ordersContainer.innerHTML = `
+
+                    <div class="error-message">
+
+                        <h2>
+                            ⚠️ Orders Could Not Be Loaded
+                        </h2>
+
+                        <p>
+                            We could not load your orders right now.
+                        </p>
+
+                        <br>
+
+                        <p>
+                            Please refresh the page and try again.
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
 );
-
 
 </script>
 
@@ -1377,3 +1589,4 @@ setInterval(
 </body>
 
 </html>
+
