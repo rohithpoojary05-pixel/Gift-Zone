@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -224,15 +224,6 @@ const profileContent =
 // =====================================
 // CREATE GIFT ZONE CUSTOMER ID
 // =====================================
-//
-// Customer ID format:
-//
-// GZ-CUST-583214
-//
-// Only numbers are shown after GZ-CUST-.
-//
-// Firebase UID stays hidden.
-//
 
 function createGiftZoneCustomerId(uid) {
 
@@ -384,6 +375,25 @@ onAuthStateChanged(
 
 
         // =================================
+        // MOBILE NUMBER
+        // =================================
+        //
+        // First use the mobile number saved
+        // during Gift Zone registration/login.
+        //
+        // Firebase Email/Password users normally
+        // do not have currentUser.phoneNumber.
+        //
+
+        const customerMobile =
+            customer.mobile ||
+            customer.phone ||
+            customer.mobileNumber ||
+            currentUser.phoneNumber ||
+            "Not available";
+
+
+        // =================================
         // SAVE CUSTOMER INFORMATION
         // =================================
 
@@ -411,9 +421,7 @@ onAuthStateChanged(
                 "Not available",
 
             mobile:
-                customer.mobile ||
-                currentUser.phoneNumber ||
-                "Not available"
+                customerMobile
 
         };
 
@@ -643,4 +651,4 @@ async function logoutCustomer() {
 </body>
 
 </html>
-
+```
