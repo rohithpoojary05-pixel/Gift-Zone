@@ -1,8 +1,10 @@
 
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -11,6 +13,7 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+
         .register-page {
             min-height: 100vh;
             display: flex;
@@ -123,6 +126,7 @@
         }
 
         @media (max-width: 480px) {
+
             .register-box {
                 padding: 28px 20px;
             }
@@ -130,8 +134,11 @@
             .register-box h1 {
                 font-size: 26px;
             }
+
         }
+
     </style>
+
 </head>
 
 <body>
@@ -152,7 +159,6 @@
 
             <form id="registerForm">
 
-                <!-- Full Name -->
                 <label for="registerName">
                     Full Name
                 </label>
@@ -165,8 +171,6 @@
                     required
                 >
 
-
-                <!-- Email -->
                 <label for="registerEmail">
                     Email Address
                 </label>
@@ -179,8 +183,6 @@
                     required
                 >
 
-
-                <!-- Mobile -->
                 <label for="registerMobile">
                     Mobile Number
                 </label>
@@ -195,8 +197,6 @@
                     required
                 >
 
-
-                <!-- Password -->
                 <label for="registerPassword">
                     Password
                 </label>
@@ -210,8 +210,6 @@
                     required
                 >
 
-
-                <!-- Confirm Password -->
                 <label for="confirmPassword">
                     Confirm Password
                 </label>
@@ -225,8 +223,6 @@
                     required
                 >
 
-
-                <!-- Create Account -->
                 <button
                     type="submit"
                     class="register-button"
@@ -237,14 +233,15 @@
 
             </form>
 
-
             <p class="login-link">
+
                 Already have an account?
+
                 <a href="login.html">
                     Login
                 </a>
-            </p>
 
+            </p>
 
             <a
                 href="index.html"
@@ -258,31 +255,27 @@
     </div>
 
 
-    <!-- ==========================================
-         FIREBASE REGISTRATION
-    =========================================== -->
-
     <script type="module">
 
-        // Firebase Authentication
         import {
             createUserWithEmailAndPassword,
             updateProfile
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
-
-        // Gift Zone Firebase connection
         import {
-            auth
+            doc,
+            setDoc
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        import {
+            auth,
+            db
         } from "./firebase.js";
 
 
-        // Register form
         const registerForm =
             document.getElementById("registerForm");
 
-
-        // Register button
         const registerButton =
             document.getElementById("registerButton");
 
@@ -293,10 +286,6 @@
 
                 event.preventDefault();
 
-
-                // ==========================================
-                // GET FORM VALUES
-                // ==========================================
 
                 const name =
                     document
@@ -332,10 +321,6 @@
                         .value;
 
 
-                // ==========================================
-                // NAME VALIDATION
-                // ==========================================
-
                 if (!name) {
 
                     alert(
@@ -343,12 +328,9 @@
                     );
 
                     return;
+
                 }
 
-
-                // ==========================================
-                // EMAIL VALIDATION
-                // ==========================================
 
                 const emailPattern =
                     /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -361,12 +343,9 @@
                     );
 
                     return;
+
                 }
 
-
-                // ==========================================
-                // MOBILE VALIDATION
-                // ==========================================
 
                 if (!/^[0-9]{10}$/.test(mobile)) {
 
@@ -375,12 +354,9 @@
                     );
 
                     return;
+
                 }
 
-
-                // ==========================================
-                // PASSWORD VALIDATION
-                // ==========================================
 
                 if (password.length < 6) {
 
@@ -389,12 +365,9 @@
                     );
 
                     return;
+
                 }
 
-
-                // ==========================================
-                // CONFIRM PASSWORD
-                // ==========================================
 
                 if (password !== confirmPassword) {
 
@@ -403,12 +376,9 @@
                     );
 
                     return;
+
                 }
 
-
-                // ==========================================
-                // DISABLE BUTTON
-                // ==========================================
 
                 registerButton.disabled = true;
 
@@ -417,10 +387,6 @@
 
 
                 try {
-
-                    // ==========================================
-                    // CREATE FIREBASE AUTH USER
-                    // ==========================================
 
                     const userCredential =
                         await createUserWithEmailAndPassword(
@@ -434,10 +400,6 @@
                         userCredential.user;
 
 
-                    // ==========================================
-                    // SAVE NAME TO FIREBASE USER PROFILE
-                    // ==========================================
-
                     await updateProfile(
                         user,
                         {
@@ -447,8 +409,33 @@
 
 
                     // ==========================================
-                    // CUSTOMER INFORMATION
+                    // SAVE CUSTOMER PROFILE TO FIRESTORE
                     // ==========================================
+
+                    await setDoc(
+                        doc(
+                            db,
+                            "customers",
+                            user.uid
+                        ),
+                        {
+                            customerId:
+                                user.uid,
+
+                            name:
+                                name,
+
+                            email:
+                                user.email,
+
+                            mobile:
+                                mobile,
+
+                            createdAt:
+                                new Date().toISOString()
+                        }
+                    );
+
 
                     const customer = {
 
@@ -464,26 +451,19 @@
                         mobile:
                             mobile,
 
-                        createdAt:
+                        loginTime:
                             new Date().toLocaleString(
                                 "en-IN"
                             )
+
                     };
 
-
-                    // ==========================================
-                    // SAVE LOGIN SESSION
-                    // ==========================================
 
                     localStorage.setItem(
                         "giftZoneLoggedInCustomer",
                         JSON.stringify(customer)
                     );
 
-
-                    // ==========================================
-                    // SUCCESS MESSAGE
-                    // ==========================================
 
                     alert(
                         "❤️ Account created successfully!\n\n" +
@@ -492,10 +472,6 @@
                         "!"
                     );
 
-
-                    // ==========================================
-                    // GO TO HOME
-                    // ==========================================
 
                     window.location.href =
                         "index.html";
@@ -508,10 +484,6 @@
                         error
                     );
 
-
-                    // ==========================================
-                    // ERROR HANDLING
-                    // ==========================================
 
                     if (
                         error.code ===
@@ -578,17 +550,15 @@
                             "❌ Account creation failed.\n\n" +
                             error.message
                         );
+
                     }
 
-
-                    // ==========================================
-                    // ENABLE BUTTON AGAIN
-                    // ==========================================
 
                     registerButton.disabled = false;
 
                     registerButton.textContent =
                         "🎁 Create Account";
+
                 }
 
             }
