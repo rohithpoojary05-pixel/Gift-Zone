@@ -1,133 +1,3077 @@
-const {setGlobalOptions} = require("firebase-functions");
-const {onDocumentUpdated} = require("firebase-functions/v2/firestore");
-const logger = require("firebase-functions/logger");
+<!DOCTYPE html>
 
-setGlobalOptions({
-  maxInstances: 10,
-});
+<html lang="en">
 
-/*
- * ==========================================
- * GIFT ZONE - ORDER STATUS BACKEND
- * ==========================================
- *
- * Status flow:
- *
- * Order Placed
- *      ↓
- * Gift Being Packed
- *      ↓
- * Gift Ready
- *      ↓
- * Delivery Person Picked Up
- *      ↓
- * Out for Delivery
- *      ↓
- * Delivered
- *
- * The function detects orderStatus changes.
- *
- * Twilio credentials are NOT stored in this file.
- * They will be added securely later.
- */
+<head>
 
-// Customer notification messages
-const notificationMessages = {
-  "Order Placed":
-    "Gift Zone: Your order has been placed successfully.",
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  "Gift Being Packed":
-    "Gift Zone: Your gift is now being packed.",
+<title>Gift Zone - Surprise Gifts</title>
 
-  "Gift Ready":
-    "Gift Zone: Your gift is ready for delivery.",
+<link rel="stylesheet" href="style.css">
 
-  "Delivery Person Picked Up":
-    "Gift Zone: Your gift has been picked up by our delivery person.",
+<style>
 
-  "Out for Delivery":
-    "Gift Zone: Your gift is out for delivery.",
+/* =========================================
+   GIFT SEARCH
+========================================= */
 
-  "Delivered":
-   "Gift Zone: Your gift has been delivered successfully. " +
-"Thank you for choosing Gift Zone!",
+.gift-search-box {
+    width: 100%;
+    max-width: 700px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 20;
+}
+
+.gift-search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.gift-search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    width: 17px;
+    height: 17px;
+    border: 2px solid #777;
+    border-radius: 50%;
+    transform: translateY(-58%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.gift-search-icon::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 2px;
+    background: #777;
+    right: -6px;
+    bottom: -3px;
+    transform: rotate(45deg);
+    border-radius: 2px;
+}
+
+.gift-search {
+    width: 100%;
+    height: 44px;
+    padding: 0 18px 0 52px;
+    border: 1px solid #dedede;
+    border-radius: 24px;
+    font-size: 15px;
+    outline: none;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    transition: 0.25s ease;
+}
+
+.gift-search:focus {
+    border-color: #e91e63;
+    box-shadow: 0 4px 16px rgba(233,30,99,0.18);
+}
+
+.gift-search::placeholder {
+    color: #888;
+}
+
+.gift-search-suggestions {
+    position: absolute;
+    top: 51px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.14);
+    overflow: hidden;
+    display: none;
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.gift-search-suggestion {
+    padding: 12px 17px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f1f1;
+    transition: 0.2s ease;
+}
+
+.gift-search-suggestion:hover {
+    background: #fff3f7;
+}
+
+.suggestion-photo {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.suggestion-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.suggestion-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+}
+
+.suggestion-category {
+    font-size: 12px;
+    color: #888;
+}
+
+.gift-search-message {
+    text-align: center;
+    margin: 15px 0;
+    font-size: 15px;
+    color: #777;
+    display: none;
+}
+
+
+/* =========================================
+   CATEGORY PHOTOS
+========================================= */
+
+.professional-category-icon {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+    background: #f8f8f8;
+}
+
+.professional-category-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.category:hover .professional-category-icon img {
+    transform: scale(1.08);
+}
+
+
+/* =========================================
+   PRODUCT PHOTOS
+========================================= */
+
+.professional-gift-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    background: #f8f8f8;
+    border-radius: 16px 16px 0 0;
+}
+
+.professional-gift-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.gift-card:hover .professional-gift-image img {
+    transform: scale(1.06);
+}
+
+.gift-card h3 {
+    padding: 15px 15px 4px;
+    font-size: 17px;
+    color: #222;
+    min-height: 52px;
+}
+
+.gift-card .price {
+    padding: 0 15px;
+    margin-top: 4px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #e91e63;
+}
+
+.stock-left {
+    padding: 5px 15px 10px;
+    color: #d35400;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.stock-left.in-stock {
+    color: #16803c;
+}
+
+.gift-card > button {
+    margin: 5px 15px 18px;
+    width: calc(100% - 30px);
+}
+
+
+/* =========================================
+   BANNER PHOTO
+========================================= */
+
+.banner-photo {
+    width: 330px;
+    height: 280px;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.18);
+    background: #f8f8f8;
+}
+
+.banner-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.professional-loading-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 22px;
+    overflow: hidden;
+    margin: auto;
+}
+
+.professional-loading-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* =========================================
+   POPUP
+========================================= */
+
+.professional-popup-image {
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.professional-popup-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* =========================================
+   FOUR FEATURE BOXES
+========================================= */
+
+.features {
+    width: 100%;
+    max-width: 1200px;
+    margin: 25px auto 35px;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.feature-card {
+    width: 100%;
+    min-width: 0;
+    min-height: 105px;
+    padding: 18px 15px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    overflow: hidden;
+}
+
+.feature-card > div:last-child {
+    min-width: 0;
+    flex: 1;
+}
+
+.feature-card h3 {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.feature-card p {
+    margin: 7px 0 0;
+    font-size: 13px;
+    line-height: 1.3;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.feature-icon {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   PROFILE NAVIGATION
+========================================= */
+
+.main-nav a.profile-link {
+    font-weight: 700;
+}
+
+
+/* =========================================
+   HEADER SEARCH
+========================================= */
+
+.header-search {
+    flex: 0 1 360px;
+    min-width: 180px;
+    margin: 0 15px;
+}
+
+
+/* =========================================
+   MOBILE CATEGORY STRIP
+========================================= */
+
+.mobile-category-strip {
+    display: none;
+}
+
+
+/* =========================================
+   MOBILE BOTTOM NAVIGATION
+========================================= */
+
+.mobile-bottom-nav {
+    display: none;
+}
+
+
+/* =========================================
+   SURPRISE VIDEO BOX - NEW
+========================================= */
+
+.surprise-video-box {
+    width: 94%;
+    max-width: 1050px;
+    margin: 30px auto 45px;
+    padding: 30px 25px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #fff0f6, #ffffff);
+    border: 1px solid #f5cadb;
+    box-shadow: 0 10px 30px rgba(233,30,99,0.10);
+    text-align: center;
+    overflow: hidden;
+}
+
+.surprise-video-badge {
+    display: inline-block;
+    padding: 7px 15px;
+    border-radius: 20px;
+    background: #e91e63;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.surprise-video-box h2 {
+    margin: 0 0 10px;
+    color: #222;
+    font-size: 26px;
+}
+
+.surprise-video-box > p {
+    margin: 0 auto 18px;
+    max-width: 700px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.surprise-video-message {
+    min-height: 30px;
+    margin: 12px auto 20px;
+    color: #e91e63;
+    font-weight: 800;
+    font-size: 17px;
+    animation: surpriseMessageFade 0.5s ease;
+}
+
+@keyframes surpriseMessageFade {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.surprise-video-price {
+    font-size: 22px;
+    font-weight: 900;
+    color: #222;
+    margin: 10px 0 20px;
+}
+
+.surprise-video-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.surprise-video-actions button {
+    border: none;
+    border-radius: 25px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.surprise-video-add {
+    background: #e91e63;
+    color: #fff;
+}
+
+.surprise-video-skip {
+    background: #eee;
+    color: #444;
+}
+
+.surprise-video-selected {
+    display: none;
+    margin-top: 15px;
+    color: #16803c;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 950px) {
+
+    .features {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .header-search {
+        flex-basis: 280px;
+        min-width: 160px;
+        margin: 0 8px;
+    }
+
+}
+
+
+/* =========================================
+   SMALLER SCREENS
+========================================= */
+
+@media (max-width: 700px) {
+
+    .banner-photo {
+        width: 220px;
+        height: 190px;
+        margin: 15px auto;
+    }
+
+    .professional-gift-image {
+        height: 210px;
+    }
+
+    .professional-category-icon {
+        height: 120px;
+    }
+
+    .surprise-video-box {
+        padding: 25px 18px;
+    }
+
+    .surprise-video-box h2 {
+        font-size: 23px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE ONLY
+========================================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding-bottom: 72px;
+    }
+
+
+    .main-header {
+        min-height: 64px;
+        padding: 10px 15px;
+        position: sticky;
+        top: 0;
+        z-index: 5000;
+    }
+
+    .logo {
+        font-size: 19px;
+    }
+
+
+    .main-nav {
+        display: none;
+    }
+
+
+    .mobile-cart {
+        display: none !important;
+    }
+
+
+    .header-search {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        margin: 0;
+        padding: 10px 15px;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        z-index: 4900;
+    }
+
+    .gift-search {
+        height: 48px;
+        font-size: 15px;
+    }
+
+    .gift-search-suggestions {
+        top: 61px;
+        left: 15px;
+        right: 15px;
+    }
+
+
+    .mobile-category-strip {
+        display: flex;
+        position: relative;
+        width: 100%;
+        margin-top: 69px;
+        padding: 10px 12px;
+        gap: 10px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        background: #fff;
+        border-bottom: 1px solid #f2dce5;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        scrollbar-width: none;
+        z-index: 100;
+    }
+
+    .mobile-category-strip::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobile-category-button {
+        flex: 0 0 auto;
+        border: 1px solid #f0d7e1;
+        background: #fff;
+        color: #333;
+        padding: 9px 14px;
+        border-radius: 22px;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .mobile-category-button:active,
+    .mobile-category-button:hover {
+        background: #e91e63;
+        border-color: #e91e63;
+        color: #fff;
+    }
+
+
+    .banner-section {
+        margin-top: 0;
+    }
+
+
+    .features {
+        display: none;
+    }
+
+
+    .categories {
+        display: none;
+    }
+
+
+    .popular-gifts {
+        width: 94%;
+        margin: 35px auto 55px;
+    }
+
+    .section-heading {
+        margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+        font-size: 22px;
+    }
+
+    .gift-container {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .professional-gift-image {
+        height: 230px;
+    }
+
+    .gift-card h3 {
+        font-size: 17px;
+    }
+
+
+    .surprise {
+        width: 94%;
+        margin: 45px auto;
+        padding: 40px 20px;
+    }
+
+
+    .mobile-bottom-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 68px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        background: #fff;
+        border-top: 1px solid #eadce2;
+        box-shadow: 0 -5px 18px rgba(0,0,0,0.10);
+        z-index: 10000;
+    }
+
+    .mobile-bottom-nav a,
+    .mobile-bottom-nav button {
+        width: 100%;
+        height: 68px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        border: none;
+        background: transparent;
+        color: #555;
+        text-decoration: none;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-bottom-nav .bottom-icon {
+        font-size: 23px;
+        line-height: 1;
+    }
+
+    .mobile-bottom-nav a:active,
+    .mobile-bottom-nav button:active {
+        color: #e91e63;
+        background: #fff4f8;
+    }
+
+    .mobile-bottom-nav .bottom-label {
+        line-height: 1;
+    }
+
+
+    /* NEW MOBILE SURPRISE VIDEO */
+
+    .surprise-video-box {
+        width: 94%;
+        margin: 25px auto 40px;
+        padding: 25px 15px;
+        border-radius: 20px;
+    }
+
+    .surprise-video-box h2 {
+        font-size: 21px;
+    }
+
+    .surprise-video-box > p {
+        font-size: 14px;
+    }
+
+    .surprise-video-message {
+        font-size: 15px;
+    }
+
+    .surprise-video-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .surprise-video-actions button {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+
+    .main-header {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .header-search {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .gift-search {
+        height: 46px;
+        padding-left: 47px;
+        font-size: 14px;
+    }
+
+    .gift-search-icon {
+        left: 17px;
+    }
+
+    .mobile-category-strip {
+        padding-left: 10px;
+        padding-right: 10px;
+        gap: 8px;
+    }
+
+    .mobile-category-button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .professional-gift-image {
+        height: 210px;
+    }
+
+    .mobile-bottom-nav {
+        height: 66px;
+    }
+
+    .mobile-bottom-nav a,
+    .mobile-bottom-nav button {
+        height: 66px;
+    }
+
+    .mobile-bottom-nav .bottom-icon {
+        font-size: 21px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE SEARCH / HEADER SAFETY
+========================================= */
+
+@media (max-width: 600px) {
+
+    .header-search .gift-search-suggestions {
+        position: absolute;
+        top: 61px;
+        left: 15px;
+        right: 15px;
+        width: auto;
+    }
+
+}
+
+
+/* =========================================
+   DESKTOP PRESERVATION
+========================================= */
+
+@media (min-width: 601px) {
+
+    .mobile-category-strip,
+    .mobile-bottom-nav {
+        display: none !important;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header class="main-header">
+
+<div class="logo">
+    <span>GIFT ZONE</span>
+</div>
+
+<div class="header-search">
+
+
+<div class="gift-search-box">
+
+    <div class="gift-search-wrapper">
+
+        <span
+            class="gift-search-icon"
+            aria-hidden="true">
+        </span>
+
+        <input
+            type="text"
+            id="giftSearch"
+            class="gift-search"
+            placeholder="Search for gifts..."
+            autocomplete="off">
+
+        <div
+            id="giftSearchSuggestions"
+            class="gift-search-suggestions">
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+<nav class="main-nav">
+
+
+<a href="index.html" class="active">Home</a>
+
+<a href="#gifts">Gifts</a>
+
+<a href="#categories">Occasions</a>
+
+<a href="checkout.html">Surprise Delivery</a>
+
+<a href="orders.html">My Orders</a>
+
+<a href="profile.html" class="profile-link">
+    👤 Profile
+</a>
+
+<a href="cart.html">
+    🛒 Cart
+</a>
+
+
+</nav>
+
+<div class="mobile-cart">
+    Cart
+</div>
+
+</header>
+
+<!-- =========================================
+     MOBILE CATEGORY ROW
+========================================= -->
+
+<div class="mobile-category-strip">
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Birthday')">
+Birthday </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Anniversary')">
+Anniversary </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Celebrations')">
+Celebrations </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Raksha Bandhan')">
+Raksha Bandhan </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Mothers Day')">
+Mother's Day </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Fathers Day')">
+Father's Day </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Teachers Day')">
+Teacher's Day </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Love')">
+Love </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Flowers')">
+Flowers </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Cakes')">
+Cakes </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showCategory('Combos')">
+Gift Combos </button>
+
+<button
+ type="button"
+ class="mobile-category-button"
+ onclick="showAllGifts()">
+All Gifts </button>
+
+</div>
+
+<!-- =========================================
+     BANNER
+========================================= -->
+
+<section class="banner-section">
+
+<div class="banner-slider">
+
+<div class="banner active-banner">
+
+
+<div class="banner-content">
+
+    <p class="small-title">
+        MAKE EVERY OCCASION SPECIAL
+    </p>
+
+    <h1>
+        SURPRISE THEM<br>
+        MAKE THEM SMILE
+    </h1>
+
+    <p>
+        Choose the perfect gift and make
+        their special moment unforgettable.
+    </p>
+
+    <button
+        type="button"
+        onclick="document.getElementById('gifts').scrollIntoView({behavior:'smooth'})">
+
+        SHOP NOW
+
+    </button>
+
+</div>
+
+<div class="banner-photo">
+
+    <img
+        src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
+        alt="Birthday gift hamper"
+        loading="eager"
+        decoding="async">
+
+</div>
+
+
+</div>
+
+<div class="banner">
+
+
+<div class="banner-content">
+
+    <p class="small-title">
+        GIFTS FOR EVERY OCCASION
+    </p>
+
+    <h1>
+        BIRTHDAY<br>
+        ANNIVERSARY & MORE
+    </h1>
+
+    <p>
+        Beautiful cakes, flowers,
+        chocolates and gift hampers.
+    </p>
+
+    <button
+        type="button"
+        onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">
+
+        EXPLORE GIFTS
+
+    </button>
+
+</div>
+
+<div class="banner-photo">
+
+    <img
+        src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
+        alt="Anniversary gift hamper"
+        loading="eager"
+        decoding="async">
+
+</div>
+
+
+</div>
+
+<div class="banner">
+
+
+<div class="banner-content">
+
+    <p class="small-title">
+        SURPRISE DELIVERY
+    </p>
+
+    <h1>
+        GIFTS THAT<br>
+        CREATE MEMORIES
+    </h1>
+
+    <p>
+        Choose a gift, select your date
+        and plan a special surprise.
+    </p>
+
+    <button
+        type="button"
+        onclick="window.location.href='checkout.html'">
+
+        PLAN A SURPRISE
+
+    </button>
+
+</div>
+
+<div class="banner-photo">
+
+    <img
+        src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
+        alt="Celebration gift"
+        loading="eager"
+        decoding="async">
+
+</div>
+
+
+</div>
+
+</div>
+
+<button
+type="button"
+class="banner-arrow banner-prev"
+onclick="changeBanner(-1)">
+
+❮
+
+</button>
+
+<button
+type="button"
+class="banner-arrow banner-next"
+onclick="changeBanner(1)">
+
+❯
+
+</button>
+
+<div class="banner-dots">
+
+<span
+ class="banner-dot active-dot"
+ onclick="showBanner(0)"> </span>
+
+<span
+ class="banner-dot"
+ onclick="showBanner(1)"> </span>
+
+<span
+ class="banner-dot"
+ onclick="showBanner(2)"> </span>
+
+</div>
+
+</section>
+
+<!-- =========================================
+     FEATURES
+========================================= -->
+
+<section class="features">
+
+<div class="feature-card">
+
+
+<div class="feature-icon">
+    Gifts
+</div>
+
+<div>
+    <h3>Wide Range of Gifts</h3>
+    <p>For Every Occasion</p>
+</div>
+
+
+</div>
+
+<div class="feature-card">
+
+
+<div class="feature-icon">
+    Delivery
+</div>
+
+<div>
+    <h3>On-Time Delivery</h3>
+    <p>Always on Time</p>
+</div>
+
+
+</div>
+
+<div class="feature-card">
+
+
+<div class="feature-icon">
+    Surprise
+</div>
+
+<div>
+    <h3>Surprise Delivery</h3>
+    <p>Make Moments Special</p>
+</div>
+
+
+</div>
+
+<div class="feature-card">
+
+
+<div class="feature-icon">
+    Secure
+</div>
+
+<div>
+    <h3>Secure Payment</h3>
+    <p>100% Safe & Secure</p>
+</div>
+
+
+</div>
+
+</section>
+
+<!-- =========================================
+     DESKTOP CATEGORIES
+========================================= -->
+
+<section class="categories" id="categories">
+
+<div class="section-heading">
+
+
+<h2>SHOP BY CATEGORY</h2>
+
+<a href="#gifts">View All</a>
+
+
+</div>
+
+<div class="category-container">
+
+<div class="category" onclick="showCategory('Birthday')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
+        alt="Birthday gifts"
+        loading="lazy">
+
+</div>
+
+<h3>Birthday</h3>
+
+
+</div>
+
+<div class="category" onclick="showCategory('Anniversary')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
+        alt="Anniversary gifts"
+        loading="lazy">
+
+</div>
+
+<h3>Anniversary</h3>
+
+
+</div>
+
+<div class="category" onclick="showCategory('Celebrations')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
+        alt="Celebration gifts"
+        loading="lazy">
+
+</div>
+
+<h3>Celebrations</h3>
+
+
+</div>
+
+<div class="category" onclick="showCategory('Raksha Bandhan')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://mesmerizeindia.com/cdn/shop/articles/Rakhi_2026_Blog_Image_85afbaba-1f6d-4d0d-a0e4-96a7581bb205.jpg?v=1784184317&width=2048"
+        alt="Raksha Bandhan rakhi gifts"
+        loading="lazy">
+
+</div>
+
+<h3>Raksha Bandhan</h3>
+
+
+</div>
+
+<div class="category" onclick="showCategory('Mothers Day')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://imgcdn.floweraura.com/captivating-hamper-for-mom-9817800co-B_0.jpg"
+        alt="Mother's Day flower gifts"
+        loading="lazy">
+
+</div>
+
+<h3>Mother's Day</h3>
+
+
+</div>
+
+<div class="category" onclick="showCategory('Fathers Day')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282"
+        alt="Father's Day gifts"
+        loading="lazy">
+
+</div>
+
+<h3>Father's Day</h3>
+
+
+</div>
+
+<div class="category" onclick="showCategory('Teachers Day')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://www.fnp.com/images/pr/x/v20230818165234/best-teacher-ever-hamper_1.jpg"
+        alt="Teacher's Day gifts"
+        loading="lazy">
+
+</div>
+
+<h3>Teacher's Day</h3>
+
+
+</div>
+
+<div class="category" onclick="showCategory('Love')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10"
+        alt="Love gifts"
+        loading="lazy">
+
+</div>
+
+<h3>Love</h3>
+
+
+</div>
+
+<div class="category" onclick="showCategory('Flowers')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://halfpe.com/cdn/shop/files/bGgFnGnreh.jpg?v=1732943085"
+        alt="Flower bouquet gifts"
+        loading="lazy">
+
+</div>
+
+<h3>Flowers</h3>
+
+
+</div>
+
+<div class="category" onclick="showCategory('Cakes')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://creativflowers.com/cdn/shop/products/gdsthumbnails_505x505px_ver_2_bs1allaboutcake.jpg?v=1680459275&width=1445"
+        alt="Cake gifts"
+        loading="lazy">
+
+</div>
+
+<h3>Cakes</h3>
+
+
+</div>
+
+<div class="category" onclick="showCategory('Combos')">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://www.classicflora.com/uploads/product-pics/img3/org/1770721419_mixed-rose-basket-with-gypsophila-teddy-chocolates-choco-chips-cake.jpg"
+        alt="Gift combo"
+        loading="lazy">
+
+</div>
+
+<h3>Gift Combos</h3>
+
+
+</div>
+
+<div class="category" onclick="showAllGifts()">
+
+
+<div class="professional-category-icon">
+
+    <img
+        src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
+        alt="All gifts"
+        loading="lazy">
+
+</div>
+
+<h3>All Gifts</h3>
+
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================
+     BEST SELLERS
+========================================= -->
+
+<section class="popular-gifts" id="gifts">
+
+<div class="section-heading">
+
+
+<h2>BEST SELLERS</h2>
+
+<a href="#gifts">View All</a>
+
+
+</div>
+
+<p id="giftSearchMessage" class="gift-search-message">
+    No gifts found. Try another search.
+</p>
+
+<div class="gift-container">
+
+<!-- BIRTHDAY -->
+
+<div class="gift-card" data-category="Birthday">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
+        alt="Birthday Cake Chocolate Hamper"
+        loading="lazy">
+
+</div>
+
+<h3>Birthday Cake & Chocolate Hamper</h3>
+
+<p class="price">₹999</p>
+
+<p class="stock-left">Only 7 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- ANNIVERSARY -->
+
+<div class="gift-card" data-category="Anniversary">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
+        alt="Anniversary Rose Chocolate Hamper"
+        loading="lazy">
+
+</div>
+
+<h3>Anniversary Rose & Chocolate Hamper</h3>
+
+<p class="price">₹1,499</p>
+
+<p class="stock-left">Only 6 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- CELEBRATIONS -->
+
+<div class="gift-card" data-category="Celebrations">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
+        alt="Celebration Balloon Gift"
+        loading="lazy">
+
+</div>
+
+<h3>Celebration Balloon & Cake Gift</h3>
+
+<p class="price">₹1,199</p>
+
+<p class="stock-left">Only 8 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- RAKSHA BANDHAN -->
+
+<div class="gift-card" data-category="Raksha Bandhan">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://mesmerizeindia.com/cdn/shop/articles/Rakhi_2026_Blog_Image_85afbaba-1f6d-4d0d-a0e4-96a7581bb205.jpg?v=1784184317&width=2048"
+        alt="Raksha Bandhan Rakhi Gift"
+        loading="lazy">
+
+</div>
+
+<h3>Rakhi Chocolate Celebration Box</h3>
+
+<p class="price">₹899</p>
+
+<p class="stock-left">Only 9 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- MOTHER'S DAY -->
+
+<div class="gift-card" data-category="Mothers Day">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://imgcdn.floweraura.com/captivating-hamper-for-mom-9817800co-B_0.jpg"
+        alt="Mother's Day Flower Gift"
+        loading="lazy">
+
+</div>
+
+<h3>Mother's Day Flower & Chocolate Hamper</h3>
+
+<p class="price">₹1,399</p>
+
+<p class="stock-left">Only 6 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- FATHER'S DAY -->
+
+<div class="gift-card" data-category="Fathers Day">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282"
+        alt="Father's Day Wallet Gift"
+        loading="lazy">
+
+</div>
+
+<h3>Father's Day Wallet & Watch Set</h3>
+
+<p class="price">₹1,499</p>
+
+<p class="stock-left">Only 7 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- TEACHER'S DAY GIFT 1 -->
+
+<div class="gift-card" data-category="Teachers Day">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://www.fnp.com/images/pr/x/v20230818165234/best-teacher-ever-hamper_1.jpg"
+        alt="Best Teacher Ever Hamper"
+        loading="lazy">
+
+</div>
+
+<h3>Best Teacher Ever Gift Hamper</h3>
+
+<p class="price">₹1,499</p>
+
+<p class="stock-left">Only 7 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- TEACHER'S DAY GIFT 2 -->
+
+<div class="gift-card" data-category="Teachers Day">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://static-assets-prod.fnp.com/images/pr/l/v20250822183310/teachers-day-tea-chocolate-n-makhana-gift-box_1.jpg"
+        alt="Teacher's Day Tea Chocolate Gift Box"
+        loading="lazy">
+
+</div>
+
+<h3>Teacher's Day Tea, Chocolate & Gift Box</h3>
+
+<p class="price">₹1,299</p>
+
+<p class="stock-left">Only 8 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- LOVE -->
+
+<div class="gift-card" data-category="Love">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10"
+        alt="Pink Roses Love Gift"
+        loading="lazy">
+
+</div>
+
+<h3>Pink Roses & Chocolate Love Hamper</h3>
+
+<p class="price">₹1,199</p>
+
+<p class="stock-left">Only 8 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- FLOWERS -->
+
+<div class="gift-card" data-category="Flowers">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://halfpe.com/cdn/shop/files/bGgFnGnreh.jpg?v=1732943085"
+        alt="Red Rose Flower Basket"
+        loading="lazy">
+
+</div>
+
+<h3>Premium Red Rose Basket</h3>
+
+<p class="price">₹999</p>
+
+<p class="stock-left">Only 10 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- CAKES -->
+
+<div class="gift-card" data-category="Cakes">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://creativflowers.com/cdn/shop/products/gdsthumbnails_505x505px_ver_2_bs1allaboutcake.jpg?v=1680459275&width=1445"
+        alt="Premium Chocolate Cake"
+        loading="lazy">
+
+</div>
+
+<h3>Premium Chocolate Celebration Cake</h3>
+
+<p class="price">₹699</p>
+
+<p class="stock-left">Only 8 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- COMBOS -->
+
+<div class="gift-card" data-category="Combos">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://www.classicflora.com/uploads/product-pics/img3/org/1770721419_mixed-rose-basket-with-gypsophila-teddy-chocolates-choco-chips-cake.jpg"
+        alt="Flowers Cake Chocolate Teddy Gift Combo"
+        loading="lazy">
+
+</div>
+
+<h3>Flowers, Cake, Chocolate & Teddy Combo</h3>
+
+<p class="price">₹1,699</p>
+
+<p class="stock-left">Only 4 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+<!-- PERSONALIZED -->
+
+<div class="gift-card" data-category="Personalized">
+
+
+<div class="professional-gift-image">
+
+    <img
+        src="https://product.hstatic.net/200000350831/product/12_11fb8d0386104597bfc98c23ecf51be8_grande.png"
+        alt="Personalized Premium Gift Set"
+        loading="lazy">
+
+</div>
+
+<h3>Personalized Premium Gift Set</h3>
+
+<p class="price">₹1,499</p>
+
+<p class="stock-left">Only 6 left</p>
+
+<button type="button">ADD TO CART</button>
+
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================
+     NEW - MAKE A SURPRISE VIDEO
+========================================= -->
+
+<section class="surprise-video-box" id="surpriseVideoBox">
+
+
+<div class="surprise-video-badge">
+    🎥 SPECIAL SURPRISE SERVICE
+</div>
+
+<h2>
+    Make a Surprise Video 💕
+</h2>
+
+<p>
+    Want to capture the special reaction?
+    Our delivery team can record the surprise moment
+    and create a memorable video for you.
+</p>
+
+<div
+    id="surpriseVideoMessage"
+    class="surprise-video-message">
+    Make their surprise moment unforgettable! ✨
+</div>
+
+<div class="surprise-video-price">
+    Surprise Video — ₹199
+</div>
+
+<div class="surprise-video-actions">
+
+    <button
+        type="button"
+        class="surprise-video-add"
+        onclick="selectSurpriseVideo()">
+
+        🎥 ADD SURPRISE VIDEO — ₹199
+
+    </button>
+
+    <button
+        type="button"
+        class="surprise-video-skip"
+        onclick="skipSurpriseVideo()">
+
+        Skip
+
+    </button>
+
+</div>
+
+<div
+    id="surpriseVideoSelected"
+    class="surprise-video-selected">
+
+    ✓ Surprise Video added. The ₹199 service charge will be included with your order.
+
+</div>
+
+
+</section>
+
+<!-- =========================================
+     SURPRISE DELIVERY
+========================================= -->
+
+<section class="surprise">
+
+<h2>
+    Want To Make It Extra Special?
+</h2>
+
+<p>
+    We don't just deliver gifts.
+    We create a memorable surprise
+    moment for your loved ones!
+</p>
+
+<button
+ type="button"
+ onclick="window.location.href='checkout.html'">
+
+
+PLAN A SURPRISE
+
+
+</button>
+
+</section>
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer>
+
+<h2>GIFT ZONE</h2>
+
+<p>Gifts that create memories.</p>
+
+<p>© 2026 Gift Zone. All Rights Reserved.</p>
+
+</footer>
+
+<!-- =========================================
+     MOBILE BOTTOM NAVIGATION
+     WISHLIST ADDED
+========================================= -->
+
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+
+<a href="index.html">
+
+    <span class="bottom-icon">🏠</span>
+
+    <span class="bottom-label">
+        Home
+    </span>
+
+</a>
+
+
+<a href="categories.html">
+
+    <span class="bottom-icon">🎁</span>
+
+    <span class="bottom-label">
+        Categories
+    </span>
+
+</a>
+
+
+<a href="wishlist.html">
+
+    <span class="bottom-icon">♡</span>
+
+    <span class="bottom-label">
+        Wishlist
+    </span>
+
+</a>
+
+
+<a href="profile.html">
+
+    <span class="bottom-icon">👤</span>
+
+    <span class="bottom-label">
+        Profile
+    </span>
+
+</a>
+
+
+<a href="cart.html">
+
+    <span class="bottom-icon">🛒</span>
+
+    <span class="bottom-label">
+        Cart
+    </span>
+
+</a>
+
+</nav>
+
+<!-- =========================================
+     LOADING SCREEN
+========================================= -->
+
+<div id="loadingScreen" class="loading-screen">
+
+<div class="professional-loading-logo">
+
+
+<img
+    src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
+    alt="Gift Zone"
+    loading="eager">
+
+
+</div>
+
+<h2>Gift Zone</h2>
+
+<p>Preparing your surprise...</p>
+
+<div class="loading-spinner"></div>
+
+</div>
+
+<!-- =========================================
+     POPUP
+========================================= -->
+
+<div id="giftPopup" class="gift-popup-overlay">
+
+<div class="gift-popup">
+
+
+<button
+    type="button"
+    id="giftPopupClose"
+    class="gift-popup-close">
+
+    ×
+
+</button>
+
+<div
+    id="giftPopupIcon"
+    class="professional-popup-image">
+
+    <img
+        src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-4a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
+        alt="Gift"
+        loading="eager">
+
+</div>
+
+<h2 id="giftPopupTitle">
+    Gift Zone
+</h2>
+
+<p id="giftPopupMessage">
+    Something special is waiting...
+</p>
+
+<button
+    type="button"
+    id="giftPopupButton"
+    class="gift-popup-button">
+
+    Okay
+
+</button>
+
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+
+/* =========================================
+   ONE PHOTO PER CATEGORY
+========================================= */
+
+const giftZoneReliableImages = {
+
+    "Birthday":
+        "https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594",
+
+    "Anniversary":
+        "https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720",
+
+    "Celebrations":
+        "https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg",
+
+    "Raksha Bandhan":
+        "https://mesmerizeindia.com/cdn/shop/articles/Rakhi_2026_Blog_Image_85afbaba-1f6d-4d0d-a0e4-96a7581bb205.jpg?v=1784184317&width=2048",
+
+    "Mothers Day":
+        "https://imgcdn.floweraura.com/captivating-hamper-for-mom-9817800co-B_0.jpg",
+
+    "Fathers Day":
+        "https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282",
+
+    "Teachers Day":
+        "https://www.fnp.com/images/pr/x/v20230818165234/best-teacher-ever-hamper_1.jpg",
+
+    "Love":
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10",
+
+    "Flowers":
+        "https://halfpe.com/cdn/shop/files/bGgFnGnreh.jpg?v=1732943085",
+
+    "Cakes":
+        "https://creativflowers.com/cdn/shop/products/gdsthumbnails_505x505px_ver_2_bs1allaboutcake.jpg?v=1680459275&width=1445",
+
+    "Combos":
+        "https://www.classicflora.com/uploads/product-pics/img3/org/1770721419_mixed-rose-basket-with-gypsophila-teddy-chocolates-choco-chips-cake.jpg",
+
+    "Personalized":
+        "https://product.hstatic.net/200000350831/product/12_11fb8d0386104597bfc98c23ecf51be8_grande.png"
+
 };
 
-/*
- * ==========================================
- * ORDER STATUS CHANGE FUNCTION
- * ==========================================
- */
 
-exports.orderStatusChanged = onDocumentUpdated(
-    "orders/{orderId}",
-    async (event) => {
-      const beforeData = event.data.before.data();
-      const afterData = event.data.after.data();
+/* =========================================
+   BANNER SLIDER
+========================================= */
 
-      if (!beforeData || !afterData) {
-        logger.warn("Gift Zone: Order data is missing.");
+let currentBanner = 0;
+
+const banners =
+    document.querySelectorAll(".banner");
+
+const dots =
+    document.querySelectorAll(".banner-dot");
+
+
+function showBanner(number) {
+
+    banners.forEach(function(banner) {
+
+        banner.classList.remove(
+            "active-banner"
+        );
+
+    });
+
+    dots.forEach(function(dot) {
+
+        dot.classList.remove(
+            "active-dot"
+        );
+
+    });
+
+    currentBanner = number;
+
+    if (banners[currentBanner]) {
+
+        banners[currentBanner]
+            .classList.add(
+                "active-banner"
+            );
+
+    }
+
+    if (dots[currentBanner]) {
+
+        dots[currentBanner]
+            .classList.add(
+                "active-dot"
+            );
+
+    }
+
+}
+
+
+function changeBanner(direction) {
+
+    currentBanner =
+        currentBanner + direction;
+
+    if (
+        currentBanner >=
+        banners.length
+    ) {
+
+        currentBanner = 0;
+
+    }
+
+    if (currentBanner < 0) {
+
+        currentBanner =
+            banners.length - 1;
+
+    }
+
+    showBanner(currentBanner);
+
+}
+
+
+setInterval(function() {
+
+    changeBanner(1);
+
+}, 4000);
+
+
+/* =========================================
+   CATEGORY FILTER
+========================================= */
+
+function showCategory(categoryName) {
+
+    const gifts =
+        document.querySelectorAll(
+            ".gift-card"
+        );
+
+    document
+        .getElementById("gifts")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+    gifts.forEach(function(gift) {
+
+        if (
+            gift.dataset.category ===
+            categoryName
+        ) {
+
+            gift.style.display = "block";
+
+        } else {
+
+            gift.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+/* =========================================
+   SHOW ALL
+========================================= */
+
+function showAllGifts() {
+
+    const gifts =
+        document.querySelectorAll(
+            ".gift-card"
+        );
+
+    gifts.forEach(function(gift) {
+
+        gift.style.display = "block";
+
+    });
+
+    document
+        .getElementById("gifts")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+
+/* =========================================
+   GIFTS NAVIGATION
+========================================= */
+
+const giftsLink =
+    document.querySelector(
+        'a[href="#gifts"]'
+    );
+
+if (giftsLink) {
+
+    giftsLink.addEventListener(
+        "click",
+        function() {
+
+            const gifts =
+                document.querySelectorAll(
+                    ".gift-card"
+                );
+
+            gifts.forEach(
+                function(gift) {
+
+                    gift.style.display =
+                        "block";
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+const giftSearch =
+    document.getElementById(
+        "giftSearch"
+    );
+
+const giftSearchSuggestions =
+    document.getElementById(
+        "giftSearchSuggestions"
+    );
+
+const giftSearchMessage =
+    document.getElementById(
+        "giftSearchMessage"
+    );
+
+
+const searchExamples = [
+
+    "Search for gifts...",
+
+    "Search for Birthday gifts...",
+
+    "Search for Anniversary gifts...",
+
+    "Search for Rakhi gifts...",
+
+    "Search for Mother's Day gifts...",
+
+    "Search for Father's Day gifts...",
+
+    "Search for Teacher's Day gifts...",
+
+    "Search for Cakes...",
+
+    "Search for Flowers..."
+
+];
+
+
+let placeholderIndex = 0;
+
+let placeholderPosition = 0;
+
+let deletingPlaceholder = false;
+
+
+function animatePlaceholder() {
+
+    if (!giftSearch) {
         return;
-      }
+    }
 
-      const oldStatus = beforeData.orderStatus || "";
-      const newStatus = afterData.orderStatus || "";
+    const currentText =
+        searchExamples[
+            placeholderIndex
+        ];
 
-      // Ignore updates where orderStatus did not change.
-      if (oldStatus === newStatus) {
+
+    if (!deletingPlaceholder) {
+
+        placeholderPosition++;
+
+        giftSearch.placeholder =
+            currentText.substring(
+                0,
+                placeholderPosition
+            );
+
+
+        if (
+            placeholderPosition >=
+            currentText.length
+        ) {
+
+            deletingPlaceholder = true;
+
+            setTimeout(
+                animatePlaceholder,
+                1200
+            );
+
+            return;
+
+        }
+
+    } else {
+
+        placeholderPosition--;
+
+        giftSearch.placeholder =
+            currentText.substring(
+                0,
+                placeholderPosition
+            );
+
+
+        if (
+            placeholderPosition <= 0
+        ) {
+
+            deletingPlaceholder = false;
+
+            placeholderIndex++;
+
+            if (
+                placeholderIndex >=
+                searchExamples.length
+            ) {
+
+                placeholderIndex = 0;
+
+            }
+
+        }
+
+    }
+
+
+    setTimeout(
+        animatePlaceholder,
+        deletingPlaceholder
+            ? 45
+            : 75
+    );
+
+}
+
+
+animatePlaceholder();
+
+
+/* =========================================
+   GET GIFT DETAILS
+========================================= */
+
+function getGiftDetails() {
+
+    const giftCards =
+        document.querySelectorAll(
+            ".gift-card"
+        );
+
+    const giftList = [];
+
+
+    giftCards.forEach(function(gift) {
+
+        const nameElement =
+            gift.querySelector("h3");
+
+        const category =
+            gift.dataset.category || "";
+
+        const imageElement =
+            gift.querySelector(
+                ".professional-gift-image img"
+            );
+
+
+        if (nameElement) {
+
+            giftList.push({
+
+                name:
+                    nameElement.textContent.trim(),
+
+                category:
+                    category,
+
+                image:
+                    imageElement
+                        ? imageElement.src
+                        : "",
+
+                element:
+                    gift
+
+            });
+
+        }
+
+    });
+
+
+    return giftList;
+
+}
+
+
+/* =========================================
+   SEARCH SUGGESTIONS
+========================================= */
+
+function showGiftSuggestions(searchText) {
+
+    const gifts =
+        getGiftDetails();
+
+
+    giftSearchSuggestions.innerHTML = "";
+
+
+    if (!searchText) {
+
+        giftSearchSuggestions.style.display =
+            "none";
+
+        giftSearchMessage.style.display =
+            "none";
+
+
+        gifts.forEach(function(gift) {
+
+            gift.element.style.display =
+                "block";
+
+        });
+
+
         return;
-      }
 
-      const orderId = event.params.orderId;
+    }
 
-      const customerName = afterData.customerName || "";
-      const customerPhone = afterData.customerPhone || "";
-      const customerEmail = afterData.customerEmail || "";
 
-      const message =
-      notificationMessages[newStatus] ||
-      `Gift Zone: Your order status is now "${newStatus}".`;
+    const search =
+        searchText.toLowerCase();
 
-      logger.info("Gift Zone order status changed", {
-        orderId: orderId,
-        customerName: customerName,
-        customerPhone: customerPhone,
-        customerEmail: customerEmail,
-        oldStatus: oldStatus,
-        newStatus: newStatus,
-        notificationMessage: message,
-      });
 
-      /*
-     * ==========================================
-     * TWILIO NOTIFICATION - NEXT STEP
-     * ==========================================
-     *
-     * We will connect Twilio here after securely
-     * configuring:
-     *
-     * TWILIO_ACCOUNT_SID
-     * TWILIO_AUTH_TOKEN
-     * TWILIO_PHONE_NUMBER
-     *
-     * IMPORTANT:
-     * These values must NEVER be placed in:
-     *
-     * - index.js
-     * - payment.html
-     * - script.js
-     * - GitHub frontend files
-     *
-     * They will be stored securely using Firebase
-     * Secret Manager.
-     */
+    const matchingGifts =
+        gifts.filter(function(gift) {
 
-      logger.info("Gift Zone notification prepared", {
-        orderId: orderId,
-        phone: customerPhone,
-        message: message,
-      });
+            return (
 
-      return;
-    },
+                gift.name
+                    .toLowerCase()
+                    .includes(search)
+
+                ||
+
+                gift.category
+                    .toLowerCase()
+                    .includes(search)
+
+            );
+
+        });
+
+
+    gifts.forEach(function(gift) {
+
+        const matches =
+            matchingGifts.includes(gift);
+
+        gift.element.style.display =
+            matches
+                ? "block"
+                : "none";
+
+    });
+
+
+    if (
+        matchingGifts.length === 0
+    ) {
+
+        giftSearchSuggestions.style.display =
+            "none";
+
+        giftSearchMessage.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    giftSearchMessage.style.display =
+        "none";
+
+
+    matchingGifts.forEach(function(gift) {
+
+        const suggestion =
+            document.createElement("div");
+
+
+        suggestion.className =
+            "gift-search-suggestion";
+
+
+        suggestion.innerHTML =
+
+            '<img class="suggestion-photo" src="' +
+                gift.image +
+            '" alt="' +
+                gift.name +
+            '">' +
+
+            '<div class="suggestion-details">' +
+
+                '<div class="suggestion-name">' +
+                    gift.name +
+                '</div>' +
+
+                '<div class="suggestion-category">' +
+                    gift.category +
+                '</div>' +
+
+            '</div>';
+
+
+        suggestion.addEventListener(
+            "click",
+            function() {
+
+                giftSearch.value =
+                    gift.name;
+
+                giftSearchSuggestions.style.display =
+                    "none";
+
+                giftSearchMessage.style.display =
+                    "none";
+
+
+                gifts.forEach(function(item) {
+
+                    item.element.style.display =
+                        item === gift
+                            ? "block"
+                            : "none";
+
+                });
+
+
+                gift.element.scrollIntoView({
+
+                    behavior: "smooth",
+
+                    block: "center"
+
+                });
+
+            }
+        );
+
+
+        giftSearchSuggestions.appendChild(
+            suggestion
+        );
+
+    });
+
+
+    giftSearchSuggestions.style.display =
+        "block";
+
+}
+
+
+if (giftSearch) {
+
+    giftSearch.addEventListener(
+        "input",
+        function() {
+
+            showGiftSuggestions(
+                giftSearch.value.trim()
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   CLOSE SEARCH
+========================================= */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+
+            giftSearch &&
+
+            giftSearchSuggestions &&
+
+            !giftSearch.contains(
+                event.target
+            ) &&
+
+            !giftSearchSuggestions.contains(
+                event.target
+            )
+
+        ) {
+
+            giftSearchSuggestions.style.display =
+                "none";
+
+        }
+
+    }
 );
+
+
+/* =========================================
+   LOADING SCREEN
+========================================= */
+
+window.addEventListener(
+    "load",
+    function() {
+
+        const loadingScreen =
+            document.getElementById(
+                "loadingScreen"
+            );
+
+
+        if (loadingScreen) {
+
+            setTimeout(
+                function() {
+
+                    loadingScreen.style.opacity =
+                        "0";
+
+                    loadingScreen.style.transition =
+                        "opacity 0.3s ease";
+
+
+                    setTimeout(
+                        function() {
+
+                            loadingScreen.style.display =
+                                "none";
+
+                        },
+                        300
+                    );
+
+                },
+                700
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   NEW - SURPRISE VIDEO SERVICE
+========================================= */
+
+const SURPRISE_VIDEO_PRICE = 199;
+
+const surpriseVideoMessages = [
+
+    "Make their surprise moment unforgettable! ✨",
+
+    "Capture their real reaction! ❤️",
+
+    "Turn a gift into a beautiful memory! 🎁",
+
+    "A surprise they can watch again and again! 🎥",
+
+    "Make the delivery moment extra special! 💕",
+
+    "Give them a memory, not just a gift! 🌸"
+
+];
+
+let surpriseVideoMessageIndex = 0;
+
+
+/* =========================================
+   ANIMATED SURPRISE VIDEO MESSAGES
+========================================= */
+
+function animateSurpriseVideoMessage() {
+
+    const messageElement =
+        document.getElementById(
+            "surpriseVideoMessage"
+        );
+
+    if (!messageElement) {
+        return;
+    }
+
+
+    messageElement.style.animation = "none";
+
+    void messageElement.offsetWidth;
+
+    messageElement.style.animation =
+        "surpriseMessageFade 0.5s ease";
+
+
+    messageElement.textContent =
+        surpriseVideoMessages[
+            surpriseVideoMessageIndex
+        ];
+
+
+    surpriseVideoMessageIndex++;
+
+    if (
+        surpriseVideoMessageIndex >=
+        surpriseVideoMessages.length
+    ) {
+
+        surpriseVideoMessageIndex = 0;
+
+    }
+
+}
+
+
+setInterval(
+    animateSurpriseVideoMessage,
+    2500
+);
+
+
+/* =========================================
+   ADD SURPRISE VIDEO
+========================================= */
+
+function selectSurpriseVideo() {
+
+    const selectedMessage =
+        document.getElementById(
+            "surpriseVideoSelected"
+        );
+
+    if (selectedMessage) {
+
+        selectedMessage.style.display =
+            "block";
+
+    }
+
+
+    localStorage.setItem(
+        "giftZoneSurpriseVideo",
+        JSON.stringify({
+
+            selected: true,
+
+            name:
+                "Make a Surprise Video",
+
+            price:
+                SURPRISE_VIDEO_PRICE
+
+        })
+    );
+
+
+    const messageElement =
+        document.getElementById(
+            "surpriseVideoMessage"
+        );
+
+    if (messageElement) {
+
+        messageElement.textContent =
+            "✓ Surprise Video selected! Your special moment will be recorded. 🎥❤️";
+
+    }
+
+}
+
+
+/* =========================================
+   SKIP SURPRISE VIDEO
+========================================= */
+
+function skipSurpriseVideo() {
+
+    const selectedMessage =
+        document.getElementById(
+            "surpriseVideoSelected"
+        );
+
+    if (selectedMessage) {
+
+        selectedMessage.style.display =
+            "none";
+
+    }
+
+
+    localStorage.setItem(
+        "giftZoneSurpriseVideo",
+        JSON.stringify({
+
+            selected: false,
+
+            name:
+                "Make a Surprise Video",
+
+            price:
+                0
+
+        })
+    );
+
+
+    const messageElement =
+        document.getElementById(
+            "surpriseVideoMessage"
+        );
+
+    if (messageElement) {
+
+        messageElement.textContent =
+            "No problem! You can continue with your gift only. 🎁";
+
+    }
+
+}
+
+
+/* =========================================
+   RESTORE SURPRISE VIDEO SELECTION
+========================================= */
+
+function restoreSurpriseVideoSelection() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                "giftZoneSurpriseVideo"
+            );
+
+        if (!saved) {
+            return;
+        }
+
+
+        const data =
+            JSON.parse(saved);
+
+
+        if (
+            data &&
+            data.selected === true
+        ) {
+
+            const selectedMessage =
+                document.getElementById(
+                    "surpriseVideoSelected"
+                );
+
+            if (selectedMessage) {
+
+                selectedMessage.style.display =
+                    "block";
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.log(
+            "Surprise video selection could not be restored."
+        );
+
+    }
+
+}
+
+
+restoreSurpriseVideoSelection();
+
+
+/* =========================================
+   FINAL IMAGE ERROR PROTECTION
+========================================= */
+
+document.querySelectorAll("img").forEach(
+    function(image) {
+
+        image.addEventListener(
+            "error",
+            function() {
+
+                if (
+                    image.dataset.fallbackUsed ===
+                    "true"
+                ) {
+                    return;
+                }
+
+                image.dataset.fallbackUsed =
+                    "true";
+
+
+                const giftCard =
+                    image.closest(".gift-card");
+
+
+                if (giftCard) {
+
+                    const category =
+                        giftCard.dataset.category;
+
+
+                    const fallbackImage =
+                        giftZoneReliableImages[
+                            category
+                        ];
+
+
+                    if (
+                        fallbackImage &&
+                        image.src !== fallbackImage
+                    ) {
+
+                        image.src =
+                            fallbackImage;
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================
+   IMAGE LAZY LOADING PROTECTION
+========================================= */
+
+document.querySelectorAll(
+    ".professional-gift-image img"
+).forEach(function(image) {
+
+    image.addEventListener(
+        "load",
+        function() {
+
+            image.style.opacity = "1";
+
+        }
+    );
+
+});
+
+</script>
+
+</body>
+</html>
