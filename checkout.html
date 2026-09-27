@@ -120,17 +120,219 @@
 
 
         /* =====================================
+           SURPRISE VIDEO CHECKOUT BOX
+        ===================================== */
+
+        .checkout-video-box {
+
+            margin-top: 10px;
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff0f6,
+                    #ffffff
+                );
+
+            border: 2px solid #f6b5ce;
+
+            box-shadow:
+                0 8px 22px
+                rgba(233, 30, 99, 0.10);
+
+        }
+
+
+        .checkout-video-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .checkout-video-title {
+
+            margin: 0;
+
+            color: #e91e63;
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+        }
+
+
+        .checkout-video-price {
+
+            white-space: nowrap;
+
+            color: #e91e63;
+
+            font-size: 18px;
+
+            font-weight: 800;
+
+        }
+
+
+        .checkout-video-description {
+
+            margin: 8px 0 0;
+
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .checkout-video-status {
+
+            display: inline-block;
+
+            margin-top: 12px;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            background: #e91e63;
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =====================================
+           CHECKOUT TOTAL
+        ===================================== */
+
+        .checkout-total-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border-radius: 16px;
+
+            background: #fff8fb;
+
+            border: 1px solid #f3c2d5;
+
+        }
+
+
+        .checkout-total-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 6px 0;
+
+            color: #555;
+
+            font-size: 15px;
+
+        }
+
+
+        .checkout-total-row.video-charge {
+
+            color: #e91e63;
+
+        }
+
+
+        .checkout-grand-total {
+
+            margin-top: 10px;
+
+            padding-top: 14px;
+
+            border-top: 2px solid #f2c3d5;
+
+            color: #222;
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+        }
+
+
+        /* =====================================
            MOBILE
         ===================================== */
 
         @media (max-width: 600px) {
 
             .location-btn {
+
                 min-height: 56px;
 
                 font-size: 16px;
 
                 padding: 14px 15px;
+
+            }
+
+
+            .checkout-video-box {
+
+                padding: 16px;
+
+            }
+
+
+            .checkout-video-title {
+
+                font-size: 18px;
+
+            }
+
+
+            .checkout-video-price {
+
+                font-size: 17px;
+
+            }
+
+
+            .checkout-total-row {
+
+                font-size: 14px;
+
+            }
+
+
+            .checkout-grand-total {
+
+                font-size: 19px;
+
             }
 
         }
@@ -460,6 +662,122 @@
         </section>
 
 
+        <!-- =====================================
+             SURPRISE VIDEO SERVICE
+        ====================================== -->
+
+        <section
+            class="checkout-section"
+            id="surpriseVideoCheckoutSection"
+            style="display: none;">
+
+            <h2>
+                🎥 Surprise Video
+            </h2>
+
+
+            <div class="checkout-video-box">
+
+                <div class="checkout-video-header">
+
+                    <h3 class="checkout-video-title">
+                        🎥 Make a Surprise Video
+                    </h3>
+
+                    <span
+                        class="checkout-video-price"
+                        id="checkoutVideoPrice">
+
+                        ₹199
+
+                    </span>
+
+                </div>
+
+
+                <p class="checkout-video-description">
+
+                    Your selected Surprise Video service
+                    will be included with this gift order.
+                    Gift Zone will prepare the surprise
+                    delivery video for your special moment.
+
+                </p>
+
+
+                <span class="checkout-video-status">
+
+                    ✓ Video Service Added
+
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             ORDER TOTAL
+        ====================================== -->
+
+        <section
+            class="checkout-section"
+            id="checkoutTotalSection">
+
+            <h2>
+                💰 Order Total
+            </h2>
+
+
+            <div class="checkout-total-box">
+
+                <div class="checkout-total-row">
+
+                    <span>
+                        Gift Total
+                    </span>
+
+                    <strong id="checkoutGiftTotal">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="checkout-total-row video-charge"
+                    id="checkoutVideoTotalRow"
+                    style="display: none;">
+
+                    <span>
+                        🎥 Surprise Video
+                    </span>
+
+                    <strong id="checkoutVideoTotal">
+                        ₹199
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="checkout-total-row checkout-grand-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="checkoutGrandTotal">
+                        ₹0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
         <!-- PAYMENT BUTTON -->
 
         <button
@@ -612,6 +930,212 @@ function checkoutPopup(
 
 
 // =====================================
+// SURPRISE VIDEO INFORMATION
+// =====================================
+
+const SURPRISE_VIDEO_PRICE =
+    199;
+
+
+function getCheckoutSurpriseVideo() {
+
+    try {
+
+        const savedVideo =
+            JSON.parse(
+                localStorage.getItem(
+                    "giftZoneSurpriseVideo"
+                )
+            );
+
+
+        if (
+            savedVideo &&
+            savedVideo.selected
+        ) {
+
+            return {
+
+                selected: true,
+
+                price:
+                    SURPRISE_VIDEO_PRICE
+
+            };
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Surprise Video data error:",
+            error
+        );
+
+    }
+
+
+    return {
+
+        selected: false,
+
+        price: 0
+
+    };
+
+}
+
+
+// =====================================
+// DISPLAY CHECKOUT TOTAL
+// =====================================
+
+function updateCheckoutTotal() {
+
+    let cartTotal =
+        0;
+
+
+    try {
+
+        const savedCart =
+            JSON.parse(
+                localStorage.getItem(
+                    "giftZoneCart"
+                )
+            ) || [];
+
+
+        savedCart.forEach(
+            function (item) {
+
+                cartTotal +=
+                    (
+                        Number(item.price) || 0
+                    ) *
+                    (
+                        Number(item.quantity) || 1
+                    );
+
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Cart total error:",
+            error
+        );
+
+    }
+
+
+    const video =
+        getCheckoutSurpriseVideo();
+
+
+    const videoSection =
+        document.getElementById(
+            "surpriseVideoCheckoutSection"
+        );
+
+
+    const videoTotalRow =
+        document.getElementById(
+            "checkoutVideoTotalRow"
+        );
+
+
+    const giftTotalElement =
+        document.getElementById(
+            "checkoutGiftTotal"
+        );
+
+
+    const videoTotalElement =
+        document.getElementById(
+            "checkoutVideoTotal"
+        );
+
+
+    const grandTotalElement =
+        document.getElementById(
+            "checkoutGrandTotal"
+        );
+
+
+    if (giftTotalElement) {
+
+        giftTotalElement.textContent =
+            "₹" + cartTotal;
+
+    }
+
+
+    let grandTotal =
+        cartTotal;
+
+
+    if (video.selected) {
+
+        grandTotal +=
+            video.price;
+
+
+        if (videoSection) {
+
+            videoSection.style.display =
+                "block";
+
+        }
+
+
+        if (videoTotalRow) {
+
+            videoTotalRow.style.display =
+                "flex";
+
+        }
+
+
+        if (videoTotalElement) {
+
+            videoTotalElement.textContent =
+                "₹" + video.price;
+
+        }
+
+    } else {
+
+        if (videoSection) {
+
+            videoSection.style.display =
+                "none";
+
+        }
+
+
+        if (videoTotalRow) {
+
+            videoTotalRow.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    if (grandTotalElement) {
+
+        grandTotalElement.textContent =
+            "₹" + grandTotal;
+
+    }
+
+}
+
+
+// =====================================
 // HIDE LOADING SCREEN
 // =====================================
 
@@ -638,6 +1162,11 @@ window.addEventListener(
             },
             700
         );
+
+
+        // Update total after page loads.
+
+        updateCheckoutTotal();
 
     }
 );
@@ -887,7 +1416,7 @@ if (locationBtn) {
 
 
                         locationStatus.textContent =
-                            "✅ Location detected. Please complete your address.";
+                            "✅ Location detected. Please complete your full delivery address manually.";
 
                         locationStatus.className =
                             "location-status location-success";
@@ -1045,6 +1574,20 @@ if (deliveryDate) {
     );
 
 }
+
+
+// =====================================
+// INITIAL CHECKOUT TOTAL
+// =====================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        updateCheckoutTotal();
+
+    }
+);
 
 
 </script>
