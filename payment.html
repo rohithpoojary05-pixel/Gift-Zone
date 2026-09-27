@@ -254,7 +254,58 @@
 
 
     /* =====================================
-       POPUP
+       SURPRISE VIDEO PAYMENT
+    ===================================== */
+
+    .surprise-video-payment {
+        display: none;
+        margin-top: 15px;
+        padding: 15px 18px;
+        background: #fff0f5;
+        border: 1px solid #f5c6d7;
+        border-radius: 12px;
+    }
+
+    .surprise-video-payment.show {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .surprise-video-payment-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .surprise-video-payment-icon {
+        font-size: 28px;
+    }
+
+    .surprise-video-payment-info strong {
+        display: block;
+        color: #e91e63;
+        font-size: 15px;
+    }
+
+    .surprise-video-payment-info span {
+        display: block;
+        color: #666;
+        font-size: 13px;
+        margin-top: 3px;
+    }
+
+    .surprise-video-payment-price {
+        color: #e91e63;
+        font-size: 16px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+
+    /* =====================================
+       PAYMENT POPUP
     ===================================== */
 
     .payment-popup-overlay {
@@ -376,6 +427,10 @@
             max-width: 360px;
         }
 
+        .surprise-video-payment.show {
+            align-items: flex-start;
+        }
+
     }
 
 </style>
@@ -418,7 +473,6 @@
 
 <nav class="main-nav">
 
-
 <a href="index.html">
     Home
 </a>
@@ -438,7 +492,6 @@
 <a href="cart.html">
     🛒 Cart
 </a>
-
 
 </nav>
 
@@ -462,7 +515,6 @@
 
 <section class="checkout-section payment-box">
 
-
 <h2>
     🎁 Gift Zone Order
 </h2>
@@ -481,6 +533,45 @@
         <strong id="giftAmount">
             ₹0
         </strong>
+
+    </div>
+
+
+    <!-- =====================================
+         SURPRISE VIDEO ROW
+    ===================================== -->
+
+    <div
+        id="surpriseVideoPayment"
+        class="surprise-video-payment"
+    >
+
+        <div class="surprise-video-payment-info">
+
+            <div class="surprise-video-payment-icon">
+                🎥
+            </div>
+
+            <div>
+
+                <strong>
+                    Make a Surprise Video
+                </strong>
+
+                <span>
+                    Surprise delivery video service
+                </span>
+
+            </div>
+
+        </div>
+
+        <div
+            id="surpriseVideoPaymentPrice"
+            class="surprise-video-payment-price"
+        >
+            + ₹199
+        </div>
 
     </div>
 
@@ -512,13 +603,11 @@
 
 </div>
 
-
 </section>
 
 <!-- ONLINE PAYMENT -->
 
 <section class="checkout-section online-payment">
-
 
 <h2>
     💳 Choose Payment Method
@@ -862,12 +951,9 @@
 <a
 href="checkout.html"
 class="continue-shopping payment-back"
-
 >
 
-
 ← Back to Checkout
-
 
 </a>
 
@@ -883,7 +969,6 @@ class="continue-shopping payment-back"
 >
 
 <div class="payment-popup">
-
 
 <div
     id="paymentPopupIcon"
@@ -907,7 +992,6 @@ class="continue-shopping payment-back"
 >
     Confirm Payment
 </button>
-
 
 </div>
 
@@ -975,6 +1059,26 @@ const checkoutDetails =
 
 
 // =====================================
+// GET SURPRISE VIDEO SELECTION
+// =====================================
+
+const surpriseVideo =
+    JSON.parse(
+        localStorage.getItem("giftZoneSurpriseVideo")
+    ) || {
+        selected: false,
+        price: 0
+    };
+
+
+// =====================================
+// SURPRISE VIDEO PRICE
+// =====================================
+
+const surpriseVideoPrice = 199;
+
+
+// =====================================
 // GET LOCAL CUSTOMER DATA
 // =====================================
 
@@ -1008,6 +1112,9 @@ const payButton =
 const selectedBank =
     document.getElementById("selectedBank");
 
+const surpriseVideoPayment =
+    document.getElementById("surpriseVideoPayment");
+
 
 // =====================================
 // DELIVERY CHARGE
@@ -1017,7 +1124,7 @@ const deliveryCharge = 50;
 
 
 // =====================================
-// CALCULATE TOTAL
+// CALCULATE GIFT TOTAL
 // =====================================
 
 let giftTotal = 0;
@@ -1075,8 +1182,47 @@ if (cart.length === 0) {
 }
 
 
+// =====================================
+// SURPRISE VIDEO CHARGE
+// =====================================
+
+let videoCharge = 0;
+
+
+if (
+    surpriseVideo &&
+    surpriseVideo.selected === true
+) {
+
+    videoCharge = surpriseVideoPrice;
+
+    if (surpriseVideoPayment) {
+
+        surpriseVideoPayment.classList.add("show");
+
+    }
+
+} else {
+
+    videoCharge = 0;
+
+    if (surpriseVideoPayment) {
+
+        surpriseVideoPayment.classList.remove("show");
+
+    }
+
+}
+
+
+// =====================================
+// FINAL TOTAL
+// =====================================
+
 const finalTotal =
-    giftTotal + deliveryCharge;
+    giftTotal +
+    videoCharge +
+    deliveryCharge;
 
 
 // =====================================
@@ -1389,6 +1535,23 @@ async function saveOrderToFirestore(
             cart:
                 cart,
 
+            /* =================================
+               SURPRISE VIDEO
+            ================================= */
+
+            surpriseVideoSelected:
+                surpriseVideo?.selected === true,
+
+            surpriseVideoPrice:
+                videoCharge,
+
+            surpriseVideo:
+                surpriseVideo,
+
+            /* =================================
+               AMOUNTS
+            ================================= */
+
             giftTotal:
                 giftTotal,
 
@@ -1428,15 +1591,36 @@ async function saveOrderToFirestore(
         );
 
 
+        // =================================
+        // CLEAR CART
+        // =================================
+
         localStorage.removeItem(
             "giftZoneCart"
         );
 
 
+        // =================================
+        // CLEAR CHECKOUT
+        // =================================
+
         localStorage.removeItem(
             "giftZoneCheckout"
         );
 
+
+        // =================================
+        // CLEAR SURPRISE VIDEO
+        // =================================
+
+        localStorage.removeItem(
+            "giftZoneSurpriseVideo"
+        );
+
+
+        // =================================
+        // SUCCESS POPUP
+        // =================================
 
         showPaymentPopup(
 
@@ -1492,7 +1676,9 @@ async function saveOrderToFirestore(
             "<br><br>" +
 
             "<small>" +
+
             "Please check your internet connection and try again." +
+
             "</small>",
 
             "Try Again"
@@ -1655,6 +1841,22 @@ payButton.addEventListener(
         // CONFIRM PAYMENT
         // =================================
 
+        let videoMessage = "";
+
+
+        if (
+            surpriseVideo &&
+            surpriseVideo.selected === true
+        ) {
+
+            videoMessage =
+                "<br><br>" +
+                "🎥 <strong>Surprise Video:</strong> ₹" +
+                videoCharge;
+
+        }
+
+
         showPaymentPopup(
 
             "💳",
@@ -1666,6 +1868,24 @@ payButton.addEventListener(
             "<strong>" +
             selectedMethod +
             "</strong>" +
+
+            "<br><br>" +
+
+            "Gift Amount:<br>" +
+
+            "<strong>₹" +
+            giftTotal +
+            "</strong>" +
+
+            "<br><br>" +
+
+            "Delivery & Surprise Service:<br>" +
+
+            "<strong>₹" +
+            deliveryCharge +
+            "</strong>" +
+
+            videoMessage +
 
             "<br><br>" +
 
