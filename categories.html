@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gift Zone - Categories</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fff7fb;
+            color: #333;
+            padding-bottom: 80px;
+        }
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        header {
+            background: #e91e63;
+            color: white;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .desktop-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .desktop-nav a:hover {
+            opacity: 0.75;
+        }
+
+        /* ==============================
+           PAGE TITLE
+        ============================== */
+
+        .page-heading {
+            text-align: center;
+            padding: 35px 15px 20px;
+        }
+
+        .page-heading h1 {
+            color: #e91e63;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-heading p {
+            color: #777;
+            font-size: 15px;
+        }
+
+        /* ==============================
+           CATEGORY GRID
+        ============================== */
+
+        .categories-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 25px 45px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.10);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(233,30,99,0.20);
+        }
+
+        .category-image {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+            background: #f5f5f5;
+        }
+
+        .category-name {
+            padding: 17px 10px;
+            text-align: center;
+            color: #333;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        /* ==============================
+           LOADING SCREEN
+        ============================== */
+
+        #loadingScreen {
+            position: fixed;
+            inset: 0;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.4s ease;
+        }
+
+        #loadingScreen img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            animation: loadingLogo 1.2s infinite ease-in-out;
+        }
+
+        #loadingScreen h2 {
+            color: #e91e63;
+            font-size: 22px;
+            margin-bottom: 7px;
+        }
+
+        #loadingScreen p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        @keyframes loadingLogo {
+            0% {
+                transform: scale(0.9);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(0.9);
+            }
+        }
+
+        /* ==============================
+           MOBILE BOTTOM NAV
+        ============================== */
+
+        .mobile-bottom-nav {
+            display: none;
+        }
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        @media (max-width: 768px) {
+
+            body {
+                padding-bottom: 75px;
+            }
+
+            header {
+                height: 60px;
+                padding: 0 18px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .desktop-nav {
+                display: none;
+            }
+
+            .page-heading {
+                padding: 25px 15px 15px;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .page-heading p {
+                font-size: 14px;
+            }
+
+            .categories-container {
+                padding: 10px 13px 30px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+
+            .category-card {
+                border-radius: 14px;
+            }
+
+            .category-image {
+                height: 155px;
+            }
+
+            .category-name {
+                padding: 13px 5px;
+                font-size: 15px;
+            }
+
+            /* Bottom Navigation */
+
+            .mobile-bottom-nav {
+                position: fixed;
+                display: flex;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 68px;
+                background: white;
+                border-top: 1px solid #eee;
+                box-shadow: 0 -3px 15px rgba(0,0,0,0.10);
+                z-index: 9999;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            .mobile-bottom-nav a {
+                flex: 1;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                text-decoration: none;
+                color: #777;
+                font-size: 11px;
+                font-weight: 600;
+            }
+
+            .mobile-bottom-nav a span {
+                font-size: 22px;
+                line-height: 22px;
+            }
+
+            .mobile-bottom-nav a.active {
+                color: #e91e63;
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            .category-grid {
+                gap: 11px;
+            }
+
+            .category-image {
+                height: 140px;
+            }
+
+            .category-name {
+                font-size: 14px;
+                padding: 11px 3px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ==============================
+         LOADING SCREEN
+    ============================== -->
+
+    <div id="loadingScreen">
+
+        <img
+            src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
+            alt="Gift Zone"
+        >
+
+        <h2>Gift Zone</h2>
+
+        <p>Preparing your categories...</p>
+
+    </div>
+
+
+    <!-- ==============================
+         HEADER
+    ============================== -->
+
+    <header>
+
+        <div class="logo">
+            🎁 GIFT ZONE
+        </div>
+
+        <nav class="desktop-nav">
+
+            <a href="index.html">Home</a>
+
+            <a href="index.html#gifts">Gifts</a>
+
+            <a href="categories.html">Occasions</a>
+
+            <a href="checkout.html">Surprise Delivery</a>
+
+            <a href="orders.html">My Orders</a>
+
+            <a href="profile.html">Profile</a>
+
+            <a href="cart.html">🛒 Cart</a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ==============================
+         PAGE HEADING
+    ============================== -->
+
+    <section class="page-heading">
+
+        <h1>SHOP BY CATEGORY</h1>
+
+        <p>Choose an occasion and find the perfect gift 🎁</p>
+
+    </section>
+
+
+    <!-- ==============================
+         CATEGORY SECTION
+    ============================== -->
+
+    <main class="categories-container">
+
+        <div class="category-grid">
+
+
+            <!-- Birthday -->
+
+            <div class="category-card" onclick="openCategory('Birthday')">
+
+                <img
+                    class="category-image"
+                    src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
+                    alt="Birthday Gifts"
+                >
+
+                <div class="category-name">
+                    🎂 Birthday
+                </div>
+
+            </div>
+
+
+            <!-- Anniversary -->
+
+            <div class="category-card" onclick="openCategory('Anniversary')">
+
+                <img
+                    class="category-image"
+                    src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
+                    alt="Anniversary Gifts"
+                >
+
+                <div class="category-name">
+                    💍 Anniversary
+                </div>
+
+            </div>
+
+
+            <!-- Celebrations -->
+
+            <div class="category-card" onclick="openCategory('Celebrations')">
+
+                <img
+                    class="category-image"
+                    src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
+                    alt="Celebration Gifts"
+                >
+
+                <div class="category-name">
+                    🎉 Celebrations
+                </div>
+
+            </div>
+
+
+            <!-- Raksha Bandhan -->
+
+            <div class="category-card" onclick="openCategory('Raksha Bandhan')">
+
+                <img
+                    class="category-image"
+                    src="https://mesmerizeindia.com/cdn/shop/articles/Rakhi_2026_Blog_Image_85afbaba-1f6d-4d0d-a0e4-96a7581bb205.jpg?v=1784184317&width=2048"
+                    alt="Raksha Bandhan Gifts"
+                >
+
+                <div class="category-name">
+                    🪢 Raksha Bandhan
+                </div>
+
+            </div>
+
+
+            <!-- Mother's Day -->
+
+            <div class="category-card" onclick="openCategory('Mother’s Day')">
+
+                <img
+                    class="category-image"
+                    src="https://imgcdn.floweraura.com/captivating-hamper-for-mom-9817800co-B_0.jpg"
+                    alt="Mother's Day Gifts"
+                >
+
+                <div class="category-name">
+                    🌷 Mother's Day
+                </div>
+
+            </div>
+
+
+            <!-- Father's Day -->
+
+            <div class="category-card" onclick="openCategory('Father’s Day')">
+
+                <img
+                    class="category-image"
+                    src="https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282"
+                    alt="Father's Day Gifts"
+                >
+
+                <div class="category-name">
+                    👨 Father's Day
+                </div>
+
+            </div>
+
+
+            <!-- Teacher's Day -->
+
+            <div class="category-card" onclick="openCategory('Teacher’s Day')">
+
+                <img
+                    class="category-image"
+                    src="https://www.fnp.com/images/pr/x/v20230818165234/best-teacher-ever-hamper_1.jpg"
+                    alt="Teacher's Day Gifts"
+                >
+
+                <div class="category-name">
+                    👩‍🏫 Teacher's Day
+                </div>
+
+            </div>
+
+
+            <!-- Love -->
+
+            <div class="category-card" onclick="openCategory('Love')">
+
+                <img
+                    class="category-image"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10"
+                    alt="Love Gifts"
+                >
+
+                <div class="category-name">
+                    ❤️ Love
+                </div>
+
+            </div>
+
+
+            <!-- Flowers -->
+
+            <div class="category-card" onclick="openCategory('Flowers')">
+
+                <img
+                    class="category-image"
+                    src="https://halfpe.com/cdn/shop/files/bGgFnGnreh.jpg?v=1732943085"
+                    alt="Flowers"
+                >
+
+                <div class="category-name">
+                    🌹 Flowers
+                </div>
+
+            </div>
+
+
+            <!-- Cakes -->
+
+            <div class="category-card" onclick="openCategory('Cakes')">
+
+                <img
+                    class="category-image"
+                    src="https://creativflowers.com/cdn/shop/products/gdsthumbnails_505x505px_ver_2_bs1allaboutcake.jpg?v=1680459275&width=1445"
+                    alt="Cakes"
+                >
+
+                <div class="category-name">
+                    🎂 Cakes
+                </div>
+
+            </div>
+
+
+            <!-- Gift Combos -->
+
+            <div class="category-card" onclick="openCategory('Gift Combos')">
+
+                <img
+                    class="category-image"
+                    src="https://www.classicflora.com/uploads/product-pics/img3/org/1770721419_mixed-rose-basket-with-gypsophila-teddy-chocolates-choco-chips-cake.jpg"
+                    alt="Gift Combos"
+                >
+
+                <div class="category-name">
+                    🎁 Gift Combos
+                </div>
+
+            </div>
+
+
+            <!-- Personalized -->
+
+            <div class="category-card" onclick="openCategory('Personalized')">
+
+                <img
+                    class="category-image"
+                    src="https://product.hstatic.net/200000350831/product/12_11fb8d0386104597bfc98c23ecf51be8_grande.png"
+                    alt="Personalized Gifts"
+                >
+
+                <div class="category-name">
+                    ✨ Personalized
+                </div>
+
+            </div>
+
+
+            <!-- All Gifts -->
+
+            <div class="category-card" onclick="openCategory('All Gifts')">
+
+                <img
+                    class="category-image"
+                    src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
+                    alt="All Gifts"
+                >
+
+                <div class="category-name">
+                    🎁 All Gifts
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- ==============================
+         MOBILE BOTTOM NAV
+    ============================== -->
+
+    <nav class="mobile-bottom-nav">
+
+        <a href="index.html">
+
+            <span>🏠</span>
+
+            Home
+
+        </a>
+
+
+        <a href="categories.html" class="active">
+
+            <span>🗂️</span>
+
+            Categories
+
+        </a>
+
+
+        <a href="profile.html">
+
+            <span>👤</span>
+
+            Profile
+
+        </a>
+
+
+        <a href="cart.html">
+
+            <span>🛒</span>
+
+            Cart
+
+        </a>
+
+    </nav>
+
+
+    <!-- ==============================
+         JAVASCRIPT
+    ============================== -->
+
+    <script>
+
+        /* ==========================================
+           OPEN CATEGORY
+        ========================================== */
+
+        function openCategory(categoryName) {
+
+            window.location.href =
+                "category-gifts.html?category=" +
+                encodeURIComponent(categoryName);
+
+        }
+
+
+        /* ==========================================
+           IMAGE FALLBACK
+        ========================================== */
+
+        document.querySelectorAll(".category-image").forEach(function(image) {
+
+            image.addEventListener("error", function() {
+
+                this.src =
+                    "https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514";
+
+            });
+
+        });
+
+
+        /* ==========================================
+           LOADING SCREEN
+        ========================================== */
+
+        window.addEventListener("load", function() {
+
+            setTimeout(function() {
+
+                const loadingScreen =
+                    document.getElementById("loadingScreen");
+
+                loadingScreen.style.opacity = "0";
+
+                setTimeout(function() {
+
+                    loadingScreen.style.display = "none";
+
+                }, 400);
+
+            }, 500);
+
+        });
+
+    </script>
+
+</body>
+</html>
