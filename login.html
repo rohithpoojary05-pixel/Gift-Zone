@@ -1,9 +1,9 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
 
 <head>
-
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +13,6 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
-
-    /* ==========================================
-       PASSWORD FIELD
-    ========================================== */
 
     .password-wrapper {
         position: relative;
@@ -28,11 +24,6 @@
         box-sizing: border-box;
         padding-right: 45px !important;
     }
-
-
-    /* ==========================================
-       SIMPLE EYE BUTTON
-    ========================================== */
 
     .password-wrapper .password-eye {
         position: absolute !important;
@@ -61,11 +52,6 @@
 
         cursor: pointer;
     }
-
-
-    /* ==========================================
-       EYE
-    ========================================== */
 
     .eye {
         position: relative;
@@ -97,11 +83,6 @@
         transform: translate(-50%, -50%);
     }
 
-
-    /* ==========================================
-       EYE WITH SLASH
-    ========================================== */
-
     .eye.closed::before {
         content: "";
 
@@ -120,7 +101,6 @@
         z-index: 2;
     }
 
-
     .password-wrapper .password-eye:hover,
     .password-wrapper .password-eye:focus,
     .password-wrapper .password-eye:active {
@@ -131,13 +111,11 @@
 
 </style>
 
-
 </head>
 
 <body>
 
 <div class="login-page">
-
 
 <div class="login-box">
 
@@ -150,11 +128,6 @@
     <p class="login-subtitle">
         Login to continue your surprise journey ❤️
     </p>
-
-
-    <!-- ==============================
-         LOGIN FORM
-    =============================== -->
 
     <form id="loginForm">
 
@@ -169,11 +142,9 @@
             required
         >
 
-
         <label for="loginPassword">
             Password
         </label>
-
 
         <div class="password-wrapper">
 
@@ -202,7 +173,6 @@
 
         </div>
 
-
         <button
             type="submit"
             class="login-button"
@@ -213,11 +183,6 @@
 
     </form>
 
-
-    <!-- ==============================
-         FORGOT PASSWORD
-    =============================== -->
-
     <a
         href="#"
         class="forgot-password"
@@ -226,15 +191,9 @@
         Forgot Password?
     </a>
 
-
     <div class="login-divider">
         <span>OR</span>
     </div>
-
-
-    <!-- ==============================
-         CREATE ACCOUNT
-    =============================== -->
 
     <p class="create-account">
 
@@ -246,11 +205,6 @@
 
     </p>
 
-
-    <!-- ==============================
-         CONTINUE SHOPPING
-    =============================== -->
-
     <a
         href="index.html"
         class="continue-shopping"
@@ -260,12 +214,8 @@
 
 </div>
 
-
 </div>
 
-<!-- ==========================================
-     FIREBASE LOGIN
-=========================================== -->
 
 <script type="module">
 
@@ -275,7 +225,13 @@
     } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
     import {
-        auth
+        doc,
+        getDoc
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+    import {
+        auth,
+        db
     } from "./firebase.js";
 
 
@@ -295,11 +251,10 @@
 
     passwordEye.addEventListener(
         "click",
-        function () {
+        function() {
 
             if (passwordInput.type === "password") {
 
-                // SHOW PASSWORD
                 passwordInput.type = "text";
 
                 eyeIcon.classList.remove("closed");
@@ -316,7 +271,6 @@
 
             } else {
 
-                // HIDE PASSWORD
                 passwordInput.type = "password";
 
                 eyeIcon.classList.add("closed");
@@ -345,7 +299,7 @@
         .getElementById("loginForm")
         .addEventListener(
             "submit",
-            async function (event) {
+            async function(event) {
 
                 event.preventDefault();
 
@@ -397,19 +351,111 @@
                         userCredential.user;
 
 
+                    // ==========================================
+                    // GET CUSTOMER PROFILE FROM FIRESTORE
+                    // ==========================================
+
+                    let customerMobile = "";
+
+                    let customerName =
+                        user.displayName || "";
+
+
+                    try {
+
+                        const customerRef =
+                            doc(
+                                db,
+                                "customers",
+                                user.uid
+                            );
+
+
+                        const customerSnapshot =
+                            await getDoc(customerRef);
+
+
+                        if (customerSnapshot.exists()) {
+
+                            const customerData =
+                                customerSnapshot.data();
+
+
+                            customerMobile =
+                                customerData.mobile || "";
+
+                            customerName =
+                                customerData.name ||
+                                customerName;
+
+                        }
+
+                    } catch (profileError) {
+
+                        console.error(
+                            "Gift Zone customer profile error:",
+                            profileError
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // BACKUP FROM EXISTING LOCAL DATA
+                    // ==========================================
+
+                    if (!customerMobile) {
+
+                        try {
+
+                            const oldCustomer =
+                                JSON.parse(
+                                    localStorage.getItem(
+                                        "giftZoneLoggedInCustomer"
+                                    )
+                                );
+
+
+                            if (oldCustomer) {
+
+                                customerMobile =
+                                    oldCustomer.mobile ||
+                                    oldCustomer.phone ||
+                                    oldCustomer.mobileNumber ||
+                                    "";
+
+                            }
+
+                        } catch (error) {
+
+                            console.error(
+                                "Gift Zone local customer error:",
+                                error
+                            );
+
+                        }
+
+                    }
+
+
                     const loggedInCustomer = {
 
                         customerId:
                             user.uid,
 
                         name:
-                            user.displayName || "",
+                            customerName,
 
                         email:
                             user.email,
 
+                        mobile:
+                            customerMobile,
+
                         loginTime:
-                            new Date().toLocaleString("en-IN")
+                            new Date().toLocaleString(
+                                "en-IN"
+                            )
 
                     };
 
@@ -526,7 +572,7 @@
         .getElementById("forgotPassword")
         .addEventListener(
             "click",
-            async function (event) {
+            async function(event) {
 
                 event.preventDefault();
 
@@ -617,3 +663,4 @@
 </body>
 
 </html>
+
