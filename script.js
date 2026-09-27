@@ -2,6 +2,146 @@ let cart = JSON.parse(localStorage.getItem("giftZoneCart")) || [];
 
 
 // =====================================
+// GIFT ZONE - SURPRISE VIDEO SERVICE
+// =====================================
+// This stores whether the customer selected
+// the optional Surprise Video service.
+// Existing gift cart functionality is not changed.
+
+function getSurpriseVideoSelection() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "giftZoneSurpriseVideo"
+            )
+        ) || {
+            selected: false,
+            price: 0
+        };
+
+    } catch (error) {
+
+        return {
+            selected: false,
+            price: 0
+        };
+
+    }
+
+}
+
+
+// =====================================
+// SAVE SURPRISE VIDEO SELECTION
+// =====================================
+
+function saveSurpriseVideoSelection(
+    selected,
+    price = 0
+) {
+
+    const videoData = {
+
+        selected:
+            Boolean(selected),
+
+        price:
+            Number(price) || 0
+
+    };
+
+
+    localStorage.setItem(
+        "giftZoneSurpriseVideo",
+        JSON.stringify(videoData)
+    );
+
+
+    return videoData;
+
+}
+
+
+// =====================================
+// CLEAR SURPRISE VIDEO SELECTION
+// =====================================
+
+function clearSurpriseVideoSelection() {
+
+    localStorage.setItem(
+        "giftZoneSurpriseVideo",
+        JSON.stringify({
+
+            selected: false,
+
+            price: 0
+
+        })
+    );
+
+}
+
+
+// =====================================
+// GET SURPRISE VIDEO CHARGE
+// =====================================
+
+function getSurpriseVideoCharge() {
+
+    const videoData =
+        getSurpriseVideoSelection();
+
+
+    if (!videoData.selected) {
+
+        return 0;
+
+    }
+
+
+    return Number(
+        videoData.price
+    ) || 0;
+
+}
+
+
+// =====================================
+// GET TOTAL INCLUDING SURPRISE VIDEO
+// =====================================
+
+function getGiftZoneGrandTotal() {
+
+    let total = 0;
+
+
+    cart.forEach(
+        function (item) {
+
+            total +=
+                (
+                    Number(item.price) || 0
+                ) *
+                (
+                    Number(item.quantity) || 1
+                );
+
+        }
+    );
+
+
+    total +=
+        getSurpriseVideoCharge();
+
+
+    return total;
+
+}
+
+
+// =====================================
 // GIFT ZONE ATTRACTIVE POPUP
 // =====================================
 
@@ -15,17 +155,22 @@ function showGiftPopup(
     const popup =
         document.getElementById("giftPopup");
 
+
     const popupIcon =
         document.getElementById("giftPopupIcon");
+
 
     const popupTitle =
         document.getElementById("giftPopupTitle");
 
+
     const popupMessage =
         document.getElementById("giftPopupMessage");
 
+
     const popupButton =
         document.getElementById("giftPopupButton");
+
 
     const popupClose =
         document.getElementById("giftPopupClose");
@@ -45,11 +190,14 @@ function showGiftPopup(
     popupIcon.textContent =
         icon;
 
+
     popupTitle.textContent =
         title;
 
+
     popupMessage.innerHTML =
         message;
+
 
     popupButton.textContent =
         buttonText;
@@ -116,12 +264,369 @@ function getLoggedInCustomer() {
 
 
 // =====================================
+// GIFT ZONE PAGE LOADING SCREEN
+// FLIPKART-STYLE PAGE LOADING
+// =====================================
+
+function createGiftZoneLoadingScreen() {
+
+    let loadingScreen =
+        document.getElementById(
+            "loadingScreen"
+        );
+
+
+    if (!loadingScreen) {
+
+        loadingScreen =
+            document.createElement("div");
+
+
+        loadingScreen.id =
+            "loadingScreen";
+
+
+        loadingScreen.className =
+            "gift-zone-loading-screen";
+
+
+        document.body.appendChild(
+            loadingScreen
+        );
+
+    }
+
+
+    loadingScreen.innerHTML = `
+
+        <div class="gift-zone-loader-content">
+
+            <div class="gift-zone-loader-logo">
+
+                <span class="gift-zone-loader-gift">
+                    🎁
+                </span>
+
+                <div class="gift-zone-loader-title">
+                    GIFT ZONE
+                </div>
+
+            </div>
+
+
+            <div class="gift-zone-spinner"></div>
+
+
+            <div class="gift-zone-loading-text">
+                Preparing your surprise...
+            </div>
+
+        </div>
+
+    `;
+
+
+    // =====================================
+    // LOADING SCREEN DESIGN
+    // =====================================
+
+    if (
+        !document.getElementById(
+            "giftZoneLoadingStyle"
+        )
+    ) {
+
+        const style =
+            document.createElement("style");
+
+
+        style.id =
+            "giftZoneLoadingStyle";
+
+
+        style.textContent = `
+
+            #loadingScreen.gift-zone-loading-screen {
+
+                position: fixed;
+
+                inset: 0;
+
+                width: 100%;
+
+                height: 100%;
+
+                background: #ffffff;
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: center;
+
+                z-index: 999999;
+
+                opacity: 1;
+
+                visibility: visible;
+
+                transition:
+                    opacity 0.35s ease,
+                    visibility 0.35s ease;
+
+            }
+
+
+            #loadingScreen.gift-zone-loading-screen.hidden {
+
+                opacity: 0;
+
+                visibility: hidden;
+
+                pointer-events: none;
+
+            }
+
+
+            .gift-zone-loader-content {
+
+                text-align: center;
+
+                display: flex;
+
+                flex-direction: column;
+
+                align-items: center;
+
+                justify-content: center;
+
+                min-width: 220px;
+
+            }
+
+
+            .gift-zone-loader-logo {
+
+                display: flex;
+
+                flex-direction: column;
+
+                align-items: center;
+
+                justify-content: center;
+
+                margin-bottom: 22px;
+
+            }
+
+
+            .gift-zone-loader-gift {
+
+                font-size: 58px;
+
+                line-height: 1;
+
+                display: block;
+
+                margin-bottom: 10px;
+
+                animation:
+                    giftZoneGiftBounce 1s ease-in-out infinite;
+
+            }
+
+
+            .gift-zone-loader-title {
+
+                font-family:
+                    Arial,
+                    Helvetica,
+                    sans-serif;
+
+                font-size: 25px;
+
+                font-weight: 800;
+
+                letter-spacing: 2px;
+
+                color: #e91e63;
+
+            }
+
+
+            .gift-zone-spinner {
+
+                width: 38px;
+
+                height: 38px;
+
+                border: 4px solid #f8c5d8;
+
+                border-top: 4px solid #e91e63;
+
+                border-radius: 50%;
+
+                animation:
+                    giftZoneSpin 0.8s linear infinite;
+
+                margin-bottom: 15px;
+
+            }
+
+
+            .gift-zone-loading-text {
+
+                font-family:
+                    Arial,
+                    Helvetica,
+                    sans-serif;
+
+                font-size: 14px;
+
+                color: #777;
+
+                letter-spacing: 0.3px;
+
+            }
+
+
+            @keyframes giftZoneSpin {
+
+                from {
+
+                    transform: rotate(0deg);
+
+                }
+
+                to {
+
+                    transform: rotate(360deg);
+
+                }
+
+            }
+
+
+            @keyframes giftZoneGiftBounce {
+
+                0%,
+                100% {
+
+                    transform: translateY(0);
+
+                }
+
+                50% {
+
+                    transform: translateY(-7px);
+
+                }
+
+            }
+
+
+            @media (max-width: 600px) {
+
+                .gift-zone-loader-gift {
+
+                    font-size: 52px;
+
+                }
+
+
+                .gift-zone-loader-title {
+
+                    font-size: 22px;
+
+                }
+
+
+                .gift-zone-spinner {
+
+                    width: 34px;
+
+                    height: 34px;
+
+                }
+
+
+                .gift-zone-loading-text {
+
+                    font-size: 13px;
+
+                }
+
+            }
+
+        `;
+
+
+        document.head.appendChild(
+            style
+        );
+
+    }
+
+
+    return loadingScreen;
+
+}
+
+
+// =====================================
+// SHOW GIFT ZONE LOADING
+// =====================================
+
+function showGiftZoneLoading() {
+
+    const loadingScreen =
+        createGiftZoneLoadingScreen();
+
+
+    loadingScreen.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+// =====================================
+// HIDE GIFT ZONE LOADING
+// =====================================
+
+function hideGiftZoneLoading() {
+
+    const loadingScreen =
+        document.getElementById(
+            "loadingScreen"
+        );
+
+
+    if (loadingScreen) {
+
+        loadingScreen.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+// =====================================
 // PAGE READY
 // =====================================
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
+
+
+        // =====================================
+        // CREATE GIFT ZONE LOADING SCREEN
+        // =====================================
+
+        createGiftZoneLoadingScreen();
 
 
         // =====================================
@@ -293,6 +798,7 @@ document.addEventListener(
                                             "giftPopup"
                                         );
 
+
                                     if (popup) {
 
                                         popup.classList.remove(
@@ -300,6 +806,7 @@ document.addEventListener(
                                         );
 
                                     }
+
 
                                     window.location.href =
                                         "login.html";
@@ -336,19 +843,7 @@ document.addEventListener(
                     // SHOW LOADING
                     // =====================================
 
-                    const loadingScreen =
-                        document.getElementById(
-                            "loadingScreen"
-                        );
-
-
-                    if (loadingScreen) {
-
-                        loadingScreen.classList.remove(
-                            "hidden"
-                        );
-
-                    }
+                    showGiftZoneLoading();
 
 
                     // =====================================
@@ -393,6 +888,7 @@ document.addEventListener(
                         // IMPORTANT:
                         // This connects the order
                         // to the logged-in customer.
+
                         customerId:
                             loggedInCustomer.customerId || "",
 
@@ -452,7 +948,17 @@ document.addEventListener(
 
 
                         cart:
-                            cart
+                            cart,
+
+
+                        // =====================================
+                        // SURPRISE VIDEO SERVICE
+                        // =====================================
+                        // This is added without changing
+                        // the existing cart structure.
+
+                        surpriseVideo:
+                            getSurpriseVideoSelection()
 
                     };
 
@@ -477,13 +983,7 @@ document.addEventListener(
                         function () {
 
 
-                            if (loadingScreen) {
-
-                                loadingScreen.classList.add(
-                                    "hidden"
-                                );
-
-                            }
+                            hideGiftZoneLoading();
 
 
                             showGiftPopup(
@@ -520,15 +1020,35 @@ document.addEventListener(
                                         }
 
 
-                                        window.location.href =
-                                            "payment.html";
+                                        showGiftZoneLoading();
+
+
+                                        setTimeout(
+                                            function () {
+
+                                                window.location.href =
+                                                    "payment.html";
+
+                                            },
+                                            350
+                                        );
 
                                     };
 
                             } else {
 
-                                window.location.href =
-                                    "payment.html";
+                                showGiftZoneLoading();
+
+
+                                setTimeout(
+                                    function () {
+
+                                        window.location.href =
+                                            "payment.html";
+
+                                    },
+                                    350
+                                );
 
                             }
 
@@ -541,6 +1061,23 @@ document.addEventListener(
             );
 
         }
+
+
+        // =====================================
+        // INITIAL PAGE LOADING
+        // =====================================
+
+        showGiftZoneLoading();
+
+
+        setTimeout(
+            function () {
+
+                hideGiftZoneLoading();
+
+            },
+            700
+        );
 
 
     }
@@ -589,8 +1126,16 @@ function displayCart() {
         cartItems.innerHTML =
             "<p>Your cart is empty 🛒</p>";
 
+
+        // Even if the cart is empty,
+        // show video charge only if selected.
+        total =
+            getSurpriseVideoCharge();
+
+
         cartTotal.textContent =
-            "0";
+            total;
+
 
         return;
 
@@ -648,7 +1193,7 @@ function displayCart() {
                         <button
                             onclick="increaseQuantity(${index})">
 
-                            +
+                            + 
 
                         </button>
 
@@ -673,6 +1218,52 @@ function displayCart() {
 
         }
     );
+
+
+    // =====================================
+    // SURPRISE VIDEO CHARGE
+    // =====================================
+
+    const surpriseVideoCharge =
+        getSurpriseVideoCharge();
+
+
+    if (surpriseVideoCharge > 0) {
+
+        total +=
+            surpriseVideoCharge;
+
+
+        cartItems.innerHTML += `
+
+            <div class="cart-item gift-zone-video-cart-item">
+
+                <div>
+
+                    <h3>
+                        🎥 Surprise Video
+                    </h3>
+
+                    <p>
+                        Special surprise video service
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p>
+                        ₹${surpriseVideoCharge}
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
 
 
     cartTotal.textContent =
@@ -839,8 +1430,18 @@ function checkout() {
                     }
 
 
-                    window.location.href =
-                        "login.html";
+                    showGiftZoneLoading();
+
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "login.html";
+
+                        },
+                        350
+                    );
 
                 };
 
@@ -852,43 +1453,20 @@ function checkout() {
     }
 
 
-    window.location.href =
-        "checkout.html";
+    showGiftZoneLoading();
+
+
+    setTimeout(
+        function () {
+
+            window.location.href =
+                "checkout.html";
+
+        },
+        350
+    );
 
 }
-
-
-// =====================================
-// PAGE LOADING SCREEN
-// =====================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        const loadingScreen =
-            document.getElementById(
-                "loadingScreen"
-            );
-
-
-        if (loadingScreen) {
-
-            setTimeout(
-                function () {
-
-                    loadingScreen.classList.add(
-                        "hidden"
-                    );
-
-                },
-                700
-            );
-
-        }
-
-    }
-);
 
 
 // =====================================
@@ -927,13 +1505,11 @@ document.addEventListener(
         }
 
 
-        const loadingScreen =
-            document.getElementById(
-                "loadingScreen"
-            );
+        // Ignore JavaScript links.
 
-
-        if (!loadingScreen) {
+        if (
+            href.startsWith("javascript:")
+        ) {
 
             return;
 
@@ -943,9 +1519,7 @@ document.addEventListener(
         event.preventDefault();
 
 
-        loadingScreen.classList.remove(
-            "hidden"
-        );
+        showGiftZoneLoading();
 
 
         setTimeout(
