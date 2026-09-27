@@ -380,7 +380,6 @@ header{
 
 <header>
 
-
 <div class="logo">
     🎁 Gift Zone
 </div>
@@ -389,11 +388,9 @@ header{
     👨‍💼 Distributor / Admin
 </div>
 
-
 </header>
 
 <div class="container">
-
 
 <h1 class="page-title">
     📦 All Customer Orders
@@ -403,45 +400,47 @@ header{
     Prepare gifts, manage deliveries and update customer order status
 </p>
 
-
 <div class="top-bar">
 
-    <div class="search-box">
 
-        <input
-            type="text"
-            id="searchOrders"
-            placeholder="🔎 Search Order ID, Customer or Recipient..."
-        >
+<div class="search-box">
 
-    </div>
-
-    <button
-        class="refresh-btn"
-        id="refreshBtn"
+    <input
+        type="text"
+        id="searchOrders"
+        placeholder="🔎 Search Order ID, Customer or Recipient..."
     >
-        🔄 Refresh Orders
-    </button>
 
 </div>
 
+<button
+    class="refresh-btn"
+    id="refreshBtn"
+>
+    🔄 Refresh Orders
+</button>
+
+
+</div>
 
 <div class="order-count">
 
-    Total Orders:
-    <span id="orderCount">0</span>
+
+Total Orders:
+<span id="orderCount">0</span>
+
 
 </div>
-
 
 <div id="ordersContainer">
 
-    <div class="loading-message">
-        🔄 Connecting to Gift Zone Firebase...
-    </div>
 
+<div class="loading-message">
+    🔄 Connecting to Gift Zone Firebase...
 </div>
 
+
+</div>
 
 </div>
 
@@ -451,7 +450,7 @@ header{
    FIREBASE IMPORT
 ===================================================== */
 
-import { auth, db } from "./firebase.js";
+import { auth, db } from "./firebase-config.js";
 
 import {
     collection,
@@ -1053,6 +1052,7 @@ function createOrderCard(order){
                     }
                 >
                     ${escapeHTML(status)}
+
                 </option>
 
             `
