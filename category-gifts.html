@@ -394,7 +394,9 @@
                 font-size: 13px;
             }
 
-            /* Bottom navigation */
+            /* ==============================
+               PROFESSIONAL BOTTOM NAV
+            ============================== */
 
             .mobile-bottom-nav {
                 position: fixed;
@@ -425,9 +427,18 @@
                 font-weight: 600;
             }
 
-            .mobile-bottom-nav a span {
-                font-size: 22px;
-                line-height: 22px;
+            .mobile-bottom-nav a .bottom-icon {
+                width: 23px;
+                height: 23px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .mobile-bottom-nav a .bottom-icon svg {
+                width: 23px;
+                height: 23px;
+                display: block;
             }
 
             .mobile-bottom-nav a.active {
@@ -1270,7 +1281,22 @@
 
         <a href="index.html">
 
-            <span>🏠</span>
+            <span class="bottom-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M3 10.5L12 3l9 7.5"></path>
+                    <path d="M5 9.5V21h14V9.5"></path>
+                    <path d="M9 21v-6h6v6"></path>
+
+                </svg>
+
+            </span>
 
             Home
 
@@ -1279,7 +1305,23 @@
 
         <a href="categories.html">
 
-            <span>🗂️</span>
+            <span class="bottom-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M20 12V7l-8-4-8 4v5"></path>
+                    <path d="M4 12l8 4 8-4"></path>
+                    <path d="M4 7l8 4 8-4"></path>
+                    <path d="M12 16v5"></path>
+
+                </svg>
+
+            </span>
 
             Categories
 
@@ -1288,7 +1330,21 @@
 
         <a href="profile.html">
 
-            <span>👤</span>
+            <span class="bottom-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"></path>
+
+                </svg>
+
+            </span>
 
             Profile
 
@@ -1297,7 +1353,22 @@
 
         <a href="cart.html">
 
-            <span>🛒</span>
+            <span class="bottom-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6"></path>
+                    <circle cx="10" cy="20" r="1.5"></circle>
+                    <circle cx="18" cy="20" r="1.5"></circle>
+
+                </svg>
+
+            </span>
 
             Cart
 
