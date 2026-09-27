@@ -1,0 +1,37 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ADMIN USERS
+    match /admins/{adminId} {
+      allow read: if request.auth != null
+                    && request.auth.uid == adminId;
+      allow write: if false;
+    }
+
+    // ORDERS
+    match /orders/{orderId} {
+
+      // Customer can create only their own order
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid;
+
+      // Customer can read their own order
+      // Admin can read every order
+      allow read: if request.auth != null
+                   && (
+                     resource.data.userId == request.auth.uid
+                     || exists(
+                       /databases/$(database)/documents/admins/$(request.auth.uid)
+                     )
+                   );
+
+      // Only admin can update/delete orders
+      allow update, delete: if request.auth != null
+                            && exists(
+                              /databases/$(database)/documents/admins/$(request.auth.uid)
+                            );
+    }
+  }
+}
