@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gift Zone - Gifts</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fff7fb;
+            color: #333;
+            padding-bottom: 80px;
+        }
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        header {
+            background: #e91e63;
+            color: white;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .desktop-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .desktop-nav a:hover {
+            opacity: 0.75;
+        }
+
+        /* ==============================
+           PAGE HEADER
+        ============================== */
+
+        .page-header {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 25px 15px;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: white;
+            color: #e91e63;
+            border: 1px solid #e91e63;
+            padding: 9px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            background: #e91e63;
+            color: white;
+        }
+
+        .page-header h1 {
+            color: #e91e63;
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: #777;
+            font-size: 15px;
+        }
+
+        /* ==============================
+           GIFT GRID
+        ============================== */
+
+        .gift-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 15px 25px 45px;
+        }
+
+        .gift-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .gift-card {
+            background: white;
+            border-radius: 17px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.10);
+            transition: 0.25s;
+        }
+
+        .gift-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(233,30,99,0.18);
+        }
+
+        .gift-image {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+            background: #f5f5f5;
+        }
+
+        .gift-info {
+            padding: 15px;
+        }
+
+        .gift-name {
+            font-size: 16px;
+            font-weight: bold;
+            min-height: 40px;
+            line-height: 20px;
+        }
+
+        .gift-price {
+            color: #e91e63;
+            font-size: 19px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .add-cart-btn {
+            width: 100%;
+            border: none;
+            background: #e91e63;
+            color: white;
+            padding: 11px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .add-cart-btn:hover {
+            background: #c2185b;
+        }
+
+        /* ==============================
+           EMPTY MESSAGE
+        ============================== */
+
+        .empty-message {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+        }
+
+        .empty-message .emoji {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .empty-message h2 {
+            color: #e91e63;
+            margin-bottom: 8px;
+        }
+
+        .empty-message p {
+            color: #777;
+        }
+
+        /* ==============================
+           LOADING SCREEN
+        ============================== */
+
+        #loadingScreen {
+            position: fixed;
+            inset: 0;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.4s ease;
+        }
+
+        #loadingScreen img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            animation: loadingLogo 1.2s infinite ease-in-out;
+        }
+
+        #loadingScreen h2 {
+            color: #e91e63;
+            font-size: 22px;
+            margin-bottom: 7px;
+        }
+
+        #loadingScreen p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        @keyframes loadingLogo {
+
+            0% {
+                transform: scale(0.9);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(0.9);
+            }
+
+        }
+
+        /* ==============================
+           POPUP
+        ============================== */
+
+        #cartPopup {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 13px 18px;
+            border-radius: 10px;
+            z-index: 99998;
+            display: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        /* ==============================
+           MOBILE BOTTOM NAV
+        ============================== */
+
+        .mobile-bottom-nav {
+            display: none;
+        }
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        @media (max-width: 768px) {
+
+            body {
+                padding-bottom: 75px;
+            }
+
+            header {
+                height: 60px;
+                padding: 0 18px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .desktop-nav {
+                display: none;
+            }
+
+            .page-header {
+                padding: 22px 14px 10px;
+            }
+
+            .page-header h1 {
+                font-size: 25px;
+            }
+
+            .page-header p {
+                font-size: 14px;
+            }
+
+            .back-button {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+
+            .gift-container {
+                padding: 10px 13px 30px;
+            }
+
+            .gift-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+
+            .gift-card {
+                border-radius: 14px;
+            }
+
+            .gift-image {
+                height: 155px;
+            }
+
+            .gift-info {
+                padding: 11px;
+            }
+
+            .gift-name {
+                font-size: 14px;
+                line-height: 18px;
+                min-height: 36px;
+            }
+
+            .gift-price {
+                font-size: 17px;
+                margin: 8px 0;
+            }
+
+            .add-cart-btn {
+                padding: 10px 5px;
+                font-size: 13px;
+            }
+
+            /* Bottom navigation */
+
+            .mobile-bottom-nav {
+                position: fixed;
+                display: flex;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 68px;
+                background: white;
+                border-top: 1px solid #eee;
+                box-shadow: 0 -3px 15px rgba(0,0,0,0.10);
+                z-index: 9999;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            .mobile-bottom-nav a {
+                flex: 1;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                text-decoration: none;
+                color: #777;
+                font-size: 11px;
+                font-weight: 600;
+            }
+
+            .mobile-bottom-nav a span {
+                font-size: 22px;
+                line-height: 22px;
+            }
+
+            .mobile-bottom-nav a.active {
+                color: #e91e63;
+            }
+
+        }
+
+        @media (max-width: 400px) {
+
+            .gift-grid {
+                gap: 11px;
+            }
+
+            .gift-image {
+                height: 140px;
+            }
+
+            .gift-info {
+                padding: 9px;
+            }
+
+            .gift-name {
+                font-size: 13px;
+            }
+
+            .gift-price {
+                font-size: 16px;
+            }
+
+            .add-cart-btn {
+                font-size: 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==============================
+         LOADING SCREEN
+    ============================== -->
+
+    <div id="loadingScreen">
+
+        <img
+            src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
+            alt="Gift Zone"
+        >
+
+        <h2>Gift Zone</h2>
+
+        <p>Preparing your gifts...</p>
+
+    </div>
+
+
+    <!-- ==============================
+         HEADER
+    ============================== -->
+
+    <header>
+
+        <div class="logo">
+            🎁 GIFT ZONE
+        </div>
+
+        <nav class="desktop-nav">
+
+            <a href="index.html">Home</a>
+
+            <a href="index.html#gifts">Gifts</a>
+
+            <a href="categories.html">Occasions</a>
+
+            <a href="checkout.html">Surprise Delivery</a>
+
+            <a href="orders.html">My Orders</a>
+
+            <a href="profile.html">Profile</a>
+
+            <a href="cart.html">🛒 Cart</a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ==============================
+         PAGE HEADER
+    ============================== -->
+
+    <section class="page-header">
+
+        <a href="categories.html" class="back-button">
+            ← Back to Categories
+        </a>
+
+        <h1 id="categoryTitle">
+            Gifts
+        </h1>
+
+        <p id="categoryDescription">
+            Choose the perfect gift for your special moment 🎁
+        </p>
+
+    </section>
+
+
+    <!-- ==============================
+         GIFTS
+    ============================== -->
+
+    <main class="gift-container">
+
+        <div class="gift-grid" id="giftGrid">
+
+
+            <!-- ==================================
+                 BIRTHDAY
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Birthday">
+
+                <img
+                    class="gift-image"
+                    src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
+                    alt="Birthday Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Birthday Celebration Gift Hamper
+                    </div>
+
+                    <div class="gift-price">
+                        ₹799
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="gift-card"
+                 data-category="Birthday">
+
+                <img
+                    class="gift-image"
+                    src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
+                    alt="Birthday Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Birthday Special Surprise Box
+                    </div>
+
+                    <div class="gift-price">
+                        ₹999
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 ANNIVERSARY
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Anniversary">
+
+                <img
+                    class="gift-image"
+                    src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
+                    alt="Anniversary Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Romantic Anniversary Gift Hamper
+                    </div>
+
+                    <div class="gift-price">
+                        ₹899
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="gift-card"
+                 data-category="Anniversary">
+
+                <img
+                    class="gift-image"
+                    src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
+                    alt="Anniversary Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Happy Anniversary Surprise Box
+                    </div>
+
+                    <div class="gift-price">
+                        ₹1,199
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 CELEBRATIONS
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Celebrations">
+
+                <img
+                    class="gift-image"
+                    src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
+                    alt="Celebration Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Joyful Celebration Gift Combo
+                    </div>
+
+                    <div class="gift-price">
+                        ₹1,299
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="gift-card"
+                 data-category="Celebrations">
+
+                <img
+                    class="gift-image"
+                    src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
+                    alt="Celebration Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Celebration Flowers & Cake Combo
+                    </div>
+
+                    <div class="gift-price">
+                        ₹1,499
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 RAKSHA BANDHAN
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Raksha Bandhan">
+
+                <img
+                    class="gift-image"
+                    src="https://mesmerizeindia.com/cdn/shop/articles/Rakhi_2026_Blog_Image_85afbaba-1f6d-4d0d-a0e4-96a7581bb205.jpg?v=1784184317&width=2048"
+                    alt="Raksha Bandhan Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Raksha Bandhan Brother Sister Combo
+                    </div>
+
+                    <div class="gift-price">
+                        ₹699
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 MOTHER'S DAY
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Mother’s Day">
+
+                <img
+                    class="gift-image"
+                    src="https://imgcdn.floweraura.com/captivating-hamper-for-mom-9817800co-B_0.jpg"
+                    alt="Mother's Day Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Special Gift Hamper For Mom
+                    </div>
+
+                    <div class="gift-price">
+                        ₹899
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 FATHER'S DAY
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Father’s Day">
+
+                <img
+                    class="gift-image"
+                    src="https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282"
+                    alt="Father's Day Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Best Dad Gift Combo
+                    </div>
+
+                    <div class="gift-price">
+                        ₹799
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 TEACHER'S DAY
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Teacher’s Day">
+
+                <img
+                    class="gift-image"
+                    src="https://www.fnp.com/images/pr/x/v20230818165234/best-teacher-ever-hamper_1.jpg"
+                    alt="Teacher's Day Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Best Teacher Ever Gift Hamper
+                    </div>
+
+                    <div class="gift-price">
+                        ₹699
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 LOVE
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Love">
+
+                <img
+                    class="gift-image"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10"
+                    alt="Love Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Romantic Love Surprise Gift
+                    </div>
+
+                    <div class="gift-price">
+                        ₹899
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 FLOWERS
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Flowers">
+
+                <img
+                    class="gift-image"
+                    src="https://halfpe.com/cdn/shop/files/bGgFnGnreh.jpg?v=1732943085"
+                    alt="Flowers">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Beautiful Fresh Flower Bouquet
+                    </div>
+
+                    <div class="gift-price">
+                        ₹599
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 CAKES
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Cakes">
+
+                <img
+                    class="gift-image"
+                    src="https://creativflowers.com/cdn/shop/products/gdsthumbnails_505x505px_ver_2_bs1allaboutcake.jpg?v=1680459275&width=1445"
+                    alt="Cake">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        All About Cake
+                    </div>
+
+                    <div class="gift-price">
+                        ₹699
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 GIFT COMBOS
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Gift Combos">
+
+                <img
+                    class="gift-image"
+                    src="https://www.classicflora.com/uploads/product-pics/img3/org/1770721419_mixed-rose-basket-with-gypsophila-teddy-chocolates-choco-chips-cake.jpg"
+                    alt="Gift Combo">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Mixed Rose Gift Combo
+                    </div>
+
+                    <div class="gift-price">
+                        ₹1,099
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 PERSONALIZED
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="Personalized">
+
+                <img
+                    class="gift-image"
+                    src="https://product.hstatic.net/200000350831/product/12_11fb8d0386104597bfc98c23ecf51be8_grande.png"
+                    alt="Personalized Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Personalized Special Gift
+                    </div>
+
+                    <div class="gift-price">
+                        ₹799
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 ALL GIFTS
+            ================================== -->
+
+            <div class="gift-card"
+                 data-category="All Gifts">
+
+                <img
+                    class="gift-image"
+                    src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
+                    alt="Gift">
+
+                <div class="gift-info">
+
+                    <div class="gift-name">
+                        Congratulations & Celebration Gift Hamper
+                    </div>
+
+                    <div class="gift-price">
+                        ₹999
+                    </div>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addGiftToCart(this)">
+                        🛒 Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- EMPTY -->
+
+        <div class="empty-message" id="emptyMessage">
+
+            <div class="emoji">
+                🎁
+            </div>
+
+            <h2>No Gifts Found</h2>
+
+            <p>
+                We are preparing more beautiful gifts for this category.
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==============================
+         CART POPUP
+    ============================== -->
+
+    <div id="cartPopup">
+        🎁 Gift added to cart!
+    </div>
+
+
+    <!-- ==============================
+         MOBILE BOTTOM NAV
+    ============================== -->
+
+    <nav class="mobile-bottom-nav">
+
+        <a href="index.html">
+
+            <span>🏠</span>
+
+            Home
+
+        </a>
+
+
+        <a href="categories.html">
+
+            <span>🗂️</span>
+
+            Categories
+
+        </a>
+
+
+        <a href="profile.html">
+
+            <span>👤</span>
+
+            Profile
+
+        </a>
+
+
+        <a href="cart.html">
+
+            <span>🛒</span>
+
+            Cart
+
+        </a>
+
+    </nav>
+
+
+    <!-- ==============================
+         JAVASCRIPT
+    ============================== -->
+
+    <script>
+
+        /* ==========================================
+           GIFT DATA / CART
+        ========================================== */
+
+        let giftZoneCart =
+            JSON.parse(localStorage.getItem("giftZoneCart")) || [];
+
+
+        /* ==========================================
+           GET CATEGORY FROM URL
+        ========================================== */
+
+        const urlParams =
+            new URLSearchParams(window.location.search);
+
+        const selectedCategory =
+            urlParams.get("category") || "All Gifts";
+
+
+        /* ==========================================
+           CATEGORY TITLE
+        ========================================== */
+
+        const categoryTitle =
+            document.getElementById("categoryTitle");
+
+        const categoryDescription =
+            document.getElementById("categoryDescription");
+
+
+        if (selectedCategory === "All Gifts") {
+
+            categoryTitle.textContent = "🎁 All Gifts";
+
+            categoryDescription.textContent =
+                "Explore all our beautiful gifts";
+
+        } else {
+
+            categoryTitle.textContent =
+                "🎁 " + selectedCategory;
+
+            categoryDescription.textContent =
+                "Choose the perfect gift for " +
+                selectedCategory.toLowerCase();
+
+        }
+
+
+        /* ==========================================
+           FILTER GIFTS
+        ========================================== */
+
+        const giftCards =
+            document.querySelectorAll(".gift-card");
+
+        let visibleCount = 0;
+
+
+        giftCards.forEach(function(card) {
+
+            const cardCategory =
+                card.getAttribute("data-category");
+
+            if (
+                selectedCategory === "All Gifts" ||
+                cardCategory === selectedCategory
+            ) {
+
+                card.style.display = "block";
+
+                visibleCount++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        if (visibleCount === 0) {
+
+            document.getElementById("emptyMessage").style.display =
+                "block";
+
+        }
+
+
+        /* ==========================================
+           ADD TO CART
+        ========================================== */
+
+        function addGiftToCart(button) {
+
+            const card =
+                button.closest(".gift-card");
+
+            const name =
+                card.querySelector(".gift-name").textContent.trim();
+
+            const priceText =
+                card.querySelector(".gift-price").textContent.trim();
+
+            const price =
+                Number(
+                    priceText
+                        .replace("₹", "")
+                        .replace(/,/g, "")
+                );
+
+            const image =
+                card.querySelector(".gift-image").src;
+
+
+            const gift = {
+
+                id: Date.now(),
+
+                name: name,
+
+                price: price,
+
+                image: image,
+
+                category: card.getAttribute("data-category"),
+
+                quantity: 1
+
+            };
+
+
+            giftZoneCart.push(gift);
+
+
+            localStorage.setItem(
+                "giftZoneCart",
+                JSON.stringify(giftZoneCart)
+            );
+
+
+            showCartPopup();
+
+        }
+
+
+        /* ==========================================
+           CART POPUP
+        ========================================== */
+
+        function showCartPopup() {
+
+            const popup =
+                document.getElementById("cartPopup");
+
+            popup.style.display = "block";
+
+            setTimeout(function() {
+
+                popup.style.display = "none";
+
+            }, 1800);
+
+        }
+
+
+        /* ==========================================
+           IMAGE FALLBACK
+        ========================================== */
+
+        document.querySelectorAll(".gift-image").forEach(function(image) {
+
+            image.addEventListener("error", function() {
+
+                this.src =
+                    "https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514";
+
+            });
+
+        });
+
+
+        /* ==========================================
+           LOADING SCREEN
+        ========================================== */
+
+        window.addEventListener("load", function() {
+
+            setTimeout(function() {
+
+                const loadingScreen =
+                    document.getElementById("loadingScreen");
+
+                loadingScreen.style.opacity = "0";
+
+                setTimeout(function() {
+
+                    loadingScreen.style.display = "none";
+
+                }, 400);
+
+            }, 500);
+
+        });
+
+    </script>
+
+</body>
+
+</html>
