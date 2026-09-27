@@ -4,7 +4,6 @@
 
 <head>
 
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -381,7 +380,6 @@
 
 </style>
 
-
 </head>
 
 <body>
@@ -391,7 +389,6 @@
 ===================================== -->
 
 <div id="loadingScreen" class="loading-screen">
-
 
 <div class="loading-logo">
     🎁
@@ -407,7 +404,6 @@
 
 <div class="loading-spinner"></div>
 
-
 </div>
 
 <!-- =====================================
@@ -416,35 +412,35 @@
 
 <header class="main-header">
 
-
 <div class="logo">
     🎁 <span>GIFT ZONE</span>
 </div>
 
 <nav class="main-nav">
 
-    <a href="index.html">
-        Home
-    </a>
 
-    <a href="index.html#gifts">
-        Gifts
-    </a>
+<a href="index.html">
+    Home
+</a>
 
-    <a href="checkout.html">
-        Surprise Delivery
-    </a>
+<a href="index.html#gifts">
+    Gifts
+</a>
 
-    <a href="orders.html">
-        My Orders
-    </a>
+<a href="checkout.html">
+    Surprise Delivery
+</a>
 
-    <a href="cart.html">
-        🛒 Cart
-    </a>
+<a href="orders.html">
+    My Orders
+</a>
+
+<a href="cart.html">
+    🛒 Cart
+</a>
+
 
 </nav>
-
 
 </header>
 
@@ -454,7 +450,6 @@
 
 <main class="checkout-container payment-page">
 
-
 <h1>
     💳 Secure Payment
 </h1>
@@ -463,414 +458,418 @@
     Complete your payment to confirm the surprise delivery.
 </p>
 
-
 <!-- ORDER SUMMARY -->
 
 <section class="checkout-section payment-box">
 
-    <h2>
-        🎁 Gift Zone Order
-    </h2>
 
-    <div id="paymentItems"></div>
+<h2>
+    🎁 Gift Zone Order
+</h2>
 
-
-    <div class="payment-summary">
-
-        <div class="payment-row">
-
-            <span>
-                Gift Amount
-            </span>
-
-            <strong id="giftAmount">
-                ₹0
-            </strong>
-
-        </div>
+<div id="paymentItems"></div>
 
 
-        <div class="payment-row">
+<div class="payment-summary">
 
-            <span>
-                Delivery & Surprise Service
-            </span>
+    <div class="payment-row">
 
-            <strong id="deliveryAmount">
-                ₹50
-            </strong>
+        <span>
+            Gift Amount
+        </span>
 
-        </div>
-
-
-        <div class="payment-total">
-
-            <span>
-                Total Amount
-            </span>
-
-            <strong id="totalAmount">
-                ₹0
-            </strong>
-
-        </div>
+        <strong id="giftAmount">
+            ₹0
+        </strong>
 
     </div>
 
-</section>
 
+    <div class="payment-row">
+
+        <span>
+            Delivery & Surprise Service
+        </span>
+
+        <strong id="deliveryAmount">
+            ₹50
+        </strong>
+
+    </div>
+
+
+    <div class="payment-total">
+
+        <span>
+            Total Amount
+        </span>
+
+        <strong id="totalAmount">
+            ₹0
+        </strong>
+
+    </div>
+
+</div>
+
+
+</section>
 
 <!-- ONLINE PAYMENT -->
 
 <section class="checkout-section online-payment">
 
-    <h2>
-        💳 Choose Payment Method
-    </h2>
 
-    <p class="payment-description">
-        Select how you would like to pay.
-    </p>
+<h2>
+    💳 Choose Payment Method
+</h2>
 
-
-    <div class="payment-methods">
-
-        <div
-            class="payment-method active"
-            data-method="UPI / QR Code"
-            id="upiMethod"
-        >
-
-            <span class="payment-method-icon">
-                📱
-            </span>
-
-            <span>
-                UPI / QR Code
-            </span>
-
-        </div>
+<p class="payment-description">
+    Select how you would like to pay.
+</p>
 
 
-        <div
-            class="payment-method"
-            data-method="Debit / Credit Card"
-            id="cardMethod"
-        >
+<div class="payment-methods">
 
-            <span class="payment-method-icon">
-                💳
-            </span>
+    <div
+        class="payment-method active"
+        data-method="UPI / QR Code"
+        id="upiMethod"
+    >
 
-            <span>
-                Debit / Credit Card
-            </span>
+        <span class="payment-method-icon">
+            📱
+        </span>
 
-        </div>
-
-
-        <div
-            class="payment-method"
-            data-method="Net Banking"
-            id="netBankingMethod"
-        >
-
-            <span class="payment-method-icon">
-                🏦
-            </span>
-
-            <span>
-                Net Banking
-            </span>
-
-        </div>
+        <span>
+            UPI / QR Code
+        </span>
 
     </div>
 
 
-    <!-- UPI -->
-
     <div
-        id="upiPanel"
-        class="payment-panel active"
+        class="payment-method"
+        data-method="Debit / Credit Card"
+        id="cardMethod"
     >
 
-        <div class="qr-box">
+        <span class="payment-method-icon">
+            💳
+        </span>
 
-            <h3>
-                📱 UPI / QR Payment
-            </h3>
-
-            <p>
-                Scan the QR code using your UPI app.
-            </p>
-
-            <div class="qr-placeholder">
-                📱
-            </div>
-
-            <p>
-                <strong>
-                    Demo Payment
-                </strong>
-            </p>
-
-            <p>
-                Real QR payment will be connected
-                when the payment gateway is added.
-            </p>
-
-        </div>
+        <span>
+            Debit / Credit Card
+        </span>
 
     </div>
 
 
-    <!-- CARD -->
-
     <div
-        id="cardPanel"
-        class="payment-panel"
+        class="payment-method"
+        data-method="Net Banking"
+        id="netBankingMethod"
     >
+
+        <span class="payment-method-icon">
+            🏦
+        </span>
+
+        <span>
+            Net Banking
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- UPI -->
+
+<div
+    id="upiPanel"
+    class="payment-panel active"
+>
+
+    <div class="qr-box">
 
         <h3>
-            💳 Card Payment
+            📱 UPI / QR Payment
         </h3>
 
         <p>
-            Enter your card details.
+            Scan the QR code using your UPI app.
         </p>
 
-
-        <label class="payment-label">
-            Card Number
-        </label>
-
-        <input
-            type="text"
-            id="cardNumber"
-            class="payment-input"
-            placeholder="1234 5678 9012 3456"
-            maxlength="19"
-        >
-
-
-        <label class="payment-label">
-            Card Holder Name
-        </label>
-
-        <input
-            type="text"
-            id="cardName"
-            class="payment-input"
-            placeholder="Name on card"
-        >
-
-
-        <div class="card-row">
-
-            <div>
-
-                <label class="payment-label">
-                    Expiry Date
-                </label>
-
-                <input
-                    type="text"
-                    id="cardExpiry"
-                    class="payment-input"
-                    placeholder="MM/YY"
-                    maxlength="5"
-                >
-
-            </div>
-
-
-            <div>
-
-                <label class="payment-label">
-                    CVV
-                </label>
-
-                <input
-                    type="password"
-                    id="cardCvv"
-                    class="payment-input"
-                    placeholder="•••"
-                    maxlength="3"
-                >
-
-            </div>
-
+        <div class="qr-placeholder">
+            📱
         </div>
-
-    </div>
-
-
-    <!-- NET BANKING -->
-
-    <div
-        id="netBankingPanel"
-        class="payment-panel"
-    >
-
-        <h3>
-            🏦 Net Banking
-        </h3>
 
         <p>
-            Select your bank.
+            <strong>
+                Demo Payment
+            </strong>
         </p>
 
+        <p>
+            Real QR payment will be connected
+            when the payment gateway is added.
+        </p>
 
-        <div class="bank-list">
+    </div>
 
-            <div class="bank-option">
-                State Bank of India (SBI)
-            </div>
+</div>
 
-            <div class="bank-option">
-                HDFC Bank
-            </div>
 
-            <div class="bank-option">
-                ICICI Bank
-            </div>
+<!-- CARD -->
 
-            <div class="bank-option">
-                Axis Bank
-            </div>
+<div
+    id="cardPanel"
+    class="payment-panel"
+>
 
-            <div class="bank-option">
-                Kotak Mahindra Bank
-            </div>
+    <h3>
+        💳 Card Payment
+    </h3>
 
-            <div class="bank-option">
-                IndusInd Bank
-            </div>
+    <p>
+        Enter your card details.
+    </p>
 
-            <div class="bank-option">
-                Yes Bank
-            </div>
 
-            <div class="bank-option">
-                IDFC FIRST Bank
-            </div>
+    <label class="payment-label">
+        Card Number
+    </label>
 
-            <div class="bank-option">
-                Federal Bank
-            </div>
+    <input
+        type="text"
+        id="cardNumber"
+        class="payment-input"
+        placeholder="1234 5678 9012 3456"
+        maxlength="19"
+    >
 
-            <div class="bank-option">
-                Bank of Baroda
-            </div>
 
-            <div class="bank-option">
-                Punjab National Bank (PNB)
-            </div>
+    <label class="payment-label">
+        Card Holder Name
+    </label>
 
-            <div class="bank-option">
-                Canara Bank
-            </div>
+    <input
+        type="text"
+        id="cardName"
+        class="payment-input"
+        placeholder="Name on card"
+    >
 
-            <div class="bank-option">
-                Union Bank of India
-            </div>
 
-            <div class="bank-option">
-                Bank of India
-            </div>
+    <div class="card-row">
 
-            <div class="bank-option">
-                Indian Bank
-            </div>
+        <div>
 
-            <div class="bank-option">
-                Indian Overseas Bank
-            </div>
+            <label class="payment-label">
+                Expiry Date
+            </label>
 
-            <div class="bank-option">
-                Central Bank of India
-            </div>
-
-            <div class="bank-option">
-                UCO Bank
-            </div>
-
-            <div class="bank-option">
-                Bank of Maharashtra
-            </div>
-
-            <div class="bank-option">
-                Punjab & Sind Bank
-            </div>
-
-            <div class="bank-option">
-                South Indian Bank
-            </div>
-
-            <div class="bank-option">
-                RBL Bank
-            </div>
-
-            <div class="bank-option">
-                Karnataka Bank
-            </div>
-
-            <div class="bank-option">
-                City Union Bank
-            </div>
+            <input
+                type="text"
+                id="cardExpiry"
+                class="payment-input"
+                placeholder="MM/YY"
+                maxlength="5"
+            >
 
         </div>
 
 
-        <div
-            id="selectedBank"
-            class="selected-bank"
-        >
-            Selected Bank:
+        <div>
+
+            <label class="payment-label">
+                CVV
+            </label>
+
+            <input
+                type="password"
+                id="cardCvv"
+                class="payment-input"
+                placeholder="•••"
+                maxlength="3"
+            >
+
         </div>
 
     </div>
 
+</div>
 
-    <!-- SELECTED PAYMENT -->
+
+<!-- NET BANKING -->
+
+<div
+    id="netBankingPanel"
+    class="payment-panel"
+>
+
+    <h3>
+        🏦 Net Banking
+    </h3>
+
+    <p>
+        Select your bank.
+    </p>
+
+
+    <div class="bank-list">
+
+        <div class="bank-option">
+            State Bank of India (SBI)
+        </div>
+
+        <div class="bank-option">
+            HDFC Bank
+        </div>
+
+        <div class="bank-option">
+            ICICI Bank
+        </div>
+
+        <div class="bank-option">
+            Axis Bank
+        </div>
+
+        <div class="bank-option">
+            Kotak Mahindra Bank
+        </div>
+
+        <div class="bank-option">
+            IndusInd Bank
+        </div>
+
+        <div class="bank-option">
+            Yes Bank
+        </div>
+
+        <div class="bank-option">
+            IDFC FIRST Bank
+        </div>
+
+        <div class="bank-option">
+            Federal Bank
+        </div>
+
+        <div class="bank-option">
+            Bank of Baroda
+        </div>
+
+        <div class="bank-option">
+            Punjab National Bank (PNB)
+        </div>
+
+        <div class="bank-option">
+            Canara Bank
+        </div>
+
+        <div class="bank-option">
+            Union Bank of India
+        </div>
+
+        <div class="bank-option">
+            Bank of India
+        </div>
+
+        <div class="bank-option">
+            Indian Bank
+        </div>
+
+        <div class="bank-option">
+            Indian Overseas Bank
+        </div>
+
+        <div class="bank-option">
+            Central Bank of India
+        </div>
+
+        <div class="bank-option">
+            UCO Bank
+        </div>
+
+        <div class="bank-option">
+            Bank of Maharashtra
+        </div>
+
+        <div class="bank-option">
+            Punjab & Sind Bank
+        </div>
+
+        <div class="bank-option">
+            South Indian Bank
+        </div>
+
+        <div class="bank-option">
+            RBL Bank
+        </div>
+
+        <div class="bank-option">
+            Karnataka Bank
+        </div>
+
+        <div class="bank-option">
+            City Union Bank
+        </div>
+
+    </div>
+
 
     <div
-        id="selectedPayment"
-        class="selected-payment"
+        id="selectedBank"
+        class="selected-bank"
     >
-        Selected: 📱 UPI / QR Code
+        Selected Bank:
     </div>
 
-
-    <!-- PAY NOW -->
-
-    <button
-        type="button"
-        id="payButton"
-        class="pay-now-button"
-    >
-        💳 Pay ₹0
-    </button>
+</div>
 
 
-    <p class="secure-payment">
-        🔒 Secure payment • Your payment information is protected.
-    </p>
+<!-- SELECTED PAYMENT -->
+
+<div
+    id="selectedPayment"
+    class="selected-payment"
+>
+    Selected: 📱 UPI / QR Code
+</div>
+
+
+<!-- PAY NOW -->
+
+<button
+    type="button"
+    id="payButton"
+    class="pay-now-button"
+>
+    💳 Pay ₹0
+</button>
+
+
+<p class="secure-payment">
+    🔒 Secure payment • Your payment information is protected.
+</p>
 
 
 </section>
 
-
 <!-- BACK -->
 
 <a
-    href="checkout.html"
-    class="continue-shopping payment-back"
->
-    ← Back to Checkout
-</a>
+href="checkout.html"
+class="continue-shopping payment-back"
 
+>
+
+
+← Back to Checkout
+
+
+</a>
 
 </main>
 
@@ -883,34 +882,34 @@
     class="payment-popup-overlay"
 >
 
-
 <div class="payment-popup">
 
-    <div
-        id="paymentPopupIcon"
-        class="payment-popup-icon"
-    >
-        💳
-    </div>
 
-    <h2 id="paymentPopupTitle">
-        Confirm Payment
-    </h2>
-
-    <p id="paymentPopupMessage">
-        Please confirm your payment.
-    </p>
-
-    <button
-        type="button"
-        id="paymentPopupButton"
-        class="payment-popup-button"
-    >
-        Confirm Payment
-    </button>
-
+<div
+    id="paymentPopupIcon"
+    class="payment-popup-icon"
+>
+    💳
 </div>
 
+<h2 id="paymentPopupTitle">
+    Confirm Payment
+</h2>
+
+<p id="paymentPopupMessage">
+    Please confirm your payment.
+</p>
+
+<button
+    type="button"
+    id="paymentPopupButton"
+    class="payment-popup-button"
+>
+    Confirm Payment
+</button>
+
+
+</div>
 
 </div>
 
@@ -923,7 +922,7 @@
 import {
     auth,
     db
-} from "./firebase.js";
+} from "./firebase-config.js";
 
 import {
     collection,
