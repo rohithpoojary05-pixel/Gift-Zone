@@ -1,378 +1,48 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Gift Zone - Product Details</title>
+    <title>Gift Details | Gift Zone</title>
 
     <style>
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #fff7fb;
-            color: #333;
-            padding-bottom: 80px;
-        }
-
-        /* ==============================
-           HEADER
-        ============================== */
-
-        header {
-            background: #e91e63;
-            color: white;
-            min-height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 35px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo {
-            font-size: 25px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            white-space: nowrap;
-        }
-
-        .desktop-nav {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .desktop-nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .desktop-nav a:hover {
-            opacity: 0.75;
-        }
-
-        /* ==============================
-           PRODUCT PAGE
-        ============================== */
-
-        .product-page {
-            max-width: 1200px;
-            margin: auto;
-            padding: 30px 25px 50px;
-        }
-
-        .back-button {
-            display: inline-block;
-            background: white;
-            color: #e91e63;
-            border: 1px solid #e91e63;
-            padding: 9px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        .back-button:hover {
-            background: #e91e63;
-            color: white;
-        }
-
-        .product-box {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 5px 22px rgba(0,0,0,0.09);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        /* ==============================
-           IMAGE GALLERY
-        ============================== */
-
-        .gallery {
-            width: 100%;
-        }
-
-        .main-image-box {
-            width: 100%;
-            height: 480px;
-            background: #fafafa;
-            border-radius: 16px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #eee;
-        }
-
-        .main-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            cursor: zoom-in;
-        }
-
-        .thumbnail-container {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
-            overflow-x: auto;
-            padding: 3px;
-        }
-
-        .thumbnail {
-            width: 78px;
-            height: 78px;
-            min-width: 78px;
-            object-fit: cover;
-            border-radius: 10px;
-            border: 2px solid #eee;
-            cursor: pointer;
-            background: white;
-        }
-
-        .thumbnail:hover,
-        .thumbnail.active {
-            border-color: #e91e63;
-        }
-
-        /* ==============================
-           PRODUCT INFO
-        ============================== */
-
-        .product-info {
-            padding: 5px 0;
-        }
-
-        .product-category {
-            color: #e91e63;
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .product-name {
-            font-size: 30px;
-            line-height: 1.3;
+            background: #f8f8f8;
             color: #222;
-            margin-bottom: 15px;
         }
 
-        .rating {
-            display: inline-block;
-            background: #198754;
-            color: white;
-            padding: 5px 9px;
-            border-radius: 5px;
-            font-size: 13px;
-            font-weight: bold;
-            margin-bottom: 15px;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        .price {
-            color: #e91e63;
-            font-size: 30px;
-            font-weight: bold;
-            margin: 10px 0 20px;
+        button {
+            font-family: inherit;
         }
 
-        .price-note {
-            color: #777;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        /* ==============================
-           WISHLIST / SHARE
-        ============================== */
-
-        .action-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-
-        .small-action {
-            border: 1px solid #ddd;
-            background: white;
-            padding: 10px 17px;
-            border-radius: 9px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .small-action:hover {
-            border-color: #e91e63;
-            color: #e91e63;
-        }
-
-        .small-action.wish-active {
-            background: #fff0f5;
-            border-color: #e91e63;
-            color: #e91e63;
-        }
-
-        /* ==============================
-           DESCRIPTION
-        ============================== */
-
-        .section-title {
-            font-size: 20px;
-            color: #222;
-            margin-bottom: 10px;
-        }
-
-        .description {
-            color: #666;
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 25px;
-        }
-
-        /* ==============================
-           PRODUCT DETAILS
-        ============================== */
-
-        .details-box {
-            background: #fff7fb;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 25px;
-        }
-
-        .detail-row {
-            display: flex;
-            gap: 15px;
-            padding: 9px 0;
-            border-bottom: 1px solid #f0dce5;
-            font-size: 14px;
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            width: 120px;
-            color: #777;
-            font-weight: bold;
-        }
-
-        .detail-value {
-            color: #333;
-        }
-
-        /* ==============================
-           DELIVERY
-        ============================== */
-
-        .delivery-box {
-            border: 1px solid #eee;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 25px;
-        }
-
-        .delivery-title {
-            font-weight: bold;
-            margin-bottom: 7px;
-        }
-
-        .delivery-text {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        /* ==============================
-           BUTTONS
-        ============================== */
-
-        .buy-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .cart-button,
-        .buy-button {
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .cart-button {
-            background: #fff0f5;
-            color: #e91e63;
-            border: 2px solid #e91e63;
-        }
-
-        .cart-button:hover {
-            background: #e91e63;
-            color: white;
-        }
-
-        .buy-button {
-            background: #e91e63;
-            color: white;
-        }
-
-        .buy-button:hover {
-            background: #c2185b;
-        }
-
-        /* ==============================
-           POPUP
-        ============================== */
-
-        #cartPopup {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: #333;
-            color: white;
-            padding: 13px 18px;
-            border-radius: 10px;
-            z-index: 99998;
-            display: none;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-
-        /* ==============================
-           LOADING
-        ============================== */
+        /* =========================
+           LOADING SCREEN
+        ========================= */
 
         #loadingScreen {
             position: fixed;
             inset: 0;
-            background: white;
+            background: #ffffff;
+            z-index: 99999;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 99999;
             transition: opacity 0.4s ease;
         }
 
@@ -380,14 +50,14 @@
             width: 90px;
             height: 90px;
             object-fit: contain;
-            margin-bottom: 15px;
-            animation: loadingLogo 1.2s infinite ease-in-out;
+            margin-bottom: 18px;
+            animation: loadingPulse 1.4s infinite;
         }
 
         #loadingScreen h2 {
             color: #e91e63;
             font-size: 22px;
-            margin-bottom: 7px;
+            margin-bottom: 8px;
         }
 
         #loadingScreen p {
@@ -395,83 +65,532 @@
             font-size: 14px;
         }
 
-        @keyframes loadingLogo {
-
-            0% {
-                transform: scale(0.9);
+        @keyframes loadingPulse {
+            0%, 100% {
+                transform: scale(1);
             }
 
             50% {
                 transform: scale(1.08);
             }
-
-            100% {
-                transform: scale(0.9);
-            }
-
         }
 
-        /* ==============================
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #eeeeee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e91e63;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+            stroke: #e91e63;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .desktop-nav a {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 11px;
+            border-radius: 8px;
+            color: #444;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .desktop-nav a:hover {
+            color: #e91e63;
+            background: #fff1f6;
+        }
+
+        .nav-icon {
+            width: 17px;
+            height: 17px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .page-container {
+            max-width: 1180px;
+            margin: 30px auto 100px;
+            padding: 0 20px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: #444;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+
+        .back-button:hover {
+            border-color: #e91e63;
+            color: #e91e63;
+        }
+
+        .back-icon {
+            width: 17px;
+            height: 17px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .product-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 45px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        /* =========================
+           GALLERY
+        ========================= */
+
+        .gallery {
+            width: 100%;
+        }
+
+        .main-image-box {
+            width: 100%;
+            height: 470px;
+            background: #fafafa;
+            border: 1px solid #eeeeee;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .main-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .main-image-box img:hover {
+            transform: scale(1.03);
+        }
+
+        .thumbnails {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            overflow-x: auto;
+        }
+
+        .thumbnail {
+            width: 70px;
+            height: 70px;
+            border: 2px solid #eeeeee;
+            border-radius: 8px;
+            padding: 4px;
+            cursor: pointer;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        .thumbnail.active {
+            border-color: #e91e63;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* =========================
+           PRODUCT INFORMATION
+        ========================= */
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            width: fit-content;
+            color: #e91e63;
+            background: #fff1f6;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        .category-icon {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .product-title {
+            font-size: 31px;
+            line-height: 1.25;
+            color: #222;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 30px;
+            font-weight: 800;
+            color: #e91e63;
+            margin-bottom: 20px;
+        }
+
+        .description-title,
+        .details-title,
+        .delivery-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .description {
+            color: #666;
+            line-height: 1.7;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* =========================
+           PRODUCT DETAILS
+        ========================= */
+
+        .details-box {
+            border-top: 1px solid #eeeeee;
+            border-bottom: 1px solid #eeeeee;
+            padding: 18px 0;
+            margin-bottom: 25px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .detail-row span:first-child {
+            color: #777;
+        }
+
+        .detail-row span:last-child {
+            color: #333;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
+
+        .action-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .action-button {
+            height: 52px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: 0.2s;
+        }
+
+        .wishlist-button {
+            background: #ffffff;
+            border: 1px solid #e91e63;
+            color: #e91e63;
+        }
+
+        .wishlist-button:hover {
+            background: #fff1f6;
+        }
+
+        .wishlist-button.saved {
+            background: #fff1f6;
+        }
+
+        .share-button {
+            background: #ffffff;
+            border: 1px solid #cccccc;
+            color: #444;
+        }
+
+        .share-button:hover {
+            border-color: #e91e63;
+            color: #e91e63;
+        }
+
+        .cart-button {
+            width: 100%;
+            height: 54px;
+            border: none;
+            border-radius: 9px;
+            background: #ff9f00;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .cart-button:hover {
+            background: #ed9000;
+        }
+
+        .buy-button {
+            width: 100%;
+            height: 54px;
+            border: none;
+            border-radius: 9px;
+            background: #e91e63;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: 0.2s;
+        }
+
+        .buy-button:hover {
+            background: #d81758;
+        }
+
+        .button-icon {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* =========================
+           DELIVERY
+        ========================= */
+
+        .delivery-box {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 25px;
+        }
+
+        .delivery-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+        }
+
+        .delivery-icon {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: #e91e63;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .delivery-box p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           POPUP
+        ========================= */
+
+        .popup {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            background: #ffffff;
+            border-left: 4px solid #e91e63;
+            padding: 15px 18px;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+            z-index: 9999;
+            display: none;
+            min-width: 260px;
+        }
+
+        .popup.show {
+            display: block;
+            animation: popupIn 0.25s ease;
+        }
+
+        .popup-title {
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .popup-text {
+            color: #666;
+            font-size: 13px;
+        }
+
+        @keyframes popupIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* =========================
            MOBILE BOTTOM NAV
-        ============================== */
+        ========================= */
 
         .mobile-bottom-nav {
             display: none;
         }
 
-        /* ==============================
-           MOBILE
-        ============================== */
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
-        @media (max-width: 768px) {
-
-            body {
-                padding-bottom: 75px;
-            }
+        @media (max-width: 900px) {
 
             header {
-                height: 60px;
-                min-height: 60px;
                 padding: 0 18px;
-            }
-
-            .logo {
-                font-size: 21px;
             }
 
             .desktop-nav {
                 display: none;
             }
 
-            .product-page {
-                padding: 18px 13px 35px;
-            }
-
-            .back-button {
-                padding: 8px 14px;
-                font-size: 13px;
-                margin-bottom: 18px;
-            }
-
-            .product-box {
+            .product-card {
                 grid-template-columns: 1fr;
-                gap: 25px;
-                padding: 14px;
-                border-radius: 15px;
+                gap: 30px;
+                padding: 20px;
             }
 
             .main-image-box {
-                height: 350px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                height: 62px;
             }
 
-            .thumbnail {
-                width: 65px;
-                height: 65px;
-                min-width: 65px;
+            .logo {
+                font-size: 20px;
             }
 
-            .product-name {
-                font-size: 24px;
+            .logo-icon {
+                width: 27px;
+                height: 27px;
+            }
+
+            .page-container {
+                margin-top: 18px;
+                padding: 0 12px;
+                margin-bottom: 90px;
+            }
+
+            .product-card {
+                border-radius: 12px;
+                padding: 15px;
+                gap: 25px;
+            }
+
+            .main-image-box {
+                height: 330px;
+            }
+
+            .product-title {
+                font-size: 25px;
             }
 
             .price {
@@ -479,20 +598,11 @@
             }
 
             .action-row {
-                margin-bottom: 20px;
+                grid-template-columns: 1fr 1fr;
             }
 
-            .buy-buttons {
-                position: sticky;
-                bottom: 0;
-                background: white;
-                padding: 10px 0;
-                z-index: 20;
-            }
-
-            .cart-button,
-            .buy-button {
-                padding: 13px 5px;
+            .action-button {
+                height: 48px;
                 font-size: 14px;
             }
 
@@ -503,442 +613,483 @@
                 right: 0;
                 bottom: 0;
                 height: 68px;
-                background: white;
-                border-top: 1px solid #eee;
-                box-shadow: 0 -3px 15px rgba(0,0,0,0.10);
-                z-index: 9999;
+                background: #ffffff;
+                border-top: 1px solid #eeeeee;
+                z-index: 5000;
                 justify-content: space-around;
                 align-items: center;
             }
 
             .mobile-bottom-nav a {
-                flex: 1;
-                height: 100%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 3px;
-                text-decoration: none;
-                color: #777;
-                font-size: 11px;
-                font-weight: 600;
-            }
-
-            .mobile-bottom-nav a span {
-                font-size: 22px;
-                line-height: 22px;
+                gap: 4px;
+                color: #666;
+                font-size: 10px;
+                min-width: 55px;
             }
 
             .mobile-bottom-nav a.active {
                 color: #e91e63;
             }
 
+            .mobile-nav-icon {
+                width: 21px;
+                height: 21px;
+                fill: none;
+                stroke: currentColor;
+                stroke-width: 1.8;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+
+            .popup {
+                left: 15px;
+                right: 15px;
+                top: 15px;
+                min-width: unset;
+            }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
-    <!-- LOADING -->
+    <!-- =========================
+         LOADING SCREEN
+    ========================= -->
 
     <div id="loadingScreen">
-
-        <img
-            src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
-            alt="Gift Zone">
+        <img src="gift-zone-logo.png"
+            alt="Gift Zone"
+            onerror="this.style.display='none';">
 
         <h2>Gift Zone</h2>
-
-        <p>Preparing product...</p>
-
+        <p>Preparing your gift...</p>
     </div>
 
-
-    <!-- HEADER -->
+    <!-- =========================
+         HEADER
+    ========================= -->
 
     <header>
 
-        <div class="logo">
-            🎁 GIFT ZONE
-        </div>
+        <a href="index.html" class="logo">
+
+            <svg class="logo-icon" viewBox="0 0 24 24">
+                <path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"></path>
+                <path d="M2 7h20v5H2z"></path>
+                <path d="M12 7v15"></path>
+                <path d="M12 7H7.5A2.5 2.5 0 1 1 10 4.5C10 7 12 7 12 7Z"></path>
+                <path d="M12 7h4.5A2.5 2.5 0 1 0 14 4.5C14 7 12 7 12 7Z"></path>
+            </svg>
+
+            GIFT ZONE
+
+        </a>
 
         <nav class="desktop-nav">
 
-            <a href="index.html">Home</a>
+            <a href="index.html">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M3 10.5 12 3l9 7.5"></path>
+                    <path d="M5 9v11h14V9"></path>
+                    <path d="M9 20v-6h6v6"></path>
+                </svg>
+                Home
+            </a>
 
-            <a href="index.html#gifts">Gifts</a>
+            <a href="categories.html">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+                    <rect x="14" y="4" width="6" height="6" rx="1"></rect>
+                    <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+                    <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+                </svg>
+                Gifts
+            </a>
 
-            <a href="categories.html">Occasions</a>
+            <a href="categories.html">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M20 12a8 8 0 1 1-2.34-5.66"></path>
+                    <path d="M20 4v6h-6"></path>
+                </svg>
+                Occasions
+            </a>
 
-            <a href="checkout.html">Surprise Delivery</a>
+            <a href="checkout.html">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M4 16v3h16v-3"></path>
+                    <path d="M6 16V9h12v7"></path>
+                    <path d="M9 9V6h6v3"></path>
+                    <path d="M8 19v2"></path>
+                    <path d="M16 19v2"></path>
+                </svg>
+                Surprise Delivery
+            </a>
 
-            <a href="orders.html">My Orders</a>
+            <a href="orders.html">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M6 3h12v18l-6-3-6 3z"></path>
+                    <path d="M9 8h6"></path>
+                    <path d="M9 12h6"></path>
+                </svg>
+                My Orders
+            </a>
 
-            <a href="profile.html">Profile</a>
+            <a href="profile.html">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 21a8 8 0 0 1 16 0"></path>
+                </svg>
+                Profile
+            </a>
 
-            <a href="cart.html">🛒 Cart</a>
+            <a href="cart.html">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6"></path>
+                    <circle cx="10" cy="20" r="1.3"></circle>
+                    <circle cx="18" cy="20" r="1.3"></circle>
+                </svg>
+                Cart
+            </a>
+
+            <a href="wishlist.html">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M20.8 8.8c0 5.5-8.8 10.2-8.8 10.2S3.2 14.3 3.2 8.8A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z"></path>
+                </svg>
+                Wishlist
+            </a>
 
         </nav>
 
     </header>
 
+    <!-- =========================
+         MAIN PRODUCT
+    ========================= -->
 
-    <!-- PRODUCT -->
+    <main class="page-container">
 
-    <main class="product-page">
+        <button class="back-button" onclick="history.back()">
 
-        <a href="javascript:history.back()" class="back-button">
-            ← Back
-        </a>
+            <svg class="back-icon" viewBox="0 0 24 24">
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+            </svg>
 
+            Back
+        </button>
 
-        <div class="product-box">
+        <section class="product-card">
 
+            <!-- GALLERY -->
 
-            <!-- ==============================
-                 GALLERY
-            ============================== -->
-
-            <section class="gallery">
+            <div class="gallery">
 
                 <div class="main-image-box">
-
-                    <img
-                        id="mainProductImage"
-                        class="main-image"
+                    <img id="mainProductImage"
                         src=""
-                        alt="Gift">
+                        alt="Gift Product"
+                        onerror="imageFallback(this)">
+                </div>
+
+                <div class="thumbnails" id="thumbnailContainer"></div>
+
+            </div>
+
+            <!-- PRODUCT INFORMATION -->
+
+            <div class="product-info">
+
+                <div class="category-label">
+
+                    <svg class="category-icon" viewBox="0 0 24 24">
+                        <path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"></path>
+                        <path d="M2 7h20v5H2z"></path>
+                        <path d="M12 7v15"></path>
+                    </svg>
+
+                    <span id="productCategory">Gift</span>
 
                 </div>
 
-
-                <div
-                    class="thumbnail-container"
-                    id="thumbnailContainer">
-                </div>
-
-            </section>
-
-
-            <!-- ==============================
-                 INFORMATION
-            ============================== -->
-
-            <section class="product-info">
-
-                <div
-                    id="productCategory"
-                    class="product-category">
-                </div>
-
-
-                <h1
-                    id="productName"
-                    class="product-name">
-                    Gift
+                <h1 class="product-title" id="productName">
+                    Gift Product
                 </h1>
 
-
-                <div class="rating">
-                    ★ 5.0
-                </div>
-
-
-                <div
-                    id="productPrice"
-                    class="price">
+                <div class="price" id="productPrice">
                     ₹0
                 </div>
 
+                <h2 class="description-title">
+                    Product Description
+                </h2>
 
-                <div class="price-note">
-                    Beautifully prepared for your special moment 🎁
+                <p class="description" id="productDescription">
+                    A beautiful gift selected specially for your loved ones.
+                </p>
+
+                <div class="details-box">
+
+                    <h2 class="details-title">
+                        Product Details
+                    </h2>
+
+                    <div class="detail-row">
+                        <span>Category</span>
+                        <span id="detailCategory">Gift</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>Product</span>
+                        <span id="detailProduct">Gift Product</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>Delivery</span>
+                        <span>Gift Zone Delivery</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>Availability</span>
+                        <span>Available</span>
+                    </div>
+
                 </div>
-
 
                 <!-- WISHLIST / SHARE -->
 
                 <div class="action-row">
 
                     <button
+                        class="action-button wishlist-button"
                         id="wishlistButton"
-                        class="small-action"
                         onclick="toggleWishlist()">
 
-                        ♡ Wishlist
+                        <svg class="button-icon" viewBox="0 0 24 24">
+                            <path d="M20.8 8.8c0 5.5-8.8 10.2-8.8 10.2S3.2 14.3 3.2 8.8A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z"></path>
+                        </svg>
+
+                        <span id="wishlistText">Wishlist</span>
 
                     </button>
-
 
                     <button
-                        class="small-action"
+                        class="action-button share-button"
                         onclick="shareProduct()">
 
-                        📤 Share
+                        <svg class="button-icon" viewBox="0 0 24 24">
+                            <circle cx="18" cy="5" r="2"></circle>
+                            <circle cx="6" cy="12" r="2"></circle>
+                            <circle cx="18" cy="19" r="2"></circle>
+                            <path d="m8 11 8-5"></path>
+                            <path d="m8 13 8 5"></path>
+                        </svg>
+
+                        Share
 
                     </button>
 
                 </div>
 
+                <!-- ADD TO CART -->
 
-                <!-- DESCRIPTION -->
+                <button class="cart-button" onclick="addToCart()">
 
-                <h2 class="section-title">
-                    Description
-                </h2>
+                    <svg class="button-icon" viewBox="0 0 24 24">
+                        <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6"></path>
+                        <circle cx="10" cy="20" r="1.3"></circle>
+                        <circle cx="18" cy="20" r="1.3"></circle>
+                    </svg>
 
+                    Add to Cart
 
-                <div
-                    id="productDescription"
-                    class="description">
-                </div>
+                </button>
 
+                <!-- BUY NOW -->
 
-                <!-- DETAILS -->
+                <button class="buy-button" onclick="buyNow()">
 
-                <h2 class="section-title">
-                    Product Details
-                </h2>
+                    <svg class="button-icon" viewBox="0 0 24 24">
+                        <path d="M13 2 4 14h7l-1 8 9-12h-7z"></path>
+                    </svg>
 
+                    Buy Now
 
-                <div class="details-box">
-
-                    <div class="detail-row">
-
-                        <div class="detail-label">
-                            Category
-                        </div>
-
-                        <div
-                            id="detailCategory"
-                            class="detail-value">
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-row">
-
-                        <div class="detail-label">
-                            Product
-                        </div>
-
-                        <div
-                            id="detailProduct"
-                            class="detail-value">
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-row">
-
-                        <div class="detail-label">
-                            Packaging
-                        </div>
-
-                        <div class="detail-value">
-                            Gift-ready premium packaging
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-row">
-
-                        <div class="detail-label">
-                            Occasion
-                        </div>
-
-                        <div
-                            id="detailOccasion"
-                            class="detail-value">
-                        </div>
-
-                    </div>
-
-                </div>
-
+                </button>
 
                 <!-- DELIVERY -->
 
                 <div class="delivery-box">
 
-                    <div class="delivery-title">
-                        🚚 Gift Zone Delivery
-                    </div>
+                    <h2 class="delivery-title">
 
-                    <div class="delivery-text">
-                        Select your delivery date and time during
-                        checkout. Surprise delivery service is also
-                        available.
-                    </div>
+                        <svg class="delivery-icon" viewBox="0 0 24 24">
+                            <path d="M3 6h11v11H3z"></path>
+                            <path d="M14 10h4l3 3v4h-7z"></path>
+                            <circle cx="7" cy="19" r="2"></circle>
+                            <circle cx="18" cy="19" r="2"></circle>
+                        </svg>
 
-                </div>
+                        Gift Zone Delivery
 
+                    </h2>
 
-                <!-- BUTTONS -->
-
-                <div class="buy-buttons">
-
-                    <button
-                        class="cart-button"
-                        onclick="addToCart()">
-
-                        🛒 Add to Cart
-
-                    </button>
-
-
-                    <button
-                        class="buy-button"
-                        onclick="buyNow()">
-
-                        ⚡ Buy Now
-
-                    </button>
+                    <p>
+                        Choose your delivery date and time during checkout.
+                        We prepare your gift carefully and deliver it to your selected location.
+                    </p>
 
                 </div>
 
-            </section>
+            </div>
 
-        </div>
+        </section>
 
     </main>
 
+    <!-- =========================
+         POPUP
+    ========================= -->
 
-    <!-- POPUP -->
+    <div class="popup" id="popup">
 
-    <div id="cartPopup">
-        🎁 Gift added to cart!
+        <div class="popup-title" id="popupTitle">
+            Gift Zone
+        </div>
+
+        <div class="popup-text" id="popupText">
+            Done
+        </div>
+
     </div>
 
-
-    <!-- MOBILE NAV -->
+    <!-- =========================
+         MOBILE NAVIGATION
+    ========================= -->
 
     <nav class="mobile-bottom-nav">
 
         <a href="index.html">
 
-            <span>🏠</span>
+            <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                <path d="M3 10.5 12 3l9 7.5"></path>
+                <path d="M5 9v11h14V9"></path>
+                <path d="M9 20v-6h6v6"></path>
+            </svg>
 
-            Home
+            <span>Home</span>
 
         </a>
-
 
         <a href="categories.html">
 
-            <span>🗂️</span>
+            <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+                <rect x="14" y="4" width="6" height="6" rx="1"></rect>
+                <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+                <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+            </svg>
 
-            Categories
+            <span>Gifts</span>
 
         </a>
 
+        <a href="wishlist.html" class="active">
+
+            <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                <path d="M20.8 8.8c0 5.5-8.8 10.2-8.8 10.2S3.2 14.3 3.2 8.8A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z"></path>
+            </svg>
+
+            <span>Wishlist</span>
+
+        </a>
 
         <a href="profile.html">
 
-            <span>👤</span>
+            <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 21a8 8 0 0 1 16 0"></path>
+            </svg>
 
-            Profile
+            <span>Profile</span>
 
         </a>
 
-
         <a href="cart.html">
 
-            <span>🛒</span>
+            <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6"></path>
+                <circle cx="10" cy="20" r="1.3"></circle>
+                <circle cx="18" cy="20" r="1.3"></circle>
+            </svg>
 
-            Cart
+            <span>Cart</span>
 
         </a>
 
     </nav>
 
-
     <script>
 
         /* ==========================================
-           READ PRODUCT FROM URL
+           GET PRODUCT FROM URL
         ========================================== */
 
-        const params =
-            new URLSearchParams(window.location.search);
-
+        const params = new URLSearchParams(window.location.search);
 
         const productName =
-            params.get("name") || "Gift Zone Gift";
-
+            params.get("name") || "Gift Product";
 
         const productPrice =
             Number(params.get("price")) || 0;
 
-
         const productImage =
             params.get("image") || "";
-
 
         const productCategory =
             params.get("category") || "Gift";
 
-
         /* ==========================================
-           PRODUCT TEXT
+           PRODUCT DESCRIPTION
         ========================================== */
 
         const descriptions = {
 
             "Birthday":
-                "Make someone's birthday extra special with this beautiful Gift Zone surprise gift. Perfect for creating a memorable birthday moment.",
+                "A beautiful birthday gift carefully selected to make their special day more memorable.",
 
             "Anniversary":
-                "Celebrate love and togetherness with this beautiful anniversary gift. A thoughtful surprise for someone special.",
+                "A thoughtful anniversary gift designed to celebrate love, memories and togetherness.",
 
-            "Celebrations":
-                "A beautiful celebration gift designed to make special moments even more memorable.",
-
-            "Raksha Bandhan":
-                "A thoughtful Raksha Bandhan gift for celebrating the special bond between brother and sister.",
-
-            "Mother’s Day":
-                "A special gift for showing your love and appreciation to your mother.",
-
-            "Father’s Day":
-                "A thoughtful gift to celebrate and appreciate your amazing father.",
-
-            "Teacher’s Day":
-                "A special gift to thank and appreciate a wonderful teacher.",
+            "Wedding":
+                "A special wedding gift perfect for celebrating a beautiful new beginning.",
 
             "Love":
-                "A romantic surprise gift made to express love and create a memorable moment.",
+                "A meaningful gift for expressing your love, care and special feelings.",
 
-            "Flowers":
-                "Beautiful flowers that can brighten someone's day and make your surprise extra special.",
+            "Valentine":
+                "A romantic gift specially selected to make your Valentine's Day memorable.",
 
-            "Cakes":
-                "A delicious cake gift perfect for birthdays, celebrations and other special occasions.",
+            "Friendship":
+                "A thoughtful gift to celebrate friendship and create wonderful memories.",
 
-            "Gift Combos":
-                "A beautiful combination of gifts prepared specially for memorable celebrations.",
+            "Baby":
+                "A lovely gift suitable for welcoming and celebrating a beautiful new arrival.",
 
-            "Personalized":
-                "A special personalized gift designed to make your loved one's surprise more meaningful.",
+            "Mother":
+                "A special gift to show your love, appreciation and gratitude.",
 
-            "All Gifts":
-                "A beautiful Gift Zone surprise gift suitable for special celebrations and memorable moments."
+            "Father":
+                "A thoughtful gift to make your father's special day memorable.",
+
+            "Corporate":
+                "A professional gift suitable for clients, colleagues and business occasions."
 
         };
-
-
-        const description =
-            descriptions[productCategory] ||
-            "A beautiful Gift Zone product prepared especially for your special moment.";
-
 
         /* ==========================================
            DISPLAY PRODUCT
@@ -947,97 +1098,96 @@
         document.getElementById("productName").textContent =
             productName;
 
-
         document.getElementById("productPrice").textContent =
             "₹" + productPrice.toLocaleString("en-IN");
 
-
         document.getElementById("productCategory").textContent =
-            "🎁 " + productCategory;
-
-
-        document.getElementById("productDescription").textContent =
-            description;
-
+            productCategory;
 
         document.getElementById("detailCategory").textContent =
             productCategory;
 
-
         document.getElementById("detailProduct").textContent =
             productName;
 
+        document.getElementById("productDescription").textContent =
+            descriptions[productCategory] ||
+            "A beautiful gift selected specially for your loved ones. Gift Zone carefully prepares every order for a memorable surprise.";
 
-        document.getElementById("detailOccasion").textContent =
-            productCategory;
-
+        document.title =
+            productName + " | Gift Zone";
 
         /* ==========================================
-           PRODUCT IMAGES
+           MAIN IMAGE
         ========================================== */
 
         const mainImage =
             document.getElementById("mainProductImage");
 
+        mainImage.src = productImage;
+
+        mainImage.alt = productName;
+
+        /* ==========================================
+           IMAGE FALLBACK
+        ========================================== */
+
+        function imageFallback(img) {
+
+            img.onerror = null;
+
+            img.src =
+                "https://via.placeholder.com/600x600?text=Gift+Zone";
+
+        }
+
+        /* ==========================================
+           PRODUCT GALLERY
+        ========================================== */
 
         const thumbnailContainer =
             document.getElementById("thumbnailContainer");
 
-
-        /*
-           Your current category-gifts.html has
-           one real image per product.
-
-           We keep the gallery ready for multiple
-           images. Until additional image URLs are
-           added, the current product image is shown.
-        */
-
-        const productImages = [
-            productImage
-        ];
-
-
-        mainImage.src =
-            productImages[0];
-
-
-        productImages.forEach(function(image, index) {
+        if (productImage) {
 
             const thumbnail =
-                document.createElement("img");
-
-            thumbnail.src = image;
+                document.createElement("div");
 
             thumbnail.className =
-                "thumbnail" +
-                (index === 0 ? " active" : "");
+                "thumbnail active";
 
-            thumbnail.alt =
-                productName + " photo " + (index + 1);
+            const image =
+                document.createElement("img");
 
+            image.src = productImage;
 
-            thumbnail.onclick = function() {
+            image.alt = productName;
 
-                mainImage.src = image;
+            image.onerror = function () {
+                this.src =
+                    "https://via.placeholder.com/100x100?text=Gift";
+            };
+
+            thumbnail.appendChild(image);
+
+            thumbnail.onclick = function () {
+
+                mainImage.src =
+                    productImage;
 
                 document
                     .querySelectorAll(".thumbnail")
-                    .forEach(function(item) {
-
-                        item.classList.remove("active");
-
-                    });
+                    .forEach(item =>
+                        item.classList.remove("active")
+                    );
 
                 thumbnail.classList.add("active");
 
             };
 
-
             thumbnailContainer.appendChild(thumbnail);
 
-        });
-
+        }
 
         /* ==========================================
            CART
@@ -1045,12 +1195,19 @@
 
         function getCart() {
 
-            return JSON.parse(
-                localStorage.getItem("giftZoneCart")
-            ) || [];
+            try {
+
+                return JSON.parse(
+                    localStorage.getItem("giftZoneCart")
+                ) || [];
+
+            } catch (error) {
+
+                return [];
+
+            }
 
         }
-
 
         function saveCart(cart) {
 
@@ -1061,61 +1218,52 @@
 
         }
 
-
         /* ==========================================
            ADD TO CART
         ========================================== */
 
         function addToCart() {
 
-            const cart =
-                getCart();
+            const cart = getCart();
 
+            const existing =
+                cart.find(item =>
+                    item.id === productName
+                );
 
-            const gift = {
+            if (existing) {
 
-                id: Date.now(),
+                existing.quantity =
+                    (existing.quantity || 1) + 1;
 
-                name: productName,
+            } else {
 
-                price: productPrice,
+                cart.push({
 
-                image: productImage,
+                    id: productName,
 
-                category: productCategory,
+                    name: productName,
 
-                quantity: 1
+                    price: productPrice,
 
-            };
+                    image: productImage,
 
+                    category: productCategory,
 
-            cart.push(gift);
+                    quantity: 1
 
+                });
+
+            }
 
             saveCart(cart);
 
-
-            const popup =
-                document.getElementById("cartPopup");
-
-
-            popup.textContent =
-                "🎁 Gift added to cart!";
-
-
-            popup.style.display =
-                "block";
-
-
-            setTimeout(function() {
-
-                window.location.href =
-                    "cart.html";
-
-            }, 700);
+            showPopup(
+                "Added to Cart",
+                productName + " has been added to your cart."
+            );
 
         }
-
 
         /* ==========================================
            BUY NOW
@@ -1123,15 +1271,9 @@
 
         function buyNow() {
 
-            /*
-              Buy Now uses the same cart system,
-              but first clears the cart so this
-              product becomes the item being bought.
-            */
+            const buyProduct = {
 
-            const gift = {
-
-                id: Date.now(),
+                id: productName,
 
                 name: productName,
 
@@ -1145,63 +1287,78 @@
 
             };
 
-
             localStorage.setItem(
                 "giftZoneCart",
-                JSON.stringify([gift])
+                JSON.stringify([buyProduct])
             );
-
 
             window.location.href =
                 "checkout.html";
 
         }
 
-
         /* ==========================================
            WISHLIST
         ========================================== */
 
+        function getWishlist() {
+
+            try {
+
+                return JSON.parse(
+                    localStorage.getItem(
+                        "giftZoneWishlist"
+                    )
+                ) || [];
+
+            } catch (error) {
+
+                return [];
+
+            }
+
+        }
+
+        function saveWishlist(list) {
+
+            localStorage.setItem(
+                "giftZoneWishlist",
+                JSON.stringify(list)
+            );
+
+        }
+
         function toggleWishlist() {
 
             let wishlist =
-                JSON.parse(
-                    localStorage.getItem("giftZoneWishlist")
-                ) || [];
-
+                getWishlist();
 
             const existingIndex =
-                wishlist.findIndex(function(item) {
+                wishlist.findIndex(item =>
+                    item.id === productName
+                );
 
-                    return (
-                        item.name === productName &&
-                        item.price === productPrice
-                    );
-
-                });
-
-
-            const button =
-                document.getElementById("wishlistButton");
-
-
-            if (existingIndex >= 0) {
+            if (existingIndex !== -1) {
 
                 wishlist.splice(
                     existingIndex,
                     1
                 );
 
-                button.textContent =
-                    "♡ Wishlist";
+                saveWishlist(wishlist);
 
-                button.classList.remove(
-                    "wish-active"
+                updateWishlistButton(false);
+
+                showPopup(
+                    "Wishlist Updated",
+                    "Gift removed from your wishlist."
                 );
 
             } else {
 
                 wishlist.push({
+
+                    id: productName,
 
                     name: productName,
 
@@ -1213,86 +1370,85 @@
 
                 });
 
+                saveWishlist(wishlist);
 
-                button.textContent =
-                    "♥ Wishlisted";
+                updateWishlistButton(true);
 
-                button.classList.add(
-                    "wish-active"
+                showPopup(
+                    "Wishlist Updated",
+                    "Gift saved to your wishlist."
                 );
 
             }
 
-
-            localStorage.setItem(
-                "giftZoneWishlist",
-                JSON.stringify(wishlist)
-            );
-
         }
 
-
         /* ==========================================
-           CHECK WISHLIST
+           WISHLIST BUTTON
         ========================================== */
+
+        function updateWishlistButton(saved) {
+
+            const button =
+                document.getElementById(
+                    "wishlistButton"
+                );
+
+            const text =
+                document.getElementById(
+                    "wishlistText"
+                );
+
+            if (saved) {
+
+                button.classList.add("saved");
+
+                text.textContent =
+                    "Saved";
+
+            } else {
+
+                button.classList.remove("saved");
+
+                text.textContent =
+                    "Wishlist";
+
+            }
+
+        }
 
         function checkWishlist() {
 
             const wishlist =
-                JSON.parse(
-                    localStorage.getItem("giftZoneWishlist")
-                ) || [];
+                getWishlist();
 
-
-            const found =
-                wishlist.some(function(item) {
-
-                    return (
-                        item.name === productName &&
-                        item.price === productPrice
-                    );
-
-                });
-
-
-            if (found) {
-
-                const button =
-                    document.getElementById("wishlistButton");
-
-
-                button.textContent =
-                    "♥ Wishlisted";
-
-
-                button.classList.add(
-                    "wish-active"
+            const exists =
+                wishlist.some(item =>
+                    item.id === productName
                 );
 
-            }
+            updateWishlistButton(exists);
 
         }
 
-
         /* ==========================================
-           SHARE
+           SHARE PRODUCT
         ========================================== */
 
         async function shareProduct() {
 
             const shareData = {
 
-                title: productName,
+                title:
+                    productName + " | Gift Zone",
 
                 text:
-                    "Check out this gift on Gift Zone: " +
-                    productName,
+                    "Check out this gift on Gift Zone.",
 
                 url:
                     window.location.href
 
             };
-
 
             try {
 
@@ -1304,73 +1460,112 @@
                         shareData
                     );
 
-                } else {
+                } else if (
+                    navigator.clipboard
+                ) {
 
                     await navigator.clipboard.writeText(
                         window.location.href
                     );
 
+                    showPopup(
+                        "Link Copied",
+                        "Product link copied successfully."
+                    );
 
-                    alert(
-                        "Product link copied! You can share it anywhere."
+                } else {
+
+                    showPopup(
+                        "Share Product",
+                        window.location.href
                     );
 
                 }
 
             } catch (error) {
 
-                console.log(
-                    "Share cancelled"
-                );
+                if (
+                    error.name !==
+                    "AbortError"
+                ) {
+
+                    showPopup(
+                        "Share Product",
+                        "You can copy this product link from your browser."
+                    );
+
+                }
 
             }
 
         }
 
-
         /* ==========================================
-           IMAGE FALLBACK
+           POPUP
         ========================================== */
 
-        mainImage.addEventListener(
-            "error",
-            function() {
+        function showPopup(
+            title,
+            message
+        ) {
 
-                this.src =
-                    "https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514";
+            const popup =
+                document.getElementById(
+                    "popup"
+                );
 
-            }
-        );
+            document.getElementById(
+                "popupTitle"
+            ).textContent =
+                title;
 
+            document.getElementById(
+                "popupText"
+            ).textContent =
+                message;
+
+            popup.classList.add(
+                "show"
+            );
+
+            setTimeout(
+                function () {
+
+                    popup.classList.remove(
+                        "show"
+                    );
+
+                },
+                2500
+            );
+
+        }
 
         /* ==========================================
-           LOADING
+           LOADING SCREEN
         ========================================== */
 
         window.addEventListener(
             "load",
-            function() {
+            function () {
 
                 checkWishlist();
 
-
                 setTimeout(
-                    function() {
+                    function () {
 
-                        const loadingScreen =
+                        const loading =
                             document.getElementById(
                                 "loadingScreen"
                             );
 
-
-                        loadingScreen.style.opacity =
+                        loading.style.opacity =
                             "0";
 
-
                         setTimeout(
-                            function() {
+                            function () {
 
-                                loadingScreen.style.display =
+                                loading.style.display =
                                     "none";
 
                             },
@@ -1389,3 +1584,4 @@
 </body>
 
 </html>
+
