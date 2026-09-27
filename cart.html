@@ -1,20 +1,91 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>Gift Zone - Cart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>Gift Zone - Cart</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+    /* ==========================================
+       PROFESSIONAL CART FRONTEND ICONS
+    ========================================== */
+
+    .svg-icon {
+        width: 22px;
+        height: 22px;
+        display: inline-block;
+        vertical-align: middle;
+        flex-shrink: 0;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .logo-icon {
+        width: 31px;
+        height: 31px;
+    }
+
+    .cart-nav-icon {
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    .mobile-cart {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-cart svg {
+        width: 25px;
+        height: 25px;
+    }
+
+    .cart-heading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .cart-heading svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .checkout-icon {
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+        margin-left: 5px;
+    }
+
+    .loading-logo svg {
+        width: 58px;
+        height: 58px;
+    }
+
+</style>
+
 
 </head>
 
 <body>
-
 
 <!-- ==============================
      HEADER
@@ -22,44 +93,147 @@
 
 <header class="main-header">
 
-    <div class="logo">
-        🎁 <span>GIFT ZONE</span>
-    </div>
 
-    <nav class="main-nav">
+<div class="logo">
 
-        <a href="index.html">
-            Home
-        </a>
+    <!-- Professional Gift Zone Logo -->
+    <svg
+        class="logo-icon"
+        viewBox="0 0 64 64"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true">
 
-        <a href="index.html#gifts">
-            Gifts
-        </a>
+        <rect
+            x="8"
+            y="20"
+            width="48"
+            height="36"
+            rx="6"
+            stroke="currentColor"
+            stroke-width="4"/>
 
-        <a href="index.html#categories">
-            Occasions
-        </a>
+        <path
+            d="M32 20V56"
+            stroke="currentColor"
+            stroke-width="4"/>
 
-        <a href="checkout.html">
-            Surprise Delivery
-        </a>
+        <path
+            d="M8 31H56"
+            stroke="currentColor"
+            stroke-width="4"/>
 
-        <a href="orders.html">
-            My Orders
-        </a>
+        <path
+            d="M32 20C27 20 18 18 18 11C18 6 24 5 28 8C31 10 32 15 32 20Z"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linejoin="round"/>
 
-        <a href="cart.html" class="active">
-            🛒 Cart
-        </a>
+        <path
+            d="M32 20C37 20 46 18 46 11C46 6 40 5 36 8C33 10 32 15 32 20Z"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linejoin="round"/>
 
-    </nav>
+    </svg>
 
-    <div class="mobile-cart">
-        🛒
-    </div>
+    <span>GIFT ZONE</span>
+
+</div>
+
+
+<nav class="main-nav">
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="index.html#gifts">
+        Gifts
+    </a>
+
+    <a href="index.html#categories">
+        Occasions
+    </a>
+
+    <a href="checkout.html">
+        Surprise Delivery
+    </a>
+
+    <a href="orders.html">
+        My Orders
+    </a>
+
+    <a href="cart.html" class="active">
+
+        <svg
+            class="cart-nav-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true">
+
+            <path
+                d="M3 4H5L7.2 15.2C7.4 16.2 8.3 17 9.3 17H18.5C19.4 17 20.2 16.4 20.5 15.5L22 9H6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+
+            <circle
+                cx="9"
+                cy="21"
+                r="1.5"
+                fill="currentColor"/>
+
+            <circle
+                cx="18"
+                cy="21"
+                r="1.5"
+                fill="currentColor"/>
+
+        </svg>
+
+        Cart
+
+    </a>
+
+</nav>
+
+
+<div class="mobile-cart">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true">
+
+        <path
+            d="M3 4H5L7.2 15.2C7.4 16.2 8.3 17 9.3 17H18.5C19.4 17 20.2 16.4 20.5 15.5L22 9H6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+        <circle
+            cx="9"
+            cy="21"
+            r="1.5"
+            fill="currentColor"/>
+
+        <circle
+            cx="18"
+            cy="21"
+            r="1.5"
+            fill="currentColor"/>
+
+    </svg>
+
+</div>
+
 
 </header>
-
 
 <!-- ==============================
      CART
@@ -67,34 +241,95 @@
 
 <section class="cart-page">
 
-    <h1>
-        Your Shopping Cart 🛒
-    </h1>
 
-    <div id="cartItems"></div>
+<h1 class="cart-heading">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true">
+
+        <path
+            d="M3 4H5L7.2 15.2C7.4 16.2 8.3 17 9.3 17H18.5C19.4 17 20.2 16.4 20.5 15.5L22 9H6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+        <circle
+            cx="9"
+            cy="21"
+            r="1.5"
+            fill="currentColor"/>
+
+        <circle
+            cx="18"
+            cy="21"
+            r="1.5"
+            fill="currentColor"/>
+
+    </svg>
+
+    Your Shopping Cart
+
+</h1>
 
 
-    <div class="cart-total">
+<div id="cartItems"></div>
 
-        <h2>
-            Total: ₹<span id="cartTotal">0</span>
-        </h2>
 
-        <button onclick="window.location.href='checkout.html'">
-            Proceed to Checkout 💳
-        </button>
+<div class="cart-total">
 
-    </div>
+    <h2>
+        Total: ₹<span id="cartTotal">0</span>
+    </h2>
+
+    <button onclick="window.location.href='checkout.html'">
+
+        Proceed to Checkout
+
+        <svg
+            class="checkout-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true">
+
+            <rect
+                x="3"
+                y="5"
+                width="18"
+                height="14"
+                rx="2"
+                stroke="currentColor"
+                stroke-width="2"/>
+
+            <path
+                d="M3 10H21"
+                stroke="currentColor"
+                stroke-width="2"/>
+
+            <path
+                d="M7 15H11"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"/>
+
+        </svg>
+
+    </button>
+
+</div>
+
 
 </section>
-
 
 <!-- ==============================
      EXISTING JAVASCRIPT
 ============================== -->
 
 <script src="script.js"></script>
-
 
 <!-- ==============================
      LOADING SCREEN
@@ -104,22 +339,62 @@
     id="loadingScreen"
     class="loading-screen">
 
-    <div class="loading-logo">
-        🎁
-    </div>
 
-    <h2>
-        Gift Zone
-    </h2>
+<div class="loading-logo">
 
-    <p>
-        Preparing your surprise...
-    </p>
+    <svg
+        viewBox="0 0 64 64"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true">
 
-    <div class="loading-spinner"></div>
+        <rect
+            x="8"
+            y="20"
+            width="48"
+            height="36"
+            rx="6"
+            stroke="currentColor"
+            stroke-width="4"/>
+
+        <path
+            d="M32 20V56"
+            stroke="currentColor"
+            stroke-width="4"/>
+
+        <path
+            d="M8 31H56"
+            stroke="currentColor"
+            stroke-width="4"/>
+
+        <path
+            d="M32 20C27 20 18 18 18 11C18 6 24 5 28 8C31 10 32 15 32 20Z"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linejoin="round"/>
+
+        <path
+            d="M32 20C37 20 46 18 46 11C46 6 40 5 36 8C33 10 32 15 32 20Z"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linejoin="round"/>
+
+    </svg>
 
 </div>
 
+<h2>
+    Gift Zone
+</h2>
+
+<p>
+    Preparing your surprise...
+</p>
+
+<div class="loading-spinner"></div>
+
+
+</div>
 
 </body>
 
