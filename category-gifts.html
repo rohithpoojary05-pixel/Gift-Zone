@@ -139,6 +139,7 @@
             object-fit: cover;
             display: block;
             background: #f5f5f5;
+            cursor: pointer;
         }
 
         .gift-info {
@@ -150,6 +151,11 @@
             font-weight: bold;
             min-height: 40px;
             line-height: 20px;
+            cursor: pointer;
+        }
+
+        .gift-name:hover {
+            color: #e91e63;
         }
 
         .gift-price {
@@ -158,6 +164,32 @@
             font-weight: bold;
             margin: 10px 0;
         }
+
+        /* ==============================
+           PRODUCT DETAILS BUTTON
+        ============================== */
+
+        .details-btn {
+            width: 100%;
+            border: 1px solid #e91e63;
+            background: white;
+            color: #e91e63;
+            padding: 10px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 9px;
+            transition: 0.2s;
+        }
+
+        .details-btn:hover {
+            background: #fff0f5;
+        }
+
+        /* ==============================
+           ADD CART BUTTON
+        ============================== */
 
         .add-cart-btn {
             width: 100%;
@@ -351,6 +383,12 @@
                 margin: 8px 0;
             }
 
+            .details-btn {
+                padding: 9px 5px;
+                font-size: 12px;
+                margin-bottom: 7px;
+            }
+
             .add-cart-btn {
                 padding: 10px 5px;
                 font-size: 13px;
@@ -418,6 +456,10 @@
 
             .gift-price {
                 font-size: 16px;
+            }
+
+            .details-btn {
+                font-size: 11px;
             }
 
             .add-cart-btn {
@@ -523,17 +565,27 @@
                 <img
                     class="gift-image"
                     src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
-                    alt="Birthday Gift">
+                    alt="Birthday Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Birthday Celebration Gift Hamper
                     </div>
 
                     <div class="gift-price">
                         ₹799
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -552,17 +604,27 @@
                 <img
                     class="gift-image"
                     src="https://www.oyegifts.com/cdn/shop/files/Enigmatic-Blend.jpg?v=1774075594"
-                    alt="Birthday Gift">
+                    alt="Birthday Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Birthday Special Surprise Box
                     </div>
 
                     <div class="gift-price">
                         ₹999
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -585,17 +647,27 @@
                 <img
                     class="gift-image"
                     src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
-                    alt="Anniversary Gift">
+                    alt="Anniversary Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Romantic Anniversary Gift Hamper
                     </div>
 
                     <div class="gift-price">
                         ₹899
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -614,17 +686,27 @@
                 <img
                     class="gift-image"
                     src="https://www.happyribbon.in/cdn/shop/files/HappyAnniversaryTrayHamper.png?v=1760010659&width=720"
-                    alt="Anniversary Gift">
+                    alt="Anniversary Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Happy Anniversary Surprise Box
                     </div>
 
                     <div class="gift-price">
                         ₹1,199
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -647,17 +729,27 @@
                 <img
                     class="gift-image"
                     src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
-                    alt="Celebration Gift">
+                    alt="Celebration Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Joyful Celebration Gift Combo
                     </div>
 
                     <div class="gift-price">
                         ₹1,299
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -676,17 +768,27 @@
                 <img
                     class="gift-image"
                     src="https://www.fnp.ae/images/pr/saudi-arabia/x/v20251030133618/joyful-celebration-combo-flower-with-cake-n-balloons_1.jpg"
-                    alt="Celebration Gift">
+                    alt="Celebration Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Celebration Flowers & Cake Combo
                     </div>
 
                     <div class="gift-price">
                         ₹1,499
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -709,17 +811,27 @@
                 <img
                     class="gift-image"
                     src="https://mesmerizeindia.com/cdn/shop/articles/Rakhi_2026_Blog_Image_85afbaba-1f6d-4d0d-a0e4-96a7581bb205.jpg?v=1784184317&width=2048"
-                    alt="Raksha Bandhan Gift">
+                    alt="Raksha Bandhan Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Raksha Bandhan Brother Sister Combo
                     </div>
 
                     <div class="gift-price">
                         ₹699
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -742,17 +854,27 @@
                 <img
                     class="gift-image"
                     src="https://imgcdn.floweraura.com/captivating-hamper-for-mom-9817800co-B_0.jpg"
-                    alt="Mother's Day Gift">
+                    alt="Mother's Day Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Special Gift Hamper For Mom
                     </div>
 
                     <div class="gift-price">
                         ₹899
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -775,17 +897,27 @@
                 <img
                     class="gift-image"
                     src="https://www.groovyguygifts.com/cdn/shop/files/Screenshot-2023-04-27T091925.636_1200x.png?v=1744367282"
-                    alt="Father's Day Gift">
+                    alt="Father's Day Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Best Dad Gift Combo
                     </div>
 
                     <div class="gift-price">
                         ₹799
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -808,17 +940,27 @@
                 <img
                     class="gift-image"
                     src="https://www.fnp.com/images/pr/x/v20230818165234/best-teacher-ever-hamper_1.jpg"
-                    alt="Teacher's Day Gift">
+                    alt="Teacher's Day Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Best Teacher Ever Gift Hamper
                     </div>
 
                     <div class="gift-price">
                         ₹699
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -841,17 +983,27 @@
                 <img
                     class="gift-image"
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSXAV9wEzvtRYQFsU-PjRnJpBDfygnqV49PXBuCjeemw&s=10"
-                    alt="Love Gift">
+                    alt="Love Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Romantic Love Surprise Gift
                     </div>
 
                     <div class="gift-price">
                         ₹899
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -874,17 +1026,27 @@
                 <img
                     class="gift-image"
                     src="https://halfpe.com/cdn/shop/files/bGgFnGnreh.jpg?v=1732943085"
-                    alt="Flowers">
+                    alt="Flowers"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Beautiful Fresh Flower Bouquet
                     </div>
 
                     <div class="gift-price">
                         ₹599
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -907,17 +1069,27 @@
                 <img
                     class="gift-image"
                     src="https://creativflowers.com/cdn/shop/products/gdsthumbnails_505x505px_ver_2_bs1allaboutcake.jpg?v=1680459275&width=1445"
-                    alt="Cake">
+                    alt="Cake"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         All About Cake
                     </div>
 
                     <div class="gift-price">
                         ₹699
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -940,17 +1112,27 @@
                 <img
                     class="gift-image"
                     src="https://www.classicflora.com/uploads/product-pics/img3/org/1770721419_mixed-rose-basket-with-gypsophila-teddy-chocolates-choco-chips-cake.jpg"
-                    alt="Gift Combo">
+                    alt="Gift Combo"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Mixed Rose Gift Combo
                     </div>
 
                     <div class="gift-price">
                         ₹1,099
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -973,17 +1155,27 @@
                 <img
                     class="gift-image"
                     src="https://product.hstatic.net/200000350831/product/12_11fb8d0386104597bfc98c23ecf51be8_grande.png"
-                    alt="Personalized Gift">
+                    alt="Personalized Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Personalized Special Gift
                     </div>
 
                     <div class="gift-price">
                         ₹799
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -1006,17 +1198,27 @@
                 <img
                     class="gift-image"
                     src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
-                    alt="Gift">
+                    alt="Gift"
+                    onclick="openProductDetails(this)"
+                >
 
                 <div class="gift-info">
 
-                    <div class="gift-name">
+                    <div
+                        class="gift-name"
+                        onclick="openProductDetails(this)">
                         Congratulations & Celebration Gift Hamper
                     </div>
 
                     <div class="gift-price">
                         ₹999
                     </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="openProductDetails(this)">
+                        👀 View Details
+                    </button>
 
                     <button
                         class="add-cart-btn"
@@ -1201,19 +1403,33 @@
 
 
         /* ==========================================
-           ADD TO CART
+           OPEN PRODUCT DETAILS
         ========================================== */
 
-        function addGiftToCart(button) {
+        function openProductDetails(element) {
 
             const card =
-                button.closest(".gift-card");
+                element.closest(".gift-card");
+
+
+            if (!card) {
+                return;
+            }
+
 
             const name =
-                card.querySelector(".gift-name").textContent.trim();
+                card
+                    .querySelector(".gift-name")
+                    .textContent
+                    .trim();
+
 
             const priceText =
-                card.querySelector(".gift-price").textContent.trim();
+                card
+                    .querySelector(".gift-price")
+                    .textContent
+                    .trim();
+
 
             const price =
                 Number(
@@ -1222,8 +1438,71 @@
                         .replace(/,/g, "")
                 );
 
+
             const image =
-                card.querySelector(".gift-image").src;
+                card
+                    .querySelector(".gift-image")
+                    .src;
+
+
+            const category =
+                card.getAttribute("data-category");
+
+
+            const productUrl =
+                "product.html" +
+                "?name=" +
+                encodeURIComponent(name) +
+                "&price=" +
+                encodeURIComponent(price) +
+                "&image=" +
+                encodeURIComponent(image) +
+                "&category=" +
+                encodeURIComponent(category);
+
+
+            window.location.href =
+                productUrl;
+
+        }
+
+
+        /* ==========================================
+           ADD TO CART
+        ========================================== */
+
+        function addGiftToCart(button) {
+
+            const card =
+                button.closest(".gift-card");
+
+
+            const name =
+                card
+                    .querySelector(".gift-name")
+                    .textContent
+                    .trim();
+
+
+            const priceText =
+                card
+                    .querySelector(".gift-price")
+                    .textContent
+                    .trim();
+
+
+            const price =
+                Number(
+                    priceText
+                        .replace("₹", "")
+                        .replace(/,/g, "")
+                );
+
+
+            const image =
+                card
+                    .querySelector(".gift-image")
+                    .src;
 
 
             const gift = {
@@ -1236,7 +1515,8 @@
 
                 image: image,
 
-                category: card.getAttribute("data-category"),
+                category:
+                    card.getAttribute("data-category"),
 
                 quantity: 1
 
@@ -1266,11 +1546,15 @@
             const popup =
                 document.getElementById("cartPopup");
 
-            popup.style.display = "block";
+
+            popup.style.display =
+                "block";
+
 
             setTimeout(function() {
 
-                popup.style.display = "none";
+                popup.style.display =
+                    "none";
 
             }, 1800);
 
@@ -1281,40 +1565,54 @@
            IMAGE FALLBACK
         ========================================== */
 
-        document.querySelectorAll(".gift-image").forEach(function(image) {
+        document
+            .querySelectorAll(".gift-image")
+            .forEach(function(image) {
 
-            image.addEventListener("error", function() {
+                image.addEventListener(
+                    "error",
+                    function() {
 
-                this.src =
-                    "https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514";
+                        this.src =
+                            "https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514";
+
+                    }
+                );
 
             });
-
-        });
 
 
         /* ==========================================
            LOADING SCREEN
         ========================================== */
 
-        window.addEventListener("load", function() {
-
-            setTimeout(function() {
-
-                const loadingScreen =
-                    document.getElementById("loadingScreen");
-
-                loadingScreen.style.opacity = "0";
+        window.addEventListener(
+            "load",
+            function() {
 
                 setTimeout(function() {
 
-                    loadingScreen.style.display = "none";
+                    const loadingScreen =
+                        document.getElementById(
+                            "loadingScreen"
+                        );
 
-                }, 400);
 
-            }, 500);
+                    loadingScreen.style.opacity =
+                        "0";
 
-        });
+
+                    setTimeout(function() {
+
+                        loadingScreen.style.display =
+                            "none";
+
+                    }, 400);
+
+                }, 500);
+
+            }
+        );
 
     </script>
 
