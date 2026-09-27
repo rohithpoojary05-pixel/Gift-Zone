@@ -1,13 +1,16 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Wishlist ❤️ - Gift Zone</title>
+    <title>My Wishlist - Gift Zone</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -20,9 +23,15 @@
             color: #333;
         }
 
+        button,
+        a {
+            font-family: inherit;
+        }
+
         /* =========================
            HEADER
         ========================== */
+
         header {
             background: #e91e63;
             color: white;
@@ -38,14 +47,27 @@
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
             font-size: 24px;
             font-weight: bold;
             white-space: nowrap;
         }
 
+        .logo-icon {
+            width: 29px;
+            height: 29px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         nav {
             display: flex;
-            gap: 20px;
+            gap: 9px;
             align-items: center;
         }
 
@@ -54,15 +76,32 @@
             text-decoration: none;
             font-weight: bold;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 10px;
+            border-radius: 7px;
+            transition: 0.2s;
         }
 
         nav a:hover {
-            opacity: 0.8;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .nav-icon {
+            width: 17px;
+            height: 17px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         /* =========================
            PAGE
         ========================== */
+
         .page {
             max-width: 1200px;
             margin: auto;
@@ -74,10 +113,25 @@
             margin-bottom: 30px;
         }
 
+        .title-icon {
+            width: 32px;
+            height: 32px;
+            fill: none;
+            stroke: #e91e63;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
         .page-title h1 {
             color: #e91e63;
             font-size: 32px;
             margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .page-title p {
@@ -87,6 +141,7 @@
         /* =========================
            WISHLIST GRID
         ========================== */
+
         .wishlist-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -149,6 +204,7 @@
         /* =========================
            BUTTONS
         ========================== */
+
         .buttons {
             display: flex;
             gap: 8px;
@@ -162,6 +218,21 @@
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .button-icon {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .cart-btn {
@@ -194,6 +265,7 @@
         /* =========================
            EMPTY WISHLIST
         ========================== */
+
         .empty {
             text-align: center;
             background: white;
@@ -205,7 +277,13 @@
         }
 
         .empty-icon {
-            font-size: 65px;
+            width: 62px;
+            height: 62px;
+            fill: none;
+            stroke: #e91e63;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
             margin-bottom: 15px;
         }
 
@@ -220,7 +298,10 @@
         }
 
         .shop-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             text-decoration: none;
             background: #e91e63;
             color: white;
@@ -233,9 +314,20 @@
             background: #c2185b;
         }
 
+        .shop-icon {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         /* =========================
            MOBILE BOTTOM NAV
         ========================== */
+
         .mobile-nav {
             display: none;
         }
@@ -243,13 +335,17 @@
         /* =========================
            RESPONSIVE
         ========================== */
+
         @media (max-width: 1000px) {
+
             .wishlist-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
+
         }
 
         @media (max-width: 700px) {
+
             header {
                 padding: 13px 15px;
             }
@@ -310,21 +406,31 @@
                 color: #555;
                 font-size: 11px;
                 text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 3px;
             }
 
-            .mobile-nav .icon {
-                display: block;
-                font-size: 22px;
-                margin-bottom: 2px;
+            .mobile-nav-icon {
+                width: 22px;
+                height: 22px;
+                fill: none;
+                stroke: currentColor;
+                stroke-width: 1.8;
+                stroke-linecap: round;
+                stroke-linejoin: round;
             }
 
             .mobile-nav .active {
                 color: #e91e63;
                 font-weight: bold;
             }
+
         }
 
         @media (max-width: 400px) {
+
             .wishlist-grid {
                 grid-template-columns: 1fr 1fr;
             }
@@ -341,63 +447,203 @@
                 font-size: 12px;
                 padding: 9px;
             }
+
         }
+
     </style>
+
 </head>
 
 <body>
 
+
+<!-- =========================
+     HEADER
+========================== -->
+
 <header>
-    <div class="logo">🎁 GIFT ZONE</div>
+
+    <div class="logo">
+
+        <svg class="logo-icon" viewBox="0 0 24 24">
+            <path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"></path>
+            <path d="M2 7h20v5H2z"></path>
+            <path d="M12 7v15"></path>
+            <path d="M12 7H7.5A2.5 2.5 0 1 1 10 4.5C10 7 12 7 12 7Z"></path>
+            <path d="M12 7h4.5A2.5 2.5 0 1 0 14 4.5C14 7 12 7 12 7Z"></path>
+        </svg>
+
+        GIFT ZONE
+
+    </div>
+
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="categories.html">Gifts</a>
-        <a href="cart.html">🛒 Cart</a>
-        <a href="orders.html">📦 Orders</a>
-        <a href="wishlist.html">❤️ Wishlist</a>
+
+        <a href="index.html">
+
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M3 10.5 12 3l9 7.5"></path>
+                <path d="M5 9v11h14V9"></path>
+                <path d="M9 20v-6h6v6"></path>
+            </svg>
+
+            Home
+
+        </a>
+
+
+        <a href="categories.html">
+
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+                <rect x="14" y="4" width="6" height="6" rx="1"></rect>
+                <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+                <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+            </svg>
+
+            Gifts
+
+        </a>
+
+
+        <a href="cart.html">
+
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6"></path>
+                <circle cx="10" cy="20" r="1.3"></circle>
+                <circle cx="18" cy="20" r="1.3"></circle>
+            </svg>
+
+            Cart
+
+        </a>
+
+
+        <a href="orders.html">
+
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M6 3h12v18l-6-3-6 3z"></path>
+                <path d="M9 8h6"></path>
+                <path d="M9 12h6"></path>
+            </svg>
+
+            Orders
+
+        </a>
+
+
+        <a href="wishlist.html">
+
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M20.8 8.8c0 5.5-8.8 10.2-8.8 10.2S3.2 14.3 3.2 8.8A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z"></path>
+            </svg>
+
+            Wishlist
+
+        </a>
+
     </nav>
+
 </header>
 
+
+<!-- =========================
+     PAGE
+========================== -->
 
 <main class="page">
 
     <div class="page-title">
-        <h1>❤️ My Wishlist</h1>
+
+        <h1>
+
+            <svg class="title-icon" viewBox="0 0 24 24">
+                <path d="M20.8 8.8c0 5.5-8.8 10.2-8.8 10.2S3.2 14.3 3.2 8.8A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z"></path>
+            </svg>
+
+            My Wishlist
+
+        </h1>
+
         <p>Your saved gifts are here</p>
+
     </div>
+
 
     <div id="wishlistContainer"></div>
 
 </main>
 
 
-<!-- MOBILE NAVIGATION -->
+<!-- =========================
+     MOBILE NAVIGATION
+========================== -->
+
 <div class="mobile-nav">
 
+
     <a href="index.html">
-        <span class="icon">🏠</span>
+
+        <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+            <path d="M3 10.5 12 3l9 7.5"></path>
+            <path d="M5 9v11h14V9"></path>
+            <path d="M9 20v-6h6v6"></path>
+        </svg>
+
         Home
+
     </a>
+
 
     <a href="categories.html">
-        <span class="icon">🎁</span>
+
+        <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+            <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+            <rect x="14" y="4" width="6" height="6" rx="1"></rect>
+            <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+            <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+        </svg>
+
         Gifts
+
     </a>
+
 
     <a href="cart.html">
-        <span class="icon">🛒</span>
+
+        <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+            <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6"></path>
+            <circle cx="10" cy="20" r="1.3"></circle>
+            <circle cx="18" cy="20" r="1.3"></circle>
+        </svg>
+
         Cart
+
     </a>
+
 
     <a href="wishlist.html" class="active">
-        <span class="icon">❤️</span>
+
+        <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+            <path d="M20.8 8.8c0 5.5-8.8 10.2-8.8 10.2S3.2 14.3 3.2 8.8A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z"></path>
+        </svg>
+
         Wishlist
+
     </a>
 
+
     <a href="orders.html">
-        <span class="icon">📦</span>
+
+        <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+            <path d="M6 3h12v18l-6-3-6 3z"></path>
+            <path d="M9 8h6"></path>
+            <path d="M9 12h6"></path>
+        </svg>
+
         Orders
+
     </a>
 
 </div>
@@ -417,19 +663,26 @@
 
         try {
 
-            const saved = localStorage.getItem(WISHLIST_KEY);
+            const saved =
+                localStorage.getItem(WISHLIST_KEY);
 
             if (!saved) {
                 return [];
             }
 
-            const wishlist = JSON.parse(saved);
+            const wishlist =
+                JSON.parse(saved);
 
-            return Array.isArray(wishlist) ? wishlist : [];
+            return Array.isArray(wishlist)
+                ? wishlist
+                : [];
 
         } catch (error) {
 
-            console.error("Wishlist loading error:", error);
+            console.error(
+                "Wishlist loading error:",
+                error
+            );
 
             return [];
 
@@ -452,12 +705,37 @@
        PRODUCT DETAILS
     ========================================== */
 
-    function openProduct(product) {
+    function openProduct(index) {
 
-        const name = encodeURIComponent(product.name || "");
-        const price = encodeURIComponent(product.price || "");
-        const image = encodeURIComponent(product.image || "");
-        const category = encodeURIComponent(product.category || "");
+        const wishlist =
+            getWishlist();
+
+        const product =
+            wishlist[index];
+
+        if (!product) {
+            return;
+        }
+
+        const name =
+            encodeURIComponent(
+                product.name || ""
+            );
+
+        const price =
+            encodeURIComponent(
+                product.price || ""
+            );
+
+        const image =
+            encodeURIComponent(
+                product.image || ""
+            );
+
+        const category =
+            encodeURIComponent(
+                product.category || ""
+            );
 
         window.location.href =
             `product.html?name=${name}&price=${price}&image=${image}&category=${category}`;
@@ -471,9 +749,13 @@
 
     function removeFromWishlist(index) {
 
-        const wishlist = getWishlist();
+        const wishlist =
+            getWishlist();
 
-        wishlist.splice(index, 1);
+        wishlist.splice(
+            index,
+            1
+        );
 
         saveWishlist(wishlist);
 
@@ -486,17 +768,29 @@
        ADD TO CART
     ========================================== */
 
-    function addToCart(product) {
+    function addToCart(index) {
+
+        const wishlist =
+            getWishlist();
+
+        const product =
+            wishlist[index];
+
+        if (!product) {
+            return;
+        }
+
 
         let cart = [];
 
         try {
 
-            const savedCart = localStorage.getItem(CART_KEY);
-
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-            }
+            cart =
+                JSON.parse(
+                    localStorage.getItem(
+                        CART_KEY
+                    ) || "[]"
+                );
 
             if (!Array.isArray(cart)) {
                 cart = [];
@@ -509,11 +803,13 @@
         }
 
 
-        const existingProduct = cart.find(
-            item =>
-                item.name === product.name &&
-                item.price === product.price
-        );
+        const existingProduct =
+            cart.find(
+                item =>
+                    item.name === product.name &&
+                    Number(item.price) ===
+                    Number(product.price)
+            );
 
 
         if (existingProduct) {
@@ -524,12 +820,25 @@
         } else {
 
             cart.push({
-                id: product.id || Date.now(),
-                name: product.name,
-                price: Number(product.price) || 0,
-                image: product.image || "",
-                category: product.category || "",
+
+                id:
+                    product.id ||
+                    Date.now(),
+
+                name:
+                    product.name,
+
+                price:
+                    Number(product.price) || 0,
+
+                image:
+                    product.image || "",
+
+                category:
+                    product.category || "",
+
                 quantity: 1
+
             });
 
         }
@@ -541,7 +850,10 @@
         );
 
 
-        alert("🛒 Gift added to cart!");
+        showMessage(
+            "Added to Cart",
+            "Gift added successfully."
+        );
 
     }
 
@@ -553,21 +865,32 @@
     function renderWishlist() {
 
         const container =
-            document.getElementById("wishlistContainer");
+            document.getElementById(
+                "wishlistContainer"
+            );
 
-        const wishlist = getWishlist();
+        const wishlist =
+            getWishlist();
 
 
         /* EMPTY */
+
         if (wishlist.length === 0) {
 
             container.innerHTML = `
 
                 <div class="empty">
 
-                    <div class="empty-icon">❤️</div>
+                    <svg
+                        class="empty-icon"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M20.8 8.8c0 5.5-8.8 10.2-8.8 10.2S3.2 14.3 3.2 8.8A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z"></path>
+                    </svg>
 
-                    <h2>Your Wishlist is Empty</h2>
+                    <h2>
+                        Your Wishlist is Empty
+                    </h2>
 
                     <p>
                         Save your favourite gifts here
@@ -578,7 +901,47 @@
                         href="categories.html"
                         class="shop-btn"
                     >
-                        🎁 Explore Gifts
+
+                        <svg
+                            class="shop-icon"
+                            viewBox="0 0 24 24"
+                        >
+                            <rect
+                                x="4"
+                                y="4"
+                                width="6"
+                                height="6"
+                                rx="1"
+                            ></rect>
+
+                            <rect
+                                x="14"
+                                y="4"
+                                width="6"
+                                height="6"
+                                rx="1"
+                            ></rect>
+
+                            <rect
+                                x="4"
+                                y="14"
+                                width="6"
+                                height="6"
+                                rx="1"
+                            ></rect>
+
+                            <rect
+                                x="14"
+                                y="14"
+                                width="6"
+                                height="6"
+                                rx="1"
+                            ></rect>
+
+                        </svg>
+
+                        Explore Gifts
+
                     </a>
 
                 </div>
@@ -631,21 +994,99 @@
                                     class="details-btn"
                                     onclick="openProduct(${index})"
                                 >
-                                    👀 View Details
+
+                                    <svg
+                                        class="button-icon"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="8"
+                                        ></circle>
+
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="2"
+                                        ></circle>
+
+                                        <path
+                                            d="M12 7v1"
+                                        ></path>
+
+                                    </svg>
+
+                                    View Details
+
                                 </button>
+
 
                                 <button
                                     class="cart-btn"
                                     onclick="addToCart(${index})"
                                 >
-                                    🛒 Add to Cart
+
+                                    <svg
+                                        class="button-icon"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6"
+                                        ></path>
+
+                                        <circle
+                                            cx="10"
+                                            cy="20"
+                                            r="1.3"
+                                        ></circle>
+
+                                        <circle
+                                            cx="18"
+                                            cy="20"
+                                            r="1.3"
+                                        ></circle>
+
+                                    </svg>
+
+                                    Add to Cart
+
                                 </button>
+
 
                                 <button
                                     class="remove-btn"
                                     onclick="removeFromWishlist(${index})"
                                 >
-                                    ❌ Remove
+
+                                    <svg
+                                        class="button-icon"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            d="M4 7h16"
+                                        ></path>
+
+                                        <path
+                                            d="M10 11v6"
+                                        ></path>
+
+                                        <path
+                                            d="M14 11v6"
+                                        ></path>
+
+                                        <path
+                                            d="M6 7l1 14h10l1-14"
+                                        ></path>
+
+                                        <path
+                                            d="M9 7V4h6v3"
+                                        ></path>
+
+                                    </svg>
+
+                                    Remove
+
                                 </button>
 
                             </div>
@@ -670,119 +1111,114 @@
     function escapeHtml(value) {
 
         return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
 
     }
 
 
     /* ==========================================
-       FIX BUTTON INDEX
+       MESSAGE
     ========================================== */
 
-    function openProduct(index) {
+    function showMessage(
+        title,
+        message
+    ) {
 
-        const wishlist = getWishlist();
-
-        const product = wishlist[index];
-
-        if (!product) {
-            return;
-        }
-
-        const name =
-            encodeURIComponent(product.name || "");
-
-        const price =
-            encodeURIComponent(product.price || "");
-
-        const image =
-            encodeURIComponent(product.image || "");
-
-        const category =
-            encodeURIComponent(product.category || "");
-
-        window.location.href =
-            `product.html?name=${name}&price=${price}&image=${image}&category=${category}`;
-
-    }
-
-
-    function addToCart(index) {
-
-        const wishlist = getWishlist();
-
-        const product = wishlist[index];
-
-        if (!product) {
-            return;
-        }
-
-
-        let cart = [];
-
-        try {
-
-            cart =
-                JSON.parse(
-                    localStorage.getItem(CART_KEY) || "[]"
-                );
-
-            if (!Array.isArray(cart)) {
-                cart = [];
-            }
-
-        } catch (error) {
-
-            cart = [];
-
-        }
-
-
-        const existingProduct =
-            cart.find(
-                item =>
-                    item.name === product.name &&
-                    Number(item.price) === Number(product.price)
+        const oldMessage =
+            document.getElementById(
+                "wishlistMessage"
             );
 
-
-        if (existingProduct) {
-
-            existingProduct.quantity =
-                (existingProduct.quantity || 1) + 1;
-
-        } else {
-
-            cart.push({
-
-                id: product.id || Date.now(),
-
-                name: product.name,
-
-                price: Number(product.price) || 0,
-
-                image: product.image || "",
-
-                category: product.category || "",
-
-                quantity: 1
-
-            });
-
+        if (oldMessage) {
+            oldMessage.remove();
         }
 
 
-        localStorage.setItem(
-            CART_KEY,
-            JSON.stringify(cart)
+        const messageBox =
+            document.createElement("div");
+
+        messageBox.id =
+            "wishlistMessage";
+
+        messageBox.style.position =
+            "fixed";
+
+        messageBox.style.top =
+            "20px";
+
+        messageBox.style.right =
+            "20px";
+
+        messageBox.style.zIndex =
+            "9999";
+
+        messageBox.style.background =
+            "#ffffff";
+
+        messageBox.style.borderLeft =
+            "4px solid #e91e63";
+
+        messageBox.style.padding =
+            "15px 20px";
+
+        messageBox.style.borderRadius =
+            "8px";
+
+        messageBox.style.boxShadow =
+            "0 5px 20px rgba(0,0,0,0.15)";
+
+        messageBox.innerHTML = `
+
+            <div style="
+                font-weight:700;
+                margin-bottom:4px;
+                color:#222;
+            ">
+                ${escapeHtml(title)}
+            </div>
+
+            <div style="
+                color:#777;
+                font-size:13px;
+            ">
+                ${escapeHtml(message)}
+            </div>
+
+        `;
+
+        document.body.appendChild(
+            messageBox
         );
 
 
-        alert("🛒 Gift added to cart!");
+        setTimeout(
+            function () {
+
+                messageBox.remove();
+
+            },
+            2200
+        );
 
     }
 
@@ -796,5 +1232,6 @@
 </script>
 
 </body>
+
 </html>
 
