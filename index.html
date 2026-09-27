@@ -679,6 +679,10 @@
     }
 
 
+    /* =========================================
+       PROFESSIONAL 5-BUTTON MOBILE NAV
+    ========================================= */
+
     .mobile-bottom-nav {
         position: fixed;
         left: 0;
@@ -686,15 +690,14 @@
         bottom: 0;
         height: 68px;
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         background: #fff;
         border-top: 1px solid #eadce2;
         box-shadow: 0 -5px 18px rgba(0,0,0,0.10);
         z-index: 10000;
     }
 
-    .mobile-bottom-nav a,
-    .mobile-bottom-nav button {
+    .mobile-bottom-nav a {
         width: 100%;
         height: 68px;
         display: flex;
@@ -707,25 +710,38 @@
         color: #555;
         text-decoration: none;
         font-family: inherit;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+        transition: 0.2s ease;
     }
 
     .mobile-bottom-nav .bottom-icon {
-        font-size: 23px;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         line-height: 1;
     }
 
+    .mobile-bottom-nav .bottom-icon svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+        stroke: currentColor;
+    }
+
     .mobile-bottom-nav a:active,
-    .mobile-bottom-nav button:active {
+    .mobile-bottom-nav a:hover {
         color: #e91e63;
         background: #fff4f8;
     }
 
     .mobile-bottom-nav .bottom-label {
         line-height: 1;
+        white-space: nowrap;
     }
 
 
@@ -811,13 +827,19 @@
         height: 66px;
     }
 
-    .mobile-bottom-nav a,
-    .mobile-bottom-nav button {
+    .mobile-bottom-nav a {
         height: 66px;
+        font-size: 9px;
     }
 
     .mobile-bottom-nav .bottom-icon {
-        font-size: 21px;
+        width: 22px;
+        height: 22px;
+    }
+
+    .mobile-bottom-nav .bottom-icon svg {
+        width: 20px;
+        height: 20px;
     }
 
 }
@@ -871,7 +893,6 @@
 
 <div class="header-search">
 
-
 <div class="gift-search-box">
 
     <div class="gift-search-wrapper">
@@ -897,11 +918,9 @@
 
 </div>
 
-
 </div>
 
 <nav class="main-nav">
-
 
 <a href="index.html" class="active">Home</a>
 
@@ -921,7 +940,6 @@
     🛒 Cart
 </a>
 
-
 </nav>
 
 <div class="mobile-cart">
@@ -936,76 +954,40 @@
 
 <div class="mobile-category-strip">
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Birthday')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Birthday')">
 Birthday </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Anniversary')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Anniversary')">
 Anniversary </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Celebrations')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Celebrations')">
 Celebrations </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Raksha Bandhan')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Raksha Bandhan')">
 Raksha Bandhan </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Mothers Day')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Mothers Day')">
 Mother's Day </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Fathers Day')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Fathers Day')">
 Father's Day </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Teachers Day')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Teachers Day')">
 Teacher's Day </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Love')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Love')">
 Love </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Flowers')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Flowers')">
 Flowers </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Cakes')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Cakes')">
 Cakes </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showCategory('Combos')">
+<button type="button" class="mobile-category-button" onclick="showCategory('Combos')">
 Gift Combos </button>
 
-<button
- type="button"
- class="mobile-category-button"
- onclick="showAllGifts()">
+<button type="button" class="mobile-category-button" onclick="showAllGifts()">
 All Gifts </button>
 
 </div>
@@ -1019,7 +1001,6 @@ All Gifts </button>
 <div class="banner-slider">
 
 <div class="banner active-banner">
-
 
 <div class="banner-content">
 
@@ -1057,11 +1038,9 @@ All Gifts </button>
 
 </div>
 
-
 </div>
 
 <div class="banner">
-
 
 <div class="banner-content">
 
@@ -1099,11 +1078,9 @@ All Gifts </button>
 
 </div>
 
-
 </div>
 
 <div class="banner">
-
 
 <div class="banner-content">
 
@@ -1141,7 +1118,6 @@ All Gifts </button>
 
 </div>
 
-
 </div>
 
 </div>
@@ -1166,17 +1142,11 @@ onclick="changeBanner(1)">
 
 <div class="banner-dots">
 
-<span
- class="banner-dot active-dot"
- onclick="showBanner(0)"> </span>
+<span class="banner-dot active-dot" onclick="showBanner(0)"> </span>
 
-<span
- class="banner-dot"
- onclick="showBanner(1)"> </span>
+<span class="banner-dot" onclick="showBanner(1)"> </span>
 
-<span
- class="banner-dot"
- onclick="showBanner(2)"> </span>
+<span class="banner-dot" onclick="showBanner(2)"> </span>
 
 </div>
 
@@ -1190,7 +1160,6 @@ onclick="changeBanner(1)">
 
 <div class="feature-card">
 
-
 <div class="feature-icon">
     Gifts
 </div>
@@ -1200,11 +1169,9 @@ onclick="changeBanner(1)">
     <p>For Every Occasion</p>
 </div>
 
-
 </div>
 
 <div class="feature-card">
-
 
 <div class="feature-icon">
     Delivery
@@ -1215,11 +1182,9 @@ onclick="changeBanner(1)">
     <p>Always on Time</p>
 </div>
 
-
 </div>
 
 <div class="feature-card">
-
 
 <div class="feature-icon">
     Surprise
@@ -1230,11 +1195,9 @@ onclick="changeBanner(1)">
     <p>Make Moments Special</p>
 </div>
 
-
 </div>
 
 <div class="feature-card">
-
 
 <div class="feature-icon">
     Secure
@@ -1244,7 +1207,6 @@ onclick="changeBanner(1)">
     <h3>Secure Payment</h3>
     <p>100% Safe & Secure</p>
 </div>
-
 
 </div>
 
@@ -1258,18 +1220,15 @@ onclick="changeBanner(1)">
 
 <div class="section-heading">
 
-
 <h2>SHOP BY CATEGORY</h2>
 
 <a href="#gifts">View All</a>
-
 
 </div>
 
 <div class="category-container">
 
 <div class="category" onclick="showCategory('Birthday')">
-
 
 <div class="professional-category-icon">
 
@@ -1282,11 +1241,9 @@ onclick="changeBanner(1)">
 
 <h3>Birthday</h3>
 
-
 </div>
 
 <div class="category" onclick="showCategory('Anniversary')">
-
 
 <div class="professional-category-icon">
 
@@ -1299,11 +1256,9 @@ onclick="changeBanner(1)">
 
 <h3>Anniversary</h3>
 
-
 </div>
 
 <div class="category" onclick="showCategory('Celebrations')">
-
 
 <div class="professional-category-icon">
 
@@ -1316,11 +1271,9 @@ onclick="changeBanner(1)">
 
 <h3>Celebrations</h3>
 
-
 </div>
 
 <div class="category" onclick="showCategory('Raksha Bandhan')">
-
 
 <div class="professional-category-icon">
 
@@ -1333,11 +1286,9 @@ onclick="changeBanner(1)">
 
 <h3>Raksha Bandhan</h3>
 
-
 </div>
 
 <div class="category" onclick="showCategory('Mothers Day')">
-
 
 <div class="professional-category-icon">
 
@@ -1350,11 +1301,9 @@ onclick="changeBanner(1)">
 
 <h3>Mother's Day</h3>
 
-
 </div>
 
 <div class="category" onclick="showCategory('Fathers Day')">
-
 
 <div class="professional-category-icon">
 
@@ -1367,11 +1316,9 @@ onclick="changeBanner(1)">
 
 <h3>Father's Day</h3>
 
-
 </div>
 
 <div class="category" onclick="showCategory('Teachers Day')">
-
 
 <div class="professional-category-icon">
 
@@ -1384,11 +1331,9 @@ onclick="changeBanner(1)">
 
 <h3>Teacher's Day</h3>
 
-
 </div>
 
 <div class="category" onclick="showCategory('Love')">
-
 
 <div class="professional-category-icon">
 
@@ -1401,11 +1346,9 @@ onclick="changeBanner(1)">
 
 <h3>Love</h3>
 
-
 </div>
 
 <div class="category" onclick="showCategory('Flowers')">
-
 
 <div class="professional-category-icon">
 
@@ -1418,11 +1361,9 @@ onclick="changeBanner(1)">
 
 <h3>Flowers</h3>
 
-
 </div>
 
 <div class="category" onclick="showCategory('Cakes')">
-
 
 <div class="professional-category-icon">
 
@@ -1435,11 +1376,9 @@ onclick="changeBanner(1)">
 
 <h3>Cakes</h3>
 
-
 </div>
 
 <div class="category" onclick="showCategory('Combos')">
-
 
 <div class="professional-category-icon">
 
@@ -1452,11 +1391,9 @@ onclick="changeBanner(1)">
 
 <h3>Gift Combos</h3>
 
-
 </div>
 
 <div class="category" onclick="showAllGifts()">
-
 
 <div class="professional-category-icon">
 
@@ -1468,7 +1405,6 @@ onclick="changeBanner(1)">
 </div>
 
 <h3>All Gifts</h3>
-
 
 </div>
 
@@ -1484,11 +1420,9 @@ onclick="changeBanner(1)">
 
 <div class="section-heading">
 
-
 <h2>BEST SELLERS</h2>
 
 <a href="#gifts">View All</a>
-
 
 </div>
 
@@ -1501,7 +1435,6 @@ onclick="changeBanner(1)">
 <!-- BIRTHDAY -->
 
 <div class="gift-card" data-category="Birthday">
-
 
 <div class="professional-gift-image">
 
@@ -1520,13 +1453,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- ANNIVERSARY -->
 
 <div class="gift-card" data-category="Anniversary">
-
 
 <div class="professional-gift-image">
 
@@ -1545,13 +1476,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- CELEBRATIONS -->
 
 <div class="gift-card" data-category="Celebrations">
-
 
 <div class="professional-gift-image">
 
@@ -1570,13 +1499,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- RAKSHA BANDHAN -->
 
 <div class="gift-card" data-category="Raksha Bandhan">
-
 
 <div class="professional-gift-image">
 
@@ -1595,13 +1522,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- MOTHER'S DAY -->
 
 <div class="gift-card" data-category="Mothers Day">
-
 
 <div class="professional-gift-image">
 
@@ -1620,13 +1545,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- FATHER'S DAY -->
 
 <div class="gift-card" data-category="Fathers Day">
-
 
 <div class="professional-gift-image">
 
@@ -1645,13 +1568,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- TEACHER'S DAY GIFT 1 -->
 
 <div class="gift-card" data-category="Teachers Day">
-
 
 <div class="professional-gift-image">
 
@@ -1670,13 +1591,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- TEACHER'S DAY GIFT 2 -->
 
 <div class="gift-card" data-category="Teachers Day">
-
 
 <div class="professional-gift-image">
 
@@ -1695,13 +1614,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- LOVE -->
 
 <div class="gift-card" data-category="Love">
-
 
 <div class="professional-gift-image">
 
@@ -1720,13 +1637,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- FLOWERS -->
 
 <div class="gift-card" data-category="Flowers">
-
 
 <div class="professional-gift-image">
 
@@ -1745,13 +1660,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- CAKES -->
 
 <div class="gift-card" data-category="Cakes">
-
 
 <div class="professional-gift-image">
 
@@ -1770,13 +1683,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- COMBOS -->
 
 <div class="gift-card" data-category="Combos">
-
 
 <div class="professional-gift-image">
 
@@ -1795,13 +1706,11 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 <!-- PERSONALIZED -->
 
 <div class="gift-card" data-category="Personalized">
-
 
 <div class="professional-gift-image">
 
@@ -1820,7 +1729,6 @@ onclick="changeBanner(1)">
 
 <button type="button">ADD TO CART</button>
 
-
 </div>
 
 </div>
@@ -1832,7 +1740,6 @@ onclick="changeBanner(1)">
 ========================================= -->
 
 <section class="surprise-video-box" id="surpriseVideoBox">
-
 
 <div class="surprise-video-badge">
     🎥 SPECIAL SURPRISE SERVICE
@@ -1888,7 +1795,6 @@ onclick="changeBanner(1)">
 
 </div>
 
-
 </section>
 
 <!-- =========================================
@@ -1911,9 +1817,7 @@ onclick="changeBanner(1)">
  type="button"
  onclick="window.location.href='checkout.html'">
 
-
 PLAN A SURPRISE
-
 
 </button>
 
@@ -1933,62 +1837,172 @@ PLAN A SURPRISE
 
 </footer>
 
+
 <!-- =========================================
      MOBILE BOTTOM NAVIGATION
-     UPDATED
+     HOME + CATEGORIES + WISHLIST + PROFILE + CART
 ========================================= -->
 
 <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
 
 <a href="index.html">
 
+    <span class="bottom-icon" aria-hidden="true">
 
-<span class="bottom-icon">🏠</span>
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
 
-<span class="bottom-label">
-    Home
-</span>
+            <path d="M3 10.5L12 3l9 7.5"></path>
 
+            <path d="M5 9.5V21h14V9.5"></path>
+
+            <path d="M9 21v-6h6v6"></path>
+
+        </svg>
+
+    </span>
+
+    <span class="bottom-label">
+        Home
+    </span>
 
 </a>
+
 
 <a href="categories.html">
 
+    <span class="bottom-icon" aria-hidden="true">
 
-<span class="bottom-icon">🎁</span>
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
 
-<span class="bottom-label">
-    Categories
-</span>
+            <path d="M20 12V7l-8-4-8 4v5"></path>
 
+            <path d="M4 12l8 4 8-4"></path>
+
+            <path d="M4 7l8 4 8-4"></path>
+
+            <path d="M12 16v5"></path>
+
+        </svg>
+
+    </span>
+
+    <span class="bottom-label">
+        Categories
+    </span>
 
 </a>
+
+
+<a href="wishlist.html">
+
+    <span class="bottom-icon" aria-hidden="true">
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <path d="M20.8 8.6c0 5.5-8.8 10.4-8.8 10.4S3.2 14.1 3.2 8.6C3.2 5.5 5.4 3 8.4 3c1.8 0 3.1.9 3.6 2.1C12.5 3.9 13.8 3 15.6 3c3 0 5.2 2.5 5.2 5.6z"></path>
+
+        </svg>
+
+    </span>
+
+    <span class="bottom-label">
+        Wishlist
+    </span>
+
+</a>
+
 
 <a href="profile.html">
 
+    <span class="bottom-icon" aria-hidden="true">
 
-<span class="bottom-icon">👤</span>
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
 
-<span class="bottom-label">
-    Profile
-</span>
+            <circle
+                cx="12"
+                cy="8"
+                r="4">
+            </circle>
 
+            <path
+                d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7">
+            </path>
+
+        </svg>
+
+    </span>
+
+    <span class="bottom-label">
+        Profile
+    </span>
 
 </a>
 
+
 <a href="cart.html">
 
+    <span class="bottom-icon" aria-hidden="true">
 
-<span class="bottom-icon">🛒</span>
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
 
-<span class="bottom-label">
-    Cart
-</span>
+            <path
+                d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6">
+            </path>
 
+            <circle
+                cx="10"
+                cy="20"
+                r="1.5">
+            </circle>
+
+            <circle
+                cx="18"
+                cy="20"
+                r="1.5">
+            </circle>
+
+        </svg>
+
+    </span>
+
+    <span class="bottom-label">
+        Cart
+    </span>
 
 </a>
 
 </nav>
+
 
 <!-- =========================================
      LOADING SCREEN
@@ -1998,12 +2012,10 @@ PLAN A SURPRISE
 
 <div class="professional-loading-logo">
 
-
 <img
     src="https://cdn.shopify.com/s/files/1/0410/5948/3805/files/TheCongratulationsandCelebrationsGiftHamper_600x_c80f5059-54a1-47c8-9e14-7f6038a77646_480x480.webp?v=1681735514"
     alt="Gift Zone"
     loading="eager">
-
 
 </div>
 
@@ -2015,6 +2027,7 @@ PLAN A SURPRISE
 
 </div>
 
+
 <!-- =========================================
      POPUP
 ========================================= -->
@@ -2022,7 +2035,6 @@ PLAN A SURPRISE
 <div id="giftPopup" class="gift-popup-overlay">
 
 <div class="gift-popup">
-
 
 <button
     type="button"
@@ -2061,10 +2073,10 @@ PLAN A SURPRISE
 
 </button>
 
-
 </div>
 
 </div>
+
 
 <script src="script.js"></script>
 
@@ -2853,11 +2865,6 @@ function selectSurpriseVideo() {
     }
 
 
-    /*
-       Save separately so checkout/payment
-       can use this later.
-    */
-
     localStorage.setItem(
         "giftZoneSurpriseVideo",
         JSON.stringify({
@@ -2873,11 +2880,6 @@ function selectSurpriseVideo() {
         })
     );
 
-
-    /*
-       Keep existing website behavior.
-       We only store the selection here.
-    */
 
     const messageElement =
         document.getElementById(
